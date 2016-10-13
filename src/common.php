@@ -16,10 +16,10 @@ unset($curtheme);
 require_once 'helpers.php';
 
 // Load configs
-\Royl\WpThemeBase\Util\Configure::init();
+include_once __DIR__ . '/Config/core.php';
 
 // Load required vendors
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'plugin-activation' . DIRECTORY_SEPARATOR . 'class-tgm-plugin-activation.php';
+require_once __DIR__ . '/vendor/plugin-activation/class-tgm-plugin-activation.php';
 
 // Bootstrap the Theme!
 $royl_wp_core = new Royl\WpThemeBase\Core\Core();

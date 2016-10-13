@@ -28,17 +28,6 @@ final class Configure
     protected static $config = array();
 
     /**
-     * Initalize configuration options. Load core and app configs
-     */
-    public static function init() {
-        // load primary core config
-        require_once ROYL_WPTHEME_BASE_APP_PATH . DIRECTORY_SEPARATOR . 'Ecs' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'core.php';
-
-        // load app config
-        require_once ROYL_WPTHEME_BASE_APP_PATH . DIRECTORY_SEPARATOR . 'Ecs' . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'core.php';
-    }
-
-    /**
      * Set $config. Used to initialize the Configure object
      *
      * @param array $set array of config data
