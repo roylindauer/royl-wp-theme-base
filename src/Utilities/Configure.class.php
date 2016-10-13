@@ -32,10 +32,10 @@ final class Configure
      */
     public static function init() {
         // load primary core config
-        require_once APP_PATH . DS . 'Ecs' . DS . 'Core' . DS . 'Config' . DS . 'core.php';
+        require_once ROYL_WPTHEME_BASE_APP_PATH . DIRECTORY_SEPARATOR . 'Ecs' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'core.php';
 
         // load app config
-        require_once APP_PATH . DS . 'Ecs' . DS . 'App' . DS . 'Config' . DS . 'core.php';
+        require_once ROYL_WPTHEME_BASE_APP_PATH . DIRECTORY_SEPARATOR . 'Ecs' . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Config' . DIRECTORY_SEPARATOR . 'core.php';
     }
 
     /**

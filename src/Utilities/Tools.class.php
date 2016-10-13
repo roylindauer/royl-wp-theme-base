@@ -30,7 +30,7 @@ class Tools
     public static function renderPartial($partial, $data = array())
     {
         global $wp_query;
-        $file = 'partials' . DS . $partial . '.php';
+        $file = 'partials' . DIRECTORY_SEPARATOR . $partial . '.php';
         $wp_query->query_vars = array_merge($wp_query->query_vars, $data);
         locate_template($file, true, false);
     }
@@ -132,7 +132,7 @@ class Tools
 
         // Save the image
         $ch = curl_init($url);
-        $fp = fopen($upload_dir . DS . $pathinfo['basename'], 'wb');
+        $fp = fopen($upload_dir . DIRECTORY_SEPARATOR . $pathinfo['basename'], 'wb');
 
         curl_setopt($ch, CURLOPT_FILE, $fp);
         curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -145,9 +145,9 @@ class Tools
         $file_info = new \stdClass();
 
         $file_info->filename = $pathinfo['basename'];
-        $file_info->path     = $upload_dir . DS . $pathinfo['basename'];
-        $file_info->url      = $wp_upload['url'] . DS . $pathinfo['basename'];
-        $file_info->wp_url   = $wp_upload['subdir'] . DS . $pathinfo['basename'];
+        $file_info->path     = $upload_dir . DIRECTORY_SEPARATOR . $pathinfo['basename'];
+        $file_info->url      = $wp_upload['url'] . DIRECTORY_SEPARATOR . $pathinfo['basename'];
+        $file_info->wp_url   = $wp_upload['subdir'] . DIRECTORY_SEPARATOR . $pathinfo['basename'];
 
         return $file_info;
     }

@@ -4,12 +4,7 @@
  */
 
 // Setup constants
-define('DS', DIRECTORY_SEPARATOR);
-define('APP_PATH', dirname(dirname(realpath(__FILE__))));
-define('VENDOR_PATH', APP_PATH . DS . 'vendor');
-
-// Autoloader
-require_once 'autoloader.php';
+define('ROYL_WPTHEME_BASE_APP_PATH', dirname(dirname(realpath(__FILE__))));
 
 // Set base Theme Name and Version into Theme Config
 $curtheme = wp_get_theme();
@@ -24,7 +19,7 @@ require_once 'helpers.php';
 \Royl\WpThemeBase\Util\Configure::init();
 
 // Load required vendors
-require_once VENDOR_PATH . DS . 'plugin-activation' . DS . 'class-tgm-plugin-activation.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'plugin-activation' . DIRECTORY_SEPARATOR . 'class-tgm-plugin-activation.php';
 
 // Bootstrap the Theme!
 $royl_wp_core = new Royl\WpThemeBase\Core\Core();
