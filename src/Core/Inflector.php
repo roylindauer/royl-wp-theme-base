@@ -1,5 +1,5 @@
 <?php
-namespace ERoyl\WpThemeBase\Core;
+namespace Royl\WpThemeBase\Core;
 
 /**
  * This file is part of the Akelos Framework
