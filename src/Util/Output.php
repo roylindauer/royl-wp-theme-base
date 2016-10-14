@@ -13,7 +13,7 @@ namespace Royl\WpThemeBase\Util;
  * Usage:
  *
  * $data = array('results' => array('name' => 'My User', 'email' => 'user@example.org'));
- * \Ecs\Core\Utilities\Output::json($data);
+ * \Royl\WpThemeBase\Util\Output::json($data);
  *
  * would return the following in your browser:
  *

@@ -5,9 +5,6 @@ namespace Royl\WpThemeBase\Util;
 /**
  * Utility class for working with Arrays
  *
- * Usage:
- * $result = \Ecs\Core\Utilities\Set::isArrayEmpty($array);
- *
  * @package     WpThemeBase
  * @subpackage  Util
  * @author      Roy Lindauer <hello@roylindauer.com>
