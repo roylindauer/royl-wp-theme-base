@@ -22,7 +22,7 @@ class Text
      * @param string $str The string to translate
      * @param string $domain lang domain to get translated string
      */
-    function translate($str = '', $domain = false)
+    public static function translate($str = '', $domain = false)
     {
         // Default domain to theme
         if ($domain === false) {
