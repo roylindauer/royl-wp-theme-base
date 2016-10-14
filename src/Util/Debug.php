@@ -17,7 +17,7 @@ class Debug {
      *
      * @param mixed $var variable to print out
      */
-    public function pr($var = null)
+    public static function pr($var = null)
     {
         if (PHP_SAPI === 'cli') {
             echo str_repeat('-', 50) . "\n";
@@ -35,7 +35,7 @@ class Debug {
      *
      * @param mixed $var
      */
-    public function debug($var = null)
+    public static function debug($var = null)
     {
         $backtrace = debug_backtrace();
         $file = '.'.str_replace($_SERVER['DOCUMENT_ROOT'], '', $backtrace[0]['file']);
