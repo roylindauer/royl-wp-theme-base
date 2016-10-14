@@ -7,7 +7,8 @@ class WpThemeBase {
     /**
      * Initialize Theme
      */
-    public function init() {
+    public function init($config = array()) {
         require __DIR__ . DIRECTORY_SEPARATOR . 'common.php';
+        \Royl\WpThemeBase\Util\Configure::set($config);
     }
 }
