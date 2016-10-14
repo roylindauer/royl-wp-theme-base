@@ -38,36 +38,38 @@ class Core
      */
     public function run()
     {
-        // Load custom post types, widgets, etc.
-        add_action('init', array(&$this, 'loadPostTypes'));
-        add_action('init', array(&$this, 'registerTaxonomies'));
+        if (function_exists('add_action')) {
+            // Load custom post types, widgets, etc.
+            add_action('init', array(&$this, 'loadPostTypes'));
+            add_action('init', array(&$this, 'registerTaxonomies'));
 
-        // Display admin notices
-        add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
+            // Display admin notices
+            add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
 
-        // Check for PHP library dependencies
-        add_action('admin_notices', array(&$this, 'dependencies'));
+            // Check for PHP library dependencies
+            add_action('admin_notices', array(&$this, 'dependencies'));
 
-        // Require plugins
-        add_action('tgmpa_register', array(&$this, 'registerRequiredPlugins'));
+            // Require plugins
+            add_action('tgmpa_register', array(&$this, 'registerRequiredPlugins'));
 
-        // Load assets
-        add_action('wp_enqueue_scripts', array(&$this, 'registerStylesheets'));
-        add_action('wp_enqueue_scripts', array(&$this, 'registerScripts'));
+            // Load assets
+            add_action('wp_enqueue_scripts', array(&$this, 'registerStylesheets'));
+            add_action('wp_enqueue_scripts', array(&$this, 'registerScripts'));
 
-        add_action('wp_enqueue_scripts', array(&$this, 'enqueueStylesheets'));
-        add_action('wp_enqueue_scripts', array(&$this, 'enqueueScripts'));
+            add_action('wp_enqueue_scripts', array(&$this, 'enqueueStylesheets'));
+            add_action('wp_enqueue_scripts', array(&$this, 'enqueueScripts'));
 
-        // Setup wp theme features
-        add_action('after_setup_theme', array(&$this, 'registerThemeFeatures'));
-        add_action('after_setup_theme', array(&$this, 'registerImageSizes'));
-        add_action('after_setup_theme', array(&$this, 'registerNavMenus'));
-        add_action('after_setup_theme', array(&$this, 'registerSidebars'));
+            // Setup wp theme features
+            add_action('after_setup_theme', array(&$this, 'registerThemeFeatures'));
+            add_action('after_setup_theme', array(&$this, 'registerImageSizes'));
+            add_action('after_setup_theme', array(&$this, 'registerNavMenus'));
+            add_action('after_setup_theme', array(&$this, 'registerSidebars'));
 
-        // Setup ajax endpoint
-        add_action('wp_ajax_ns_ajax', array(&$this, 'executeAjax'));
-        add_action('wp_ajax_nopriv_ns_ajax', array(&$this, 'executeAjax'));
-        add_action('wp_enqueue_scripts', array(&$this, 'generateWPNonce'));
+            // Setup ajax endpoint
+            add_action('wp_ajax_ns_ajax', array(&$this, 'executeAjax'));
+            add_action('wp_ajax_nopriv_ns_ajax', array(&$this, 'executeAjax'));
+            add_action('wp_enqueue_scripts', array(&$this, 'generateWPNonce'));
+        }
 
     }
 

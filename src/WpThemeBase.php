@@ -17,12 +17,14 @@ class WpThemeBase {
      * Initialize Theme
      *
      * @param  array $theme_config User supplied theme configuration options
-     * @return void
+     * @return boolean
      */
     public function init($theme_config = array()) {
 
         // Load plugin activator
-        require_once __DIR__ . '/vendor/plugin-activation/class-tgm-plugin-activation.php';
+        if (\Royl\WpThemeBase\Util\Configure::read('dependencies.plugins') != false) {
+            require_once __DIR__ . '/vendor/plugin-activation/class-tgm-plugin-activation.php';
+        }
 
         // Load Theme Configuration
         if (!empty($theme_config)) {
@@ -34,13 +36,17 @@ class WpThemeBase {
         \Royl\WpThemeBase\Util\Configure::set($config);
 
         // Set base Theme Name and Version into Theme Config
-        $curtheme = wp_get_theme();
-        \Royl\WpThemeBase\Util\Configure::write('name', $curtheme->get('Name'));
-        \Royl\WpThemeBase\Util\Configure::write('version', $curtheme->get('Version'));
-        unset($curtheme);
+        if (function_exists('wp_get_theme')) {
+            $curtheme = wp_get_theme();
+            \Royl\WpThemeBase\Util\Configure::write('name', $curtheme->get('Name'));
+            \Royl\WpThemeBase\Util\Configure::write('version', $curtheme->get('Version'));
+            unset($curtheme);
+        }
 
         // Do the thing
         $royl_wp_core = new \Royl\WpThemeBase\Core\Core();
         $royl_wp_core->run();
+
+        return true;
     }
 }

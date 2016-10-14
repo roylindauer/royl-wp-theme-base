@@ -146,6 +146,7 @@ $config = array(
     // Define stylesheets and scripts
     // WordPress core throws a NOTICE if you don't enqueue at least one stylesheet
     // This bug should be patched in WordPress core 4.2.3
+    /*
     'assets' => array(
         'stylesheets' => array(
             'style' => array(
@@ -154,13 +155,14 @@ $config = array(
                 'version' => \Royl\WpThemeBase\Util\Configure::read('version')
             ),
         ),
-        #'scripts' => array(
-        #    'main' => array(
-        #        'source' => get_stylesheet_directory_uri() . '/assets/js/main.js',
-        #        'dependencies' => false,
-        #        'version' => \Royl\WpThemeBase\Util\Configure::read('version'),
-        #        'in_footer' => true
-        #    ),
-        #)
+        'scripts' => array(
+            'main' => array(
+                'source' => get_stylesheet_directory_uri() . '/assets/js/main.js',
+                'dependencies' => false,
+                'version' => \Royl\WpThemeBase\Util\Configure::read('version'),
+                'in_footer' => true
+            ),
+        )
     )
+    */
 );

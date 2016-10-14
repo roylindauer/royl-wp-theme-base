@@ -10,12 +10,27 @@ namespace Royl\WpThemeBase\Util;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-final class Cache
+class Cache
 {
     /**
      * @todo Make this configurable, add expiration functionality again
      */
     const CACHE_TIMEOUT = 60; // Minutes
+
+    /**
+     * Generate unique hash for the args - if there are no args, just hash the prefix
+     * @param  [type] $args   [description]
+     * @param  [type] $prefix [description]
+     * @return string
+     */
+    public function getHash($args, $prefix) {
+        if ($args && !empty($args)) {
+            $hash = $this->arrayHash($args);
+        } else {
+            $hash = hash('md4', $prefix);
+        }
+        return $hash;
+    }
 
     /**
      * Given an array of arguments, check for cached query for the args (args
@@ -27,15 +42,9 @@ final class Cache
      * 'query')
      * @return mixed Returns cached value if it exists or null if not
      **/
-    public static function getCachedQuery($args, $prefix = 'query')
+    public function getCachedQuery($args, $prefix = 'query')
     {
-        // Generate unique hash for the args - if there are no args, just hash
-        // the prefix
-        if ($args && !empty($args)) {
-            $hash = self::arrayHash($args);
-        } else {
-            $hash = hash('md4', $prefix);
-        }
+        $hash = $this->getHash($args, $prefix);
 
         // Then pull the cached value
         $cached = get_option('query_cache_' . $prefix . '_' . $hash);
@@ -54,19 +63,13 @@ final class Cache
      * Defaults to value in CACHE_TIMEOUT.
      * @return bool Returns true/false on cache set success/fail
      **/
-    public static function setCachedQuery($args, &$data, $prefix = 'query', $expire = null)
+    public function setCachedQuery($args, &$data, $prefix = 'query', $expire = null)
     {
         if (!$expire) {
-            $expire = self::CACHE_TIMEOUT;
+            $expire = $this->CACHE_TIMEOUT;
         }
 
-        // Generate unique hash for the args - if there are no args, just hash
-        // the prefix
-        if ($args && !empty($args)) {
-            $hash = self::arrayHash($args);
-        } else {
-            $hash = hash('md4', $prefix);
-        }
+        $hash = $this->getHash($args, $prefix);
 
         // And set the cached value.  This isn't using Transients due to issues
         // with larger values and autoloading.
@@ -82,7 +85,7 @@ final class Cache
      * @return array Returns array of names of queries that are currently
      * cached
      **/
-    public static function getCachedQueryNames($prefix = 'query')
+    public function getCachedQueryNames($prefix = 'query')
     {
         global $wpdb;
 
@@ -110,10 +113,10 @@ final class Cache
      * 'query')
      * @return boolean Returns true/false on cache clear/no clear
      */
-    public static function clearQueryCaching($prefix = 'query')
+    public function clearQueryCaching($prefix = 'query')
     {
         // Pull in the collection of current query caches
-        $queries = self::getCachedQueryNames($prefix);
+        $queries = $this->getCachedQueryNames($prefix);
 
         // And blow them all out
         if (!empty($queries)) {
@@ -144,10 +147,9 @@ final class Cache
      * @return string Returns unique hashed string from arg array or empty string
      * if something explodes
      **/
-    private static function arrayHash(&$args)
+    private function arrayHash(&$args)
     {
-        $string = self::arrayToString($args);
-
+        $string = $this->arrayToString($args);
         return empty($string) ? '' : hash('md4', $string);
     }
 
@@ -159,7 +161,7 @@ final class Cache
      * @return string Returns concatted string of all array properties or empty
      * string if something explodes
      **/
-    private static function arrayToString(&$args, $parentKey = null)
+    private function arrayToString(&$args, $parentKey = null)
     {
         $string = '';
 
@@ -169,7 +171,7 @@ final class Cache
                 $value = (array) $value;
 
                 // And recurse
-                $string .= self::arrayToString($value, $key);
+                $string .= $this->arrayToString($value, $key);
             } else {
                 $string .= ($parentKey ? $parentKey : $key) . (string) $value;
             }
