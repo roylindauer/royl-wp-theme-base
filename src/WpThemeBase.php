@@ -24,7 +24,7 @@ class WpThemeBase {
         // Bootstrap the Theme! 
         \Royl\WpThemeBase\Util\Configure::set($config);
 
-        $royl_wp_core = new Royl\WpThemeBase\Core\Core();
+        $royl_wp_core = new \Royl\WpThemeBase\Core\Core();
         $royl_wp_core->run();
     }
 }
