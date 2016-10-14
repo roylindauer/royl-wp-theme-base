@@ -11,7 +11,6 @@
  *     * Defining menus
  *     * Defining image sizes
  *     * Defining theme features
- *     * Loading of custom shortcodes
  *     * Plugin dependencies using the http://tgmpluginactivation.com/ TGMPA Plugin
  */
 
@@ -43,7 +42,6 @@ class Core
         // Load custom post types, widgets, etc.
         add_action('init', array(&$this, 'loadPostTypes'));
         add_action('init', array(&$this, 'registerTaxonomies'));
-        add_action('init', array(&$this, 'loadShortcodes'));
 
         // Display admin notices
         add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
@@ -236,7 +234,7 @@ class Core
         }
 
         foreach ($post_types as $post_type => $params) {
-            new \Royl\WpThemeBase\CorePostType($post_type, $params);
+            new \Royl\WpThemeBase\Core\PostType($post_type, $params);
         }
     }
 
@@ -252,7 +250,7 @@ class Core
         }
 
         foreach ($taxonomies as $name => $opts) {
-            new \Royl\WpThemeBase\CoreTaxonomy($name, $opts['params'], $opts['args']);
+            new \Royl\WpThemeBase\Core\Taxonomy($name, $opts['params'], $opts['args']);
         }
     }
 
@@ -406,23 +404,6 @@ class Core
     }
 
     /**
-     * Load Shortcodes
-     */
-    public function loadShortcodes()
-    {
-        $shortcodes = \Royl\WpThemeBase\Util\Configure::read('shortcodes');
-
-        if (empty($shortcodes)) {
-            return;
-        }
-
-        foreach ($shortcodes as $shortcode) {
-            $shortcode = "\Royl\WpThemeBase\CoreShortcodes\\$shortcode\\$shortcode";
-            new $shortcode();
-        }
-    }
-
-    /**
      * Simple interface for executing ajax requests
      *
      * Usage: /wp-admin/admin-ajax.php?action=ns_ajax&c=CLASS&m=METHOD&_wpnonce=NONCE
@@ -456,7 +437,7 @@ class Core
                 throw new \Exception('Invalid params in ajax request');
             }
 
-            $Inflector = new \Royl\WpThemeBase\CoreInflector();
+            $Inflector = new \Royl\WpThemeBase\Core\Inflector();
 
             // Make sure that the requested class exists and instantiate it
             $class = $Inflector->camelize(filter_var($_REQUEST['c'], FILTER_SANITIZE_STRING));
