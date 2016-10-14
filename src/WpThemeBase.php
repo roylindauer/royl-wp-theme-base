@@ -16,7 +16,7 @@ class WpThemeBase {
     /**
      * Initialize Theme
      *
-     * @param  array $config Theme Configuration Options
+     * @param  array $theme_config User supplied theme configuration options
      * @return void
      */
     public function init($theme_config = array()) {
