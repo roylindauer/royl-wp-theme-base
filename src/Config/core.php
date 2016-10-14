@@ -7,6 +7,12 @@
 
 // Set theme config
 $config = array(
+
+    // Misc.
+    /*
+    'partial_dir' => 'partials', // this directory is relative to your theme root
+     */
+
     // Define Post Types
     // Uncomment below and edit to create custom post types
     /*
