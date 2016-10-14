@@ -1,19 +1,19 @@
 <?php
-/**
- * Example Class for testing ajax calls, etc.
- */
 
 namespace Royl\WpThemeBase\Core;
 
 /**
- * Example Module class for testing ajax calls, etc.
+ * Example Module for AJAX Endpoint
  *
- * @package Royl\WpThemeBase\Core
+ * @package     WpThemeBase
+ * @subpackage  Core
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class TestAjax
 {
     /**
-     * test ajax endpoint
+     * test ajax endpoint - JSON
      */
     public function ajaxDoThingJson()
     {
@@ -21,7 +21,7 @@ class TestAjax
     }
 
     /**
-     * test ajax endpoint
+     * test ajax endpoint - XML
      */
     public function ajaxDoThingHtml()
     {

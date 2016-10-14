@@ -2,10 +2,22 @@
 
 namespace Royl\WpThemeBase;
 
+/**
+ * WpThemeBase base class
+ *
+ * Bootstrap the theme framework
+ *
+ * @package  WpThemeBase
+ * @author   Roy Lindauer <hello@roylindauer.com>
+ * @version  1.0
+ */
 class WpThemeBase {
 
     /**
      * Initialize Theme
+     *
+     * @param  array $config Theme Configuration Options
+     * @return void
      */
     public function init($config = array()) {
 

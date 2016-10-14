@@ -1,7 +1,4 @@
 <?php
-/**
- * Utility class for working with Arrays
- */
 
 namespace Royl\WpThemeBase\Util;
 
@@ -11,9 +8,10 @@ namespace Royl\WpThemeBase\Util;
  * Usage:
  * $result = \Ecs\Core\Utilities\Set::isArrayEmpty($array);
  *
- * Methods are to be called statically.
- *
- * @package Royl\WpThemeBase\Util
+ * @package     WpThemeBase
+ * @subpackage  Util
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class Set
 {

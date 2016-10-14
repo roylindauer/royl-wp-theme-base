@@ -1,16 +1,14 @@
 <?php
-/**
- * Utility class for working with Cache (Query Caching, etc)
- */
 
 namespace Royl\WpThemeBase\Util;
 
 /**
  * Utility class for working with Cache (Query Caching, etc)
  *
- * Methods are to be called statically.
- *
- * @package Royl\WpThemeBase\Util
+ * @package     WpThemeBase
+ * @subpackage  Util
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 final class Cache
 {

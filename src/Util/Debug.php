@@ -2,6 +2,14 @@
 
 namespace Royl\WpThemeBase\Util;
 
+/**
+ * Theme Debug Helpers
+ *
+ * @package     WpThemeBase
+ * @subpackage  Util
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
+ */
 class Debug {
     
     /**

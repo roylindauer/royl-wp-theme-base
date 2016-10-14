@@ -1,14 +1,16 @@
 <?php
-/**
- * Class Registry.
- */
 
 namespace Royl\WpThemeBase\Core;
 
 /**
  * Class Registry
  *
- * @package Royl\WpThemeBase\Core
+ * Store and retreive Objects
+ *
+ * @package     WpThemeBase
+ * @subpackage  Core
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class Registry
 {

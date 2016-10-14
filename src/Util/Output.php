@@ -1,7 +1,4 @@
 <?php
-/**
- * Utility class for handling Data Output
- */
 
 namespace Royl\WpThemeBase\Util;
 
@@ -13,8 +10,6 @@ namespace Royl\WpThemeBase\Util;
  * Another example would be the need to respond with a file attachment header to force download of a file.
  * Or returning valid XML data.
  *
- * Methods are to be called statically.
- *
  * Usage:
  *
  * $data = array('results' => array('name' => 'My User', 'email' => 'user@example.org'));
@@ -24,7 +19,10 @@ namespace Royl\WpThemeBase\Util;
  *
  * {"results":{"name":"My User","email":"user@example.org"}}
  *
- * @package Royl\WpThemeBase\Util
+ * @package     WpThemeBase
+ * @subpackage  Util
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class Output
 {

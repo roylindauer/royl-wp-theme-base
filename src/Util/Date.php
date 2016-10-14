@@ -1,16 +1,14 @@
 <?php
-/**
- * Utility class for working with Dates
- */
 
 namespace Royl\WpThemeBase\Util;
 
 /**
  * Utility class for working with Dates
  *
- * Methods are to be called statically.
- *
- * @package Royl\WpThemeBase\Util
+ * @package     WpThemeBase
+ * @subpackage  Util
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class Date
 {

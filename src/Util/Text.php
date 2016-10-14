@@ -1,14 +1,14 @@
 <?php
 
-/**
- * Utility class for working with text
- */
 namespace Royl\WpThemeBase\Util;
 
 /**
  * Utility class for working with text
  *
- * @package Royl\WpThemeBase\Util
+ * @package     WpThemeBase
+ * @subpackage  Util
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class Text
 {

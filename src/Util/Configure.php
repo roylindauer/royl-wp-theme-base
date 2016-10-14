@@ -1,4 +1,7 @@
 <?php
+
+namespace Royl\WpThemeBase\Util;
+
 /**
  * Configure class for handling theme configurations.
  *
@@ -10,12 +13,11 @@
  *
  * \Ecs\Core\Utilities\Configure::write('data', array('test' => 'value'));
  * $val = \Ecs\Core\Utilities\Configure::read('data.test');
- */
-
-namespace Royl\WpThemeBase\Util;
-
-/**
- * Configure class for handling theme configurations
+ *
+ * @package     WpThemeBase
+ * @subpackage  Util
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 final class Configure
 {

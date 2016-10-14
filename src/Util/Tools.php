@@ -1,21 +1,20 @@
 <?php
-/**
- * WordPress Tools
- *
- * This class is for doing WordPress-related things in code that we do
- * commonly, such as creating a new post type or creating an image attachment.
- **/
 
 namespace Royl\WpThemeBase\Util;
 
 /**
  * WordPress Tools
  *
+ * This class is for doing WordPress-related things in code that we do
+ * commonly, such as creating a new post type or creating an image attachment.
+ *
  * Usage:
- * Call class methods statically
  * \Ecs\Core\Utilities\Tools::method()
  *
- * @package Royl\WpThemeBase\Util
+ * @package     WpThemeBase
+ * @subpackage  Util
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class Tools
 {

@@ -1,7 +1,11 @@
 <?php
+
+namespace Royl\WpThemeBase\Core;
+
 /**
- * Core Theme Class. Sets up Wordpress per the sites core Config.
+ * Theme Core Class
  *
+ * Configures WordPress runtime according to the themes configuration.
  * This class is responsible for:
  *     * Creating custom post types
  *     * Handling taxonomies
@@ -12,15 +16,11 @@
  *     * Defining image sizes
  *     * Defining theme features
  *     * Plugin dependencies using the http://tgmpluginactivation.com/ TGMPA Plugin
- */
-
-namespace Royl\WpThemeBase\Core;
-
-/**
- * Theme Core Class
- * This bootstraps our Theme. It configures WordPress runtime per the themes configuration.
  *
- * @package Royl\WpThemeBase\Core
+ * @package     WpThemeBase
+ * @subpackage  Core
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class Core
 {
@@ -32,10 +32,9 @@ class Core
     public $post_types = array();
 
     /**
-     * Setup.
+     * Do the thing
      *
      * @param array $config
-     * @todo Develop automatic menu loading and registering of image sizes.
      */
     public function run()
     {
@@ -68,7 +67,6 @@ class Core
         // Setup ajax endpoint
         add_action('wp_ajax_ns_ajax', array(&$this, 'executeAjax'));
         add_action('wp_ajax_nopriv_ns_ajax', array(&$this, 'executeAjax'));
-        // Add a route to
         add_action('wp_enqueue_scripts', array(&$this, 'generateWPNonce'));
 
     }
@@ -81,6 +79,8 @@ class Core
 
     /**
      * Does the actual work of registered stylesheets. Must be called before enqueue.
+     *
+     * @return void
      */
     public function registerStylesheets()
     {
@@ -98,6 +98,8 @@ class Core
 
     /**
      * Does the actual work of enqueing stylesheets
+     *
+     * @return void
      */
     public function enqueueStylesheets()
     {
@@ -114,6 +116,8 @@ class Core
 
     /**
      * Does the actual work of registered scripts. Must be called before enqueue.
+     *
+     * @return void
      */
     public function registerScripts()
     {
@@ -130,6 +134,8 @@ class Core
 
     /**
      * Does the actual work of enqueing scripts
+     *
+     * @return void
      */
     public function enqueueScripts()
     {
@@ -152,6 +158,8 @@ class Core
 
     /**
      * Register Required Plugins
+     *
+     * @return void
      */
     public function registerRequiredPlugins()
     {
@@ -200,11 +208,14 @@ class Core
     }
 
     /**
-     *  Check for dependencies
+     * Handle theme dependencies
+     *
+     * @return void
+     * @todo  deprecate this in favor of using composer dependencies
      */
     public function dependencies()
     {
-        // check php
+        // check for required PHP libraries
         if (\Royl\WpThemeBase\Util\Configure::read('dependencies.classes') !== false) {
             foreach (\Royl\WpThemeBase\Util\Configure::read('dependencies.classes') as $class) {
                 if (!class_exists($class)) {
@@ -224,6 +235,8 @@ class Core
 
     /**
      * Load post type classes
+     *
+     * @return void
      */
     public function loadPostTypes()
     {
@@ -240,6 +253,8 @@ class Core
 
     /**
      * Register Taxonomies
+     *
+     * @return void
      */
     public function registerTaxonomies()
     {
@@ -266,10 +281,10 @@ class Core
      * Takes the theme name as $code for the WP_Error object.
      * Merges old $data and new $data arrays @uses wp_parse_args().
      *
-     * @param (string) $message
-     * @param (mixed) $data_key
-     * @param (mixed) $data_value
-     * @return void
+     * @param  (string)  $message
+     * @param  (mixed)   $data_key
+     * @param  (mixed)   $data_value
+     * @return WP_Error|Boolean
      */
     public function addThemeError($message, $data_key = '', $data_value = '')
     {
@@ -305,7 +320,7 @@ class Core
      *
      * Adds the output to the 'shutdown' hook to render after the theme viewport is output.
      *
-     * @return
+     * @return string
      */
     public function printThemeErrors()
     {
@@ -333,6 +348,8 @@ class Core
 
     /**
      * Add theme features
+     *
+     * @return void
      */
     public function registerThemeFeatures()
     {
@@ -354,6 +371,8 @@ class Core
 
     /**
      * Register Image Sizes
+     *
+     * @return void
      */
     public function registerImageSizes()
     {
@@ -375,6 +394,8 @@ class Core
 
     /**
      * Register Nav Menus
+     *
+     * @return void
      */
     public function registerNavMenus()
     {
@@ -389,6 +410,8 @@ class Core
 
     /**
      * Register Sidebars
+     *
+     * @return void
      */
     public function registerSidebars()
     {
@@ -423,6 +446,8 @@ class Core
      * Output can be rendered as JSON, or HTML
      *
      * Generate a nonce: wp_create_nonce('execute_ajax_nonce');
+     *
+     * @return string
      */
     public function executeAjax()
     {
@@ -484,7 +509,8 @@ class Core
      * Render ajax response
      *
      * @param mixed $result Data to display
-     * @param string $display Output to display $result as. Defaults to json
+     * @param string $display Output to display $result as. Defaults to JSON
+     * @return void
      */
     private function ajaxDisplay($result = '', $display = 'json')
     {
@@ -503,6 +529,8 @@ class Core
 
     /**
      * Generates a nonce and make it available for use in main javascript file
+     *
+     * @return void
      */
     public function generateWPNonce()
     {

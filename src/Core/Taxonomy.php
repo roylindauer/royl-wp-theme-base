@@ -1,14 +1,14 @@
 <?php
-/**
- * Taxonomy Class. For registering taxonomies
- */
 
 namespace Royl\WpThemeBase\Core;
 
 /**
- * Taxonomy Base Class
+ * WordPress Taxonomy Base Class
  *
- * @package Royl\WpThemeBase\Core
+ * @package     WpThemeBase
+ * @subpackage  Core
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class Taxonomy
 {

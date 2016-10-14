@@ -1,14 +1,14 @@
 <?php
-/**
- * Post Type Base Class. Used to generate new custom posttypes.
- */
 
 namespace Royl\WpThemeBase\Core;
 
 /**
- * Post Type Base Class
+ * WordPress Post Type base class
  *
- * @package Royl\WpThemeBase\Core
+ * @package     WpThemeBase
+ * @subpackage  Core
+ * @author      Roy Lindauer <hello@roylindauer.com>
+ * @version     1.0
  */
 class PostType
 {
