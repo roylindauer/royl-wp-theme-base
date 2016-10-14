@@ -23,9 +23,10 @@ class Date
     {
         if ($timezone) {
             $tz = new \DateTimeZone($timezone);
+            $dt = new \DateTime('now', $tz);
+        } else {
+            $dt = new \DateTime('now');
         }
-
-        $dt = new \DateTime('now', $tz);
 
         if ($timestamp) {
             $dt->setTimestamp($timestamp);
