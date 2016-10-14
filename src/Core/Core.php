@@ -441,7 +441,7 @@ class Core
      * Method names will be prefixed with "ajax_" and then run through the Inflector to camelize it
      *     - eg: "doThing" would become "ajaxDoThing", so you need a method in your class called "ajaxDoThing"
      *
-     * Classes can be whatever you want. They are expected to be namespaces to \Ecs\Theme\App
+     * Classes can be whatever you want. They are expected to be namespaces to \Royl\WpThemeBase\Ajax
      *
      * Output can be rendered as JSON, or HTML
      *
@@ -466,7 +466,7 @@ class Core
 
             // Make sure that the requested class exists and instantiate it
             $class = $Inflector->camelize(filter_var($_REQUEST['c'], FILTER_SANITIZE_STRING));
-            $class = "\Ecs\\App\\$class";
+            $class = "\Royl\\WpThemeBase\\Ajax\\$class";
 
             if (!class_exists($class)) {
                 throw new \Exception('Class does not exist');

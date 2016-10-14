@@ -26,13 +26,9 @@ Include the composer autoloader in your functions.php
 Now you can bootstrap your theme:
 
 ```
-// init
-$theme = new \Royl\WpThemeBase\WpThemeBase();
-$theme->init();
-
-// configure
 $config = [ ... core config options here ... ];
-\Royl\WpThemeBase\Util\Configure::set($config);
+$theme = new \Royl\WpThemeBase\WpThemeBase();
+$theme->init($config);
 ```
 
 ## Configuration
