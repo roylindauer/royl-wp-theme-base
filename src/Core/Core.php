@@ -209,7 +209,7 @@ class Core
             foreach (\Royl\WpThemeBase\Util\Configure::read('dependencies.classes') as $class) {
                 if (!class_exists($class)) {
                     echo '<div class="error"><p>'
-                    . sprintf(\Royl\WpThemeBase\__('Please make sure that %s is installed'), $class)
+                    . sprintf(\Royl\WpThemeBase\Util\Text::translate('Please make sure that %s is installed'), $class)
                     . '</p></div>';
                 }
             }
@@ -320,7 +320,7 @@ class Core
             $output .= '<li>' . $error . '</li>';
         }
 
-        echo '<div class="error"><h4>' . \Royl\WpThemeBase\__('Theme Errors & Warnings').'</h4><ul>';
+        echo '<div class="error"><h4>' . \Royl\WpThemeBase\Util\Text::translate('Theme Errors & Warnings').'</h4><ul>';
         echo $output;
         echo '</ul></div>';
     }

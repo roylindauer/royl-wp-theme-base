@@ -12,9 +12,6 @@ $curtheme = wp_get_theme();
 \Royl\WpThemeBase\Util\Configure::write('version', $curtheme->get('Version'));
 unset($curtheme);
 
-// Load helper functions
-require_once 'helpers.php';
-
 // Load configs
 include_once __DIR__ . '/Config/core.php';
 
@@ -24,4 +21,3 @@ require_once __DIR__ . '/vendor/plugin-activation/class-tgm-plugin-activation.ph
 // Bootstrap the Theme!
 $royl_wp_core = new Royl\WpThemeBase\Core\Core();
 $royl_wp_core->run();
-\Royl\WpThemeBase\register_object('RoylWpCore', $royl_wp_core);

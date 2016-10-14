@@ -8,16 +8,30 @@ namespace Royl\WpThemeBase\Util;
 /**
  * Utility class for working with text
  *
- * Usage:
- * $result = \Ecs\Core\Utilities\Text::truncateText('hey im a string!', 11, '...');
- * echo $result; // = 'hey im a...'
- *
- * Methods are to be called statically.
- *
  * @package Royl\WpThemeBase\Util
  */
 class Text
 {
+    /**
+     * Helper method to render translated string for theme package.
+     *
+     * Helper method includes the domain to retrieve translated text.
+     * This is technically optional in Wordpress,
+     * but should be considered good practice to use.
+     *
+     * @param string $str The string to translate
+     * @param string $domain lang domain to get translated string
+     */
+    function translate($str = '', $domain = false)
+    {
+        // Default domain to theme
+        if ($domain === false) {
+            $domain = \Royl\WpThemeBase\Util\Configure::read('name');
+        }
+
+        return \__($str, $domain);
+    }
+
     /**
      * truncateText()
      * truncate long strings of text. Optionall include a suffix (eg: ...)

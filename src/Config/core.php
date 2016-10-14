@@ -21,7 +21,7 @@ $config = array(
             ),
             // Default args
             'args' => array(
-                'description' => \Royl\WpThemeBase\__('Describe the post type'),
+                'description' => \Royl\WpThemeBase\Util\Text::translate('Describe the post type'),
             )
         )
     ),
@@ -37,7 +37,7 @@ $config = array(
                 'post_types'   => array('cover', 'post', 'page'), // this can include built in post types (page, post, etc)
             ),
             'args' => array(
-                'label'        => \Royl\WpThemeBase\__('Cover Categories'),
+                'label'        => \Royl\WpThemeBase\Util\Text::translate('Cover Categories'),
                 'rewrite'      => 'cover_categories',
                 'hierarchical' => true,
             )
@@ -47,7 +47,7 @@ $config = array(
                 'post_types'   => array('cover'),
             ),
             'args' => array(
-                'label'        => \Royl\WpThemeBase\__('Cover Tags'),
+                'label'        => \Royl\WpThemeBase\Util\Text::translate('Cover Tags'),
                 'rewrite'      => 'cover_tags',
                 'hierarchical' => false,
                 'show_admin_column' => false
@@ -84,9 +84,9 @@ $config = array(
     // https://codex.wordpress.org/Function_Reference/register_nav_menu
     /*
     'menus' => array(
-        'main-menu'   => \Royl\WpThemeBase\__('Main Menu'),
-        'sub-menu'    => \Royl\WpThemeBase\__('Sub Menu'),
-        'footer-menu' => \Royl\WpThemeBase\__('Footer Menu')
+        'main-menu'   => \Royl\WpThemeBase\Util\Text::translate('Main Menu'),
+        'sub-menu'    => \Royl\WpThemeBase\Util\Text::translate('Sub Menu'),
+        'footer-menu' => \Royl\WpThemeBase\Util\Text::translate('Footer Menu')
     ),
     */
 
@@ -96,7 +96,7 @@ $config = array(
     'sidebars' => array(
         array(
             'id'            => 'my-custom-sidebar',
-            'name'          => \Royl\WpThemeBase\__('My Custom Sidebar'),
+            'name'          => \Royl\WpThemeBase\Util\Text::translate('My Custom Sidebar'),
             'description'   => '',
             'class'         => '',
             'before_widget' => '<li id="%1$s" class="widget %2$s">',
