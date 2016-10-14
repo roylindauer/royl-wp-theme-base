@@ -19,7 +19,7 @@ class WpThemeBase {
      * @param  array $config Theme Configuration Options
      * @return void
      */
-    public function init($config = array()) {
+    public function init($theme_config = array()) {
 
         // Set base Theme Name and Version into Theme Config
         $curtheme = wp_get_theme();
@@ -27,13 +27,16 @@ class WpThemeBase {
         \Royl\WpThemeBase\Util\Configure::write('version', $curtheme->get('Version'));
         unset($curtheme);
 
-        // Load core config
-        include_once __DIR__ . '/Config/core.php';
-
         // Load plugin activator
         require_once __DIR__ . '/vendor/plugin-activation/class-tgm-plugin-activation.php';
 
         // Bootstrap the Theme! 
+        if (!empty($theme_config)) {
+            $config = $theme_config;
+        } else {
+            include_once __DIR__ . '/Config/core.php'; 
+        }
+
         \Royl\WpThemeBase\Util\Configure::set($config);
 
         $royl_wp_core = new \Royl\WpThemeBase\Core\Core();

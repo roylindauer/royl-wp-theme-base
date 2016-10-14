@@ -158,6 +158,3 @@ $config = array(
         #)
     )
 );
-
-// Register the config array with the Configure class
-\Royl\WpThemeBase\Util\Configure::set($config);
