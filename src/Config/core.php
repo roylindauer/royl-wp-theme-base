@@ -152,7 +152,7 @@ $config = array(
         #    'main' => array(
         #        'source' => get_stylesheet_directory_uri() . '/assets/js/main.js',
         #        'dependencies' => false,
-        #        'version' => \Ecs\Core\Utilities\Configure::read('version'),
+        #        'version' => \Royl\WpThemeBase\Util\Configure::read('version'),
         #        'in_footer' => true
         #    ),
         #)
