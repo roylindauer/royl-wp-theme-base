@@ -3,11 +3,13 @@
 use Royl\WpThemeBase\Util;
 
 namespace {
+    // Define return value for our mocked get_option() function
     $mockWPGetOption = false;
 }
 
 namespace Royl\WpThemeBase\Util {
 
+    // WordPress Mock Functions
     function get_option($opt) {
         global $mockWPGetOption;
         if (isset($mockWPGetOption) && $mockWPGetOption === true) {
@@ -17,11 +19,11 @@ namespace Royl\WpThemeBase\Util {
         }
     }
 
+    // Cache Test Class
     class CacheTest extends \PHPUnit_Framework_TestCase {
 
         public function setup() {
-            global $mockWPGetOption;
-            $mockWPGetOption = false;
+
         }
 
         public function testGetHash() {
