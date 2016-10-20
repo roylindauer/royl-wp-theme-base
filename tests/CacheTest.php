@@ -49,24 +49,39 @@ namespace Royl\WpThemeBase\Util {
             $this->assertEquals($result, null);
         }
 
-        public function testSetCachedQuery() {
-            
-        }
-
-        public function testGetCachedQueryNames() {
-
-        }
-
-        public function testClearQueryCaching() {
-
-        }
-
         public function testArrayHash() {
+            // need to use Reflection api to get access to private method of class
+            $method = new \ReflectionMethod('\Royl\WpThemeBase\Util\Cache', 'arrayHash');
+            $method->setAccessible(true);
 
+            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, array('test'=>'1234'));
+            $this->assertEquals($result, '0dca84c7e0629fa55299843c4590033a');
+
+            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, false);
+            $this->assertFalse($result);
+
+            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, '');
+            $this->assertEquals($result, '');
         }
 
         public function testArrayToString() {
+            $method = new \ReflectionMethod('\Royl\WpThemeBase\Util\Cache', 'arrayToString');
+            $method->setAccessible(true);
 
+            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, array('test'=>'1234'));
+            $this->assertEquals($result, 'test1234');
+
+            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, array(
+                'test'=>'1234', 
+                'foo' => array(
+                    'bar' => '1234'
+                ),
+                'foo2' => array(
+                    'bar2' => '1234',
+                    'baz2' => '1234'
+                )
+            ));
+            $this->assertEquals($result, 'test1234foo1234foo21234foo21234');
         }
     }
 

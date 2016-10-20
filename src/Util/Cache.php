@@ -147,8 +147,12 @@ class Cache
      * @return string Returns unique hashed string from arg array or empty string
      * if something explodes
      **/
-    private function arrayHash(&$args)
+    private function arrayHash(&$args = array())
     {
+        if (empty($args)) {
+            return false;
+        }
+
         $string = $this->arrayToString($args);
         return empty($string) ? '' : hash('md4', $string);
     }
@@ -161,7 +165,7 @@ class Cache
      * @return string Returns concatted string of all array properties or empty
      * string if something explodes
      **/
-    private function arrayToString(&$args, $parentKey = null)
+    private function arrayToString(&$args = array(), $parentKey = false)
     {
         $string = '';
 
