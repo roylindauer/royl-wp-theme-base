@@ -2,7 +2,8 @@
     "name": "royl/wp-theme-base",
     "require": {},
     "require-dev": {
-        "phpunit/phpunit": "4.0.*"
+        "phpunit/phpunit": "4.0.*",
+        "squizlabs/php_codesniffer": "*"
     },
     "autoload": {
         "psr-4" : {
