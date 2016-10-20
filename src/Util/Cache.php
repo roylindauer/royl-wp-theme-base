@@ -3,7 +3,7 @@
 namespace Royl\WpThemeBase\Util;
 
 /**
- * Utility class for working with Cache (Query Caching, etc)
+ * Utility class for working with Cache
  *
  * @package     WpThemeBase
  * @subpackage  Util
@@ -12,24 +12,20 @@ namespace Royl\WpThemeBase\Util;
  */
 class Cache
 {
-    /**
-     * @todo Make this configurable, add expiration functionality again
-     */
-    const CACHE_TIMEOUT = 60; // Minutes
+    const CACHE_TIMEOUT = 3600; // Value in seconds
+
+    public $key = false;
+    public $expiration = false;
 
     /**
-     * Generate unique hash for the args - if there are no args, just hash the prefix
-     * @param  [type] $args   [description]
-     * @param  [type] $prefix [description]
-     * @return string
+     * Constructor
+     *
+     * @param string  $key        Name of the cache store
+     * @param boolean $expiration Optional expiration value
      */
-    public function getHash($args, $prefix) {
-        if ($args && !empty($args)) {
-            $hash = $this->arrayHash($args);
-        } else {
-            $hash = hash('md4', $prefix);
-        }
-        return $hash;
+    public function __construct($key, $expiration = false) {
+        $this->key = $key;
+        $this->expiration = ($expiration !== false) ? $expiration : self::CACHE_TIMEOUT;
     }
 
     /**
@@ -37,150 +33,46 @@ class Cache
      * will be converted to a unique hash).  Args are assumed to be valid args
      * for a WP_Query query.
      *
-     * @param array $args Args to check for query with
-     * @param string $prefix Prefix to use when pulling cached query (default:
-     * 'query')
-     * @return mixed Returns cached value if it exists or null if not
+     * @return mixed Returns cached value if it exists or false if not
      **/
-    public function getCachedQuery($args, $prefix = 'query')
-    {
-        $hash = $this->getHash($args, $prefix);
+    public function read() {
+        if (!$this->key) {
+            return false;
+        }
 
-        // Then pull the cached value
-        $cached = get_option('query_cache_' . $prefix . '_' . $hash);
-
-        return $cached ? $cached : null;
+        return get_transient($this->key);
     }
 
     /**
      * Given an array of args used to generate a unique WP_Query, generate
      * cached version of query result.
      *
-     * @param array $args Query args used to generate query with
-     * @param mixed $data Data to cache
-     * @param string $prefix Prefix to use when setting cache (default: 'query')
-     * @param int $expire Expiration time for cached value in minutes.
-     * Defaults to value in CACHE_TIMEOUT.
-     * @return bool Returns true/false on cache set success/fail
+     * @param  mixed    $data  Data to cache
+     * @return boolean  Returns true/false on cache set success/fail
      **/
-    public function setCachedQuery($args, &$data, $prefix = 'query', $expire = null)
-    {
-        if (!$expire) {
-            $expire = $this->CACHE_TIMEOUT;
-        }
-
-        $hash = $this->getHash($args, $prefix);
-
-        // And set the cached value.  This isn't using Transients due to issues
-        // with larger values and autoloading.
-        delete_option('query_cache_' . $prefix . '_' . $hash);
-        add_option('query_cache_' . $prefix . '_' . $hash, $data, null, 'no');
-    }
-
-    /**
-     * Retrieve the current list of cached queries.
-     *
-     * @param string $prefix Prefix to use when pulling cached query (default:
-     * 'query')
-     * @return array Returns array of names of queries that are currently
-     * cached
-     **/
-    public function getCachedQueryNames($prefix = 'query')
-    {
-        global $wpdb;
-
-        $queries = $wpdb->get_results(sprintf(
-            "SELECT option_name AS name
-            FROM {$wpdb->OPTIONS}
-            WHERE option_name LIKE '%%query_cache_%s_%%'",
-            $prefix
-        ));
-
-        if (!empty($queries)) {
-            $names = array_map(function ($item) {
-                return $item->name;
-            }, $queries);
-        }
-
-        return empty($queries) ? null : $names;
-    }
-
-    /**
-     * Clear query-specific caching (used for caching queries used in certain
-     * API endpoint calls)
-     *
-     * @param string $prefix Prefix to clear query caches under (default:
-     * 'query')
-     * @return boolean Returns true/false on cache clear/no clear
-     */
-    public function clearQueryCaching($prefix = 'query')
-    {
-        // Pull in the collection of current query caches
-        $queries = $this->getCachedQueryNames($prefix);
-
-        // And blow them all out
-        if (!empty($queries)) {
-            foreach ($queries as $query) {
-                delete_option($query);
-            }
-
-            return true;
-        }
-
-        // Well something didn't work out
-        return false;
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    // Utility functions //////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    /**
-     * Simple function for creating a unique hash from a passed array of args. This
-     * is used for determining the uniqueness of a query.  For speed reasons this
-     * also means you shouldn't pass giant arrays to this.  Will recurse through
-     * nested arrays as necessary.  Note that this does NOT guarantee uniqueness.
-     *
-     * @param array $args Args to generate hash from
-     * @return string Returns unique hashed string from arg array or empty string
-     * if something explodes
-     **/
-    private function arrayHash(&$args = array())
-    {
-        if (empty($args)) {
+    public function write($data = '') {
+        if (!$this->key) {
             return false;
         }
 
-        $string = $this->arrayToString($args);
-        return empty($string) ? '' : hash('md4', $string);
+        if (!$this->expiration) {
+            return false;
+        }
+
+        return set_transient($this->key, $data, $this->expiration);
     }
 
     /**
-     * Function for recursing through an array and returning all values as a string.
+     * Destroy cache
      *
-     * @param array $args Args to generate hash from
-     * @param string $parentKey parent key
-     * @return string Returns concatted string of all array properties or empty
-     * string if something explodes
-     **/
-    private function arrayToString(&$args = array(), $parentKey = false)
-    {
-        $string = '';
-
-        foreach ($args as $key => $value) {
-            if (is_array($value) || is_object($value)) {
-                // Force objects to arrays before passing
-                $value = (array) $value;
-
-                // And recurse
-                $string .= $this->arrayToString($value, $key);
-            } else {
-                $string .= ($parentKey ? $parentKey : $key) . (string) $value;
-            }
+     * @param  string  $key  The cache to destroy
+     * @return boolean
+     */
+    public function destroy() {
+        if (!$this->key) {
+            return false;
         }
 
-        return empty($string) ? '' : $string;
+        return delete_transient($this->key);
     }
 }

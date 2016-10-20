@@ -10,12 +10,30 @@ namespace {
 namespace Royl\WpThemeBase\Util {
 
     // WordPress Mock Functions
-    function get_option($opt) {
+    function get_transient($key) {
         global $mockWPGetOption;
         if (isset($mockWPGetOption) && $mockWPGetOption === true) {
-            return 'string';
+            return 'test';
         } else {
-            return null;
+            return false;
+        }
+    }
+
+    function set_transient($key, $data, $expiration) {
+        global $mockWPGetOption;
+        if (isset($mockWPGetOption) && $mockWPGetOption === true) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function delete_transient($key) {
+        global $mockWPGetOption;
+        if (isset($mockWPGetOption) && $mockWPGetOption === true) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -26,62 +44,51 @@ namespace Royl\WpThemeBase\Util {
 
         }
 
-        public function testGetHash() {
-            $Cache = new \Royl\WpThemeBase\Util\Cache();
-
-            $result = $Cache->getHash(array('test'=>'1234'), 'query');
-            $this->assertEquals($result, '0dca84c7e0629fa55299843c4590033a');
-
-            $result = $Cache->getHash(false, 'query');
-            $this->assertEquals($result, '9d1742b490bd868c55ae736b7184e29c');
-        }
-
-        public function testGetCachedQuery() {
+        public function testWrite() {
             global $mockWPGetOption;
-            $Cache = new \Royl\WpThemeBase\Util\Cache();
+            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
 
             $mockWPGetOption = true;
-            $result = $Cache->getCachedQuery(array('test'=>'1234'), 'test');
-            $this->assertEquals($result, 'string');
+            $result = $Cache->write('test');
+            $this->assertTrue($result);
 
             $mockWPGetOption = false;
-            $result = $Cache->getCachedQuery(array('test'=>'1234'), 'test');
-            $this->assertEquals($result, null);
-        }
-
-        public function testArrayHash() {
-            // need to use Reflection api to get access to private method of class
-            $method = new \ReflectionMethod('\Royl\WpThemeBase\Util\Cache', 'arrayHash');
-            $method->setAccessible(true);
-
-            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, array('test'=>'1234'));
-            $this->assertEquals($result, '0dca84c7e0629fa55299843c4590033a');
-
-            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, false);
+            $result = $Cache->write('test');
             $this->assertFalse($result);
-
-            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, '');
-            $this->assertEquals($result, '');
         }
 
-        public function testArrayToString() {
-            $method = new \ReflectionMethod('\Royl\WpThemeBase\Util\Cache', 'arrayToString');
-            $method->setAccessible(true);
+        public function testExpiration() {
+            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store', 300);
+            $this->assertEquals($Cache->expiration, 300);
 
-            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, array('test'=>'1234'));
-            $this->assertEquals($result, 'test1234');
+            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
+            $this->assertEquals($Cache->expiration, 3600);
+        }
 
-            $result = $method->invoke(new \Royl\WpThemeBase\Util\Cache, array(
-                'test'=>'1234', 
-                'foo' => array(
-                    'bar' => '1234'
-                ),
-                'foo2' => array(
-                    'bar2' => '1234',
-                    'baz2' => '1234'
-                )
-            ));
-            $this->assertEquals($result, 'test1234foo1234foo21234foo21234');
+        public function testRead() {
+            global $mockWPGetOption;
+            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
+
+            $mockWPGetOption = true;
+            $result = $Cache->read();
+            $this->assertEquals($result, 'test');
+
+            $mockWPGetOption = false;
+            $result = $Cache->read();
+            $this->assertEquals($result, false);
+        }
+
+        public function testDestroy() {
+            global $mockWPGetOption;
+            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
+
+            $mockWPGetOption = true;
+            $result = $Cache->destroy();
+            $this->assertEquals($result, true);
+
+            $mockWPGetOption = false;
+            $result = $Cache->destroy();
+            $this->assertEquals($result, false);
         }
     }
 
