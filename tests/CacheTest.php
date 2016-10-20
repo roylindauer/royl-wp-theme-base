@@ -4,15 +4,15 @@ use Royl\WpThemeBase\Util;
 
 namespace {
     // Define return value for our mocked get_option() function
-    $mockWPGetOption = false;
+    $mockWPMethodReturn = false;
 }
 
 namespace Royl\WpThemeBase\Util {
 
     // WordPress Mock Functions
     function get_transient($key) {
-        global $mockWPGetOption;
-        if (isset($mockWPGetOption) && $mockWPGetOption === true) {
+        global $mockWPMethodReturn;
+        if (isset($mockWPMethodReturn) && $mockWPMethodReturn === true) {
             return 'test';
         } else {
             return false;
@@ -20,8 +20,8 @@ namespace Royl\WpThemeBase\Util {
     }
 
     function set_transient($key, $data, $expiration) {
-        global $mockWPGetOption;
-        if (isset($mockWPGetOption) && $mockWPGetOption === true) {
+        global $mockWPMethodReturn;
+        if (isset($mockWPMethodReturn) && $mockWPMethodReturn === true) {
             return true;
         } else {
             return false;
@@ -29,8 +29,8 @@ namespace Royl\WpThemeBase\Util {
     }
 
     function delete_transient($key) {
-        global $mockWPGetOption;
-        if (isset($mockWPGetOption) && $mockWPGetOption === true) {
+        global $mockWPMethodReturn;
+        if (isset($mockWPMethodReturn) && $mockWPMethodReturn === true) {
             return true;
         } else {
             return false;
@@ -45,14 +45,14 @@ namespace Royl\WpThemeBase\Util {
         }
 
         public function testWrite() {
-            global $mockWPGetOption;
+            global $mockWPMethodReturn;
             $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
 
-            $mockWPGetOption = true;
+            $mockWPMethodReturn = true;
             $result = $Cache->write('test');
             $this->assertTrue($result);
 
-            $mockWPGetOption = false;
+            $mockWPMethodReturn = false;
             $result = $Cache->write('test');
             $this->assertFalse($result);
         }
@@ -66,27 +66,27 @@ namespace Royl\WpThemeBase\Util {
         }
 
         public function testRead() {
-            global $mockWPGetOption;
+            global $mockWPMethodReturn;
             $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
 
-            $mockWPGetOption = true;
+            $mockWPMethodReturn = true;
             $result = $Cache->read();
             $this->assertEquals($result, 'test');
 
-            $mockWPGetOption = false;
+            $mockWPMethodReturn = false;
             $result = $Cache->read();
             $this->assertEquals($result, false);
         }
 
         public function testDestroy() {
-            global $mockWPGetOption;
+            global $mockWPMethodReturn;
             $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
 
-            $mockWPGetOption = true;
+            $mockWPMethodReturn = true;
             $result = $Cache->destroy();
             $this->assertEquals($result, true);
 
-            $mockWPGetOption = false;
+            $mockWPMethodReturn = false;
             $result = $Cache->destroy();
             $this->assertEquals($result, false);
         }
