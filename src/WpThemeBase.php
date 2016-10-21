@@ -22,7 +22,8 @@ class WpThemeBase
      */
     public function init($theme_config = array())
     {
-        include __DIR__ . '../vendor/autoload.php';
+        // i dont actually know if i need to do this yet...
+        //include __DIR__ . '../vendor/autoload.php';
 
         // Load Theme Configuration
         if (!empty($theme_config)) {
