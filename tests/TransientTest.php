@@ -1,13 +1,13 @@
 <?php
 
-use Royl\WpThemeBase\Util;
+use Royl\WpThemeBase\Wp;
 
 namespace {
     // Define return value for our mocked get_option() function
     $mockWPMethodReturn = false;
 }
 
-namespace Royl\WpThemeBase\Util {
+namespace Royl\WpThemeBase\Wp {
 
     // WordPress Mock Functions
     function get_transient($key) {
@@ -46,7 +46,7 @@ namespace Royl\WpThemeBase\Util {
 
         public function testWrite() {
             global $mockWPMethodReturn;
-            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
+            $Cache = new \Royl\WpThemeBase\Wp\Transient('my_cache_store');
 
             $mockWPMethodReturn = true;
             $result = $Cache->write('test');
@@ -58,16 +58,16 @@ namespace Royl\WpThemeBase\Util {
         }
 
         public function testExpiration() {
-            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store', 300);
+            $Cache = new \Royl\WpThemeBase\Wp\Transient('my_cache_store', 300);
             $this->assertEquals($Cache->expiration, 300);
 
-            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
+            $Cache = new \Royl\WpThemeBase\Wp\Transient('my_cache_store');
             $this->assertEquals($Cache->expiration, 3600);
         }
 
         public function testRead() {
             global $mockWPMethodReturn;
-            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
+            $Cache = new \Royl\WpThemeBase\Wp\Transient('my_cache_store');
 
             $mockWPMethodReturn = true;
             $result = $Cache->read();
@@ -80,7 +80,7 @@ namespace Royl\WpThemeBase\Util {
 
         public function testDestroy() {
             global $mockWPMethodReturn;
-            $Cache = new \Royl\WpThemeBase\Util\Cache('my_cache_store');
+            $Cache = new \Royl\WpThemeBase\Wp\Transient('my_cache_store');
 
             $mockWPMethodReturn = true;
             $result = $Cache->destroy();
