@@ -159,6 +159,10 @@ class Core
      */
     public function registerRequiredPlugins()
     {
+        if (!function_exists('tgmpa')) {
+            return;
+        }
+
         if (($plugins = \Royl\WpThemeBase\Util\Configure::read('dependencies.plugins')) == false) {
             return;
         }

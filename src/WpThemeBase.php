@@ -22,12 +22,6 @@ class WpThemeBase
      */
     public function init($theme_config = array())
     {
-
-        // Load plugin activator
-        if (\Royl\WpThemeBase\Util\Configure::read('dependencies.plugins') != false) {
-            require_once __DIR__ . '/vendor/plugin-activation/class-tgm-plugin-activation.php';
-        }
-
         // Load Theme Configuration
         if (!empty($theme_config)) {
             $config = $theme_config;
