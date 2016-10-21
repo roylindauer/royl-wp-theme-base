@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/roylindauer/royl-wp-theme-base.svg?branch=master)](https://travis-ci.org/roylindauer/royl-wp-theme-base)
+
 # How to include this theme framework in your custom WordPress theme:
 
 Create `composer.json` in your WordPress theme root. 
