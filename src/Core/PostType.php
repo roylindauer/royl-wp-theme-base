@@ -83,7 +83,7 @@ class PostType
             $this->supports = $params['supports'];
         }
 
-        $this->Inflector = new \Doctrine\Common\Inflector();
+        $this->Inflector = new \Doctrine\Common\Inflector\Inflector();
         
         // Convention over configuration!
         $singular = \Royl\WpThemeBase\Util\Text::humanize($this->name);

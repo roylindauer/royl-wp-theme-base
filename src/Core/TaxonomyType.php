@@ -44,7 +44,7 @@ class TaxonomyType
     {
         $this->name = $name;
 
-        $this->Inflector = new \Doctrine\Common\Inflector();
+        $this->Inflector = new \Doctrine\Common\Inflector\Inflector();
         
         // Convention over configuration!
         $singular = \Royl\WpThemeBase\Util\Text::humanize($this->name);

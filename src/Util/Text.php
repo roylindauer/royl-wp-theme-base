@@ -84,7 +84,7 @@ class Text
      * instead of just the first one.
      * @return string Human-readable word
      */
-    public function humanize($word, $uppercase = '')
+    public static function humanize($word, $uppercase = '')
     {
         $uppercase = $uppercase == 'all' ? 'ucwords' : 'ucfirst';
         return $uppercase(str_replace('_', ' ', preg_replace('/_id$/', '', $word)));
