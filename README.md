@@ -13,8 +13,11 @@ Create `composer.json` in your WordPress theme root.
         }
     ],
     "minimum-stability": "dev",
-    "require-dev": {
+    "require": {
         "royl/wp-theme-base": "master"
+    }
+    "require-dev": {
+
     }
 }
 ```
