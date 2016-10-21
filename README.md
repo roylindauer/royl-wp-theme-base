@@ -32,8 +32,11 @@ Now you can bootstrap your theme:
 
 ```
 $config = [ ... core config options here ... ];
-$theme = new \Royl\WpThemeBase\WpThemeBase();
-$theme->init($config);
+
+\Royl\WpThemeBase\Util\Configure::set($config);
+
+$royl_wp_core = new \Royl\WpThemeBase\Core\Core();
+$royl_wp_core->run();
 ```
 
 ## Configuration

@@ -8,6 +8,7 @@
         "squizlabs/php_codesniffer": "*"
     },
     "autoload": {
+        "files": ["src/wp_theme_base.php"],
         "psr-4" : {
             "Royl\\WpThemeBase\\" : "src"
         }
