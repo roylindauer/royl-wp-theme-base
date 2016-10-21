@@ -31,10 +31,6 @@ class WpThemeBase
             include_once __DIR__ . '/Config/core.php';
         }
 
-        if (\Royl\WpThemeBase\Util\Configure::read('dependencies.plugins') != false) {
-            require_once __DIR__ . '/vendor/plugin-activation/class-tgm-plugin-activation.php';
-        }
-
         \Royl\WpThemeBase\Util\Configure::set($config);
 
         // Set base Theme Name and Version into Theme Config
