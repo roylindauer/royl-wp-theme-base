@@ -44,11 +44,11 @@ class TaxonomyType
     {
         $this->name = $name;
 
-        $this->Inflector = new \Royl\WpThemeBase\Core\Inflector();
+        $this->Inflector = new \Doctrine\Common\Inflector();
         
         // Convention over configuration!
-        $singular = $this->Inflector->humanize($this->name);
-        $plural   = $this->Inflector->humanize($this->Inflector->pluralize($this->name));
+        $singular = \Royl\WpThemeBase\Util\Text::humanize($this->name);
+        $plural   = \Royl\WpThemeBase\Util\Text::humanize($this->Inflector->pluralize($this->name));
 
         $this->labels = array(
             'name' =>                   $plural,

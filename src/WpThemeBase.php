@@ -22,11 +22,17 @@ class WpThemeBase
      */
     public function init($theme_config = array())
     {
+        include __DIR__ . '../vendor/autoload.php';
+
         // Load Theme Configuration
         if (!empty($theme_config)) {
             $config = $theme_config;
         } else {
             include_once __DIR__ . '/Config/core.php';
+        }
+
+        if (\Royl\WpThemeBase\Util\Configure::read('dependencies.plugins') != false) {
+            require_once __DIR__ . '/vendor/plugin-activation/class-tgm-plugin-activation.php';
         }
 
         \Royl\WpThemeBase\Util\Configure::set($config);

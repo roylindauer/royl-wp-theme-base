@@ -66,4 +66,27 @@ class Text
         }
         return $str;
     }
+    
+    /**
+     * Returns a human-readable string from $word
+     *
+     * Returns a human-readable string from $word, by replacing
+     * underscores with a space, and by upper-casing the initial
+     * character by default.
+     *
+     * If you need to uppercase all the words you just have to
+     * pass 'all' as a second parameter.
+     *
+     * @access public
+     * @static
+     * @param    string    $word    String to "humanize"
+     * @param    string    $uppercase    If set to 'all' it will uppercase all the words
+     * instead of just the first one.
+     * @return string Human-readable word
+     */
+    public function humanize($word, $uppercase = '')
+    {
+        $uppercase = $uppercase == 'all' ? 'ucwords' : 'ucfirst';
+        return $uppercase(str_replace('_', ' ', preg_replace('/_id$/', '', $word)));
+    }
 }
