@@ -513,8 +513,7 @@ class Core
      */
     private function ajaxDisplay($result = '', $display = 'json')
     {
-        switch ($display)
-        {
+        switch ($display) {
             case 'html':
                 echo $result;
                 break;
