@@ -367,7 +367,6 @@ class Core
                 add_theme_support($v);
             }
         }
-
     }
 
     /**
@@ -497,7 +496,6 @@ class Core
 
             // Render results
             $this->ajaxDisplay($result, $display);
-
         } catch (\Exception $e) {
             $this->ajaxDisplay(array('error' => $e->getMessage()));
         }
@@ -520,7 +518,6 @@ class Core
             case 'html':
                 echo $result;
                 break;
-
             case 'json':
             default:
                 \Royl\WpThemeBase\Util\Output::json($result);
@@ -537,7 +534,7 @@ class Core
     {
         // Localize the script with new data
         $translation_array = array(
-        	'wp_nonce' => wp_create_nonce('execute_ajax_nonce')
+            'wp_nonce' => wp_create_nonce('execute_ajax_nonce')
         );
 
         // The handle will need to be changed to a javascript file once the front end
