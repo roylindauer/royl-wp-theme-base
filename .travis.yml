@@ -7,5 +7,5 @@ sudo: false
 before_script:
   - composer install
 script:
+  - find -L . -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
   - php vendor/bin/phpcs -p -s -v -n ./src --standard=PSR2 --extensions=php --ignore=*/vendor/* --ignore=src/Core/Inflector.php
-  - php vendor/bin/phpunit --report-useless-tests
