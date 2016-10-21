@@ -10,7 +10,7 @@ namespace Royl\WpThemeBase\Core;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class Taxonomy
+class TaxonomyType
 {
 
     /**

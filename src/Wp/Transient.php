@@ -1,6 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Util;
+namespace Royl\WpThemeBase\Wp;
 
 /**
  * Cache using wp_transients
@@ -10,7 +10,7 @@ namespace Royl\WpThemeBase\Util;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class Cache
+class Transient
 {
     const CACHE_TIMEOUT = 3600; // Value in seconds
 

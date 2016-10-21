@@ -36,3 +36,7 @@ $theme->init($config);
 ## Configuration
 
 Refer to src/Config/core.php for available configuration options. 
+
+## Purpose
+
+To aid in the creation of WordPress themes. Rapid development of custom post types, taxonomies, and general WordPress config. 

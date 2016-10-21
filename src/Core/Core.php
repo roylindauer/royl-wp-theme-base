@@ -64,11 +64,6 @@ class Core
             add_action('after_setup_theme', array(&$this, 'registerImageSizes'));
             add_action('after_setup_theme', array(&$this, 'registerNavMenus'));
             add_action('after_setup_theme', array(&$this, 'registerSidebars'));
-
-            // Setup ajax endpoint
-            add_action('wp_ajax_ns_ajax', array(&$this, 'executeAjax'));
-            add_action('wp_ajax_nopriv_ns_ajax', array(&$this, 'executeAjax'));
-            add_action('wp_enqueue_scripts', array(&$this, 'generateWPNonce'));
         }
     }
 
@@ -266,7 +261,7 @@ class Core
         }
 
         foreach ($taxonomies as $name => $opts) {
-            new \Royl\WpThemeBase\Core\Taxonomy($name, $opts['params'], $opts['args']);
+            new \Royl\WpThemeBase\Core\TaxonomyType($name, $opts['params'], $opts['args']);
         }
     }
 
@@ -424,121 +419,5 @@ class Core
         foreach ($sidebars as $sidebar) {
             register_sidebar($sidebar);
         }
-    }
-
-    /**
-     * Simple interface for executing ajax requests
-     *
-     * Usage: /wp-admin/admin-ajax.php?action=ns_ajax&c=CLASS&m=METHOD&_wpnonce=NONCE
-     *
-     * Params for ajax request:
-     * c         = class to instantiate
-     * m         = method to run
-     * _wpnonce  = WordPress Nonce
-     * display   = json,html
-     *
-     * Naming Conventions
-     * Method names will be prefixed with "ajax_" and then run through the Inflector to camelize it
-     *     - eg: "doThing" would become "ajaxDoThing", so you need a method in your class called "ajaxDoThing"
-     *
-     * Classes can be whatever you want. They are expected to be namespaces to \Royl\WpThemeBase\Ajax
-     *
-     * Output can be rendered as JSON, or HTML
-     *
-     * Generate a nonce: wp_create_nonce('execute_ajax_nonce');
-     *
-     * @return string
-     */
-    public function executeAjax()
-    {
-        try {
-            // We expect a valid wp nonce
-            if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'execute_ajax_nonce')) {
-                throw new \Exception('Invalid ajax request');
-            }
-
-            // Make sure we have a class and a method to execute
-            if (!isset($_REQUEST['c']) && !isset($_REQUEST['m'])) {
-                throw new \Exception('Invalid params in ajax request');
-            }
-
-            $Inflector = new \Royl\WpThemeBase\Core\Inflector();
-
-            // Make sure that the requested class exists and instantiate it
-            $class = $Inflector->camelize(filter_var($_REQUEST['c'], FILTER_SANITIZE_STRING));
-            $class = "\Royl\\WpThemeBase\\Ajax\\$class";
-
-            if (!class_exists($class)) {
-                throw new \Exception('Class does not exist');
-            }
-
-            $Obj = new $class();
-
-            // Add our prefix and camelize the requested method
-            // eg: "method" becomes "ajaxMethod"
-            // eg: "do_thing" becomes "ajaxDoThing", or "doThing" becomes "ajaxDoThing"
-            $m = $Inflector->camelize('ajax_' . filter_var($_REQUEST['m'], FILTER_SANITIZE_STRING));
-
-            // Make sure that the requested method exists in our object
-            if (!method_exists($Obj, $m)) {
-                throw new \Exception('Ajax method does not exist');
-            }
-
-            // Execute
-            $result = $Obj->$m();
-
-            // Render the response
-            $display = 'json';
-
-            if (isset($_REQUEST['display'])) {
-                $display = filter_var($_REQUEST['display'], FILTER_SANITIZE_STRING);
-            }
-
-            // Render results
-            $this->ajaxDisplay($result, $display);
-        } catch (\Exception $e) {
-            $this->ajaxDisplay(array('error' => $e->getMessage()));
-        }
-
-        // Make sure this thing dies so it never echoes back that damn zero.
-        die();
-    }
-
-    /**
-     * Render ajax response
-     *
-     * @param mixed $result Data to display
-     * @param string $display Output to display $result as. Defaults to JSON
-     * @return void
-     */
-    private function ajaxDisplay($result = '', $display = 'json')
-    {
-        switch ($display) {
-            case 'html':
-                echo $result;
-                break;
-            case 'json':
-            default:
-                \Royl\WpThemeBase\Util\Output::json($result);
-                break;
-        }
-    }
-
-    /**
-     * Generates a nonce and make it available for use in main javascript file
-     *
-     * @return void
-     */
-    public function generateWPNonce()
-    {
-        // Localize the script with new data
-        $translation_array = array(
-            'wp_nonce' => wp_create_nonce('execute_ajax_nonce')
-        );
-
-        // The handle will need to be changed to a javascript file once the front end
-        // javascript file is in place. Use a placeholder now to pevent wp from erroring
-        wp_localize_script('wp_nonce_helper', 'wp_nonce', $translation_array);
-        wp_enqueue_script('wp_nonce_helper');
     }
 }

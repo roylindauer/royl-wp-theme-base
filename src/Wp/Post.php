@@ -1,46 +1,22 @@
 <?php
 
-namespace Royl\WpThemeBase\Util;
+namespace Royl\WpThemeBase\Wp;
 
 /**
- * WordPress Tools
+ * WordPress Tools - Posts
  *
  * This class is for doing WordPress-related things in code that we do
  * commonly, such as creating a new post type or creating an image attachment.
  *
  * @package     WpThemeBase
- * @subpackage  Util
- * @author      Roy Lindauer <hello@roylindauer.com>
+ * @subpackage  Wp
  * @author      Tim Shaw
  * @author      Nitish Narala
+ * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class Tools
+class Post
 {
-    /**
-     * Renders a template partial.
-     * This method allows us to pass data to the template partial instead of relying on nasty globals
-     * The irony of globally including wp_query is not lost on me.
-     *
-     * @param  [type] $partial [description]
-     * @param  array  $data    [description]
-     * @return [type]          [description]
-     */
-    public static function renderPartial($partial, $data = array())
-    {
-        global $wp_query;
-
-        $partial_dir = \Royl\WpThemeBase\Util\Configure::read('partial_dir');
-        if (!$partial_dir) {
-            $partial_dir = 'partials';
-        }
-
-        $wp_query->query_vars = array_merge($wp_query->query_vars, $data);
-
-        $file = $partial_dir . '/' . $partial . '.php';
-        locate_template($file, true, false);
-    }
-
     /**
      * Return a url to a page (or custom post type) by title.
      *
@@ -78,84 +54,15 @@ class Tools
     public static function setPostThumbnail($url, $post)
     {
         // Save the image to start
-        $fileInfo = self::saveImage($url);
+        $fileInfo = \Royl\WpThemeBase\Wp\Attachment::saveImage($url);
 
         if ($fileInfo) {
             // If that worked out, attach the image
-            return self::createImageAttachment($fileInfo, $post->ID);
+            return \Royl\WpThemeBase\Wp\Attachment::createImageAttachment($fileInfo, $post->ID);
         }
 
         // Guess it didn't work out
         return null;
-    }
-
-    /**
-     * Creates a new image attachment in wordpress and return the attachment ID.
-     *
-     * @param object $file_info Object containing image info from saveImage
-     * @param object $post_id The post ID to attach the new attachment to
-     * @return int Returns the new attachment ID
-     */
-    public static function createImageAttachment($file_info, $post_id = null)
-    {
-        $wp_filetype = wp_check_filetype($file_info->filename, null);
-        $attachment = array(
-            'guid' => $file_info->url,
-            'post_mime_type' => $wp_filetype['type'],
-            'post_title' => $file_info->filename,
-            'post_content' => '',
-            'post_status' => 'inherit'
-        );
-        $attach_id = wp_insert_attachment($attachment, $file_info->path, $post_id);
-
-        require_once(ABSPATH . 'wp-admin/includes/image.php');
-        $attach_data = wp_generate_attachment_metadata($attach_id, $file_info->path);
-        wp_update_attachment_metadata($attach_id, $attach_data);
-
-        // wp_insert_attachment sometimes fails to associate the image correctly
-        // so do it manually as well just to be sure if post_id was passed
-        if ($post_id) {
-            add_post_meta($post_id, '_thumbnail_id', $attach_id, true);
-        }
-
-        return $attach_id;
-    }
-
-    /**
-     * Save an image to WordPress from an arbitrary URL.
-     *
-     * @param string $url The image URL to save
-     * @return object If save is successful, returns object with info about the file
-     **/
-    public static function saveImage($url)
-    {
-        // Get upload directory info from WP
-        $wp_upload     = wp_upload_dir();
-        $upload_dir    = $wp_upload['path'];
-
-        // Pull info about the image for saving
-        $pathinfo = pathinfo($url);
-
-        // Save the image
-        $ch = curl_init($url);
-        $fp = fopen($upload_dir . DIRECTORY_SEPARATOR . $pathinfo['basename'], 'wb');
-
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_exec($ch);
-        curl_close($ch);
-
-        fclose($fp);
-
-        // Set info on file and return
-        $file_info = new \stdClass();
-
-        $file_info->filename = $pathinfo['basename'];
-        $file_info->path     = $upload_dir . DIRECTORY_SEPARATOR . $pathinfo['basename'];
-        $file_info->url      = $wp_upload['url'] . DIRECTORY_SEPARATOR . $pathinfo['basename'];
-        $file_info->wp_url   = $wp_upload['subdir'] . DIRECTORY_SEPARATOR . $pathinfo['basename'];
-
-        return $file_info;
     }
 
     /**
@@ -341,43 +248,11 @@ class Tools
         $categoryIds = array();
 
         foreach ($terms as $term) {
-            $categoryIds[] = self::upsertTaxonomyTerm($term, $taxonomy);
+            $categoryIds[] = \Royl\WpThemeBase\Wp\Taxonomy::upsertTaxonomyTerm($term, $taxonomy);
         }
 
         // Attach terms to the post
         wp_set_object_terms($postId, $categoryIds, $taxonomy, $append);
-    }
-
-    /**
-     * This safely checks if a taxonomy term exists and creates it if not.
-     *
-     * @param   string  $termName       Name (not slug) of the term to create
-     * @param   string  $taxonomy       Name of the taxonomy to check
-     * @param   string  $parent         Optional Parent term ID to put term under
-     * @param   string  $description    Optional Tax term description
-     * @return  int     Returns the term ID of the found/created term or null
-     **/
-    public static function upsertTaxonomyTerm($termName, $taxonomy, $parent = 0, $description = null)
-    {
-        $category = term_exists($termName, $taxonomy, $parent);
-
-        if (!$category) {
-            $category = wp_insert_term($termName, $taxonomy, array(
-                'parent'      => $parent,
-                'description' => $description
-            ));
-        }
-
-        if (!is_wp_error($category)) {
-            return ((int) $category['term_id']);
-        } else {
-            if (defined(WP_DEBUG) && WP_DEBUG) {
-                trigger_error($category->get_error_message(), E_USER_WARNING);
-            }
-        }
-
-        // Well something went wrong
-        return null;
     }
 
     /**
@@ -398,37 +273,6 @@ class Tools
 
             echo 'Deleted all ' . $postType . ' posts.' . "\n";
         }
-    }
-
-    /**
-     * Clear all terms from a taxonomy.  If custom taxonomy is passed, will
-     * clear that, otherwise will simple clear basic categories (these use
-     * different functions).
-     *
-     * @param string $taxonomy Name of custom taxonomy to clear
-     * @return bool Returns true/false on clear success/fail
-     **/
-    public static function flushTaxonomy($taxonomy = null)
-    {
-        if ($taxonomy) {
-            $terms = get_terms($taxonomy, array('hide_empty' => false));
-            foreach ($terms as $term) {
-                wp_delete_term($term->term_id, $taxonomy);
-            }
-
-            echo 'Deleted all ' . $taxonomy . ' terms.' . "\n";
-        } else {
-            $terms = get_categories(array('hide_empty' => 0));
-            foreach ($terms as $term) {
-                wp_delete_category($term->term_id);
-            }
-
-            echo 'Deleted all category terms.' . "\n";
-        }
-
-        // Return true/false based on whether or no there were any terms to
-        // clear
-        return !empty($terms);
     }
 
     /**
