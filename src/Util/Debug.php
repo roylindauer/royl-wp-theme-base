@@ -10,7 +10,8 @@ namespace Royl\WpThemeBase\Util;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class Debug {
+class Debug
+{
     
     /**
      * Prettier version of print_r

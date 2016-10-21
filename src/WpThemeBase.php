@@ -11,7 +11,8 @@ namespace Royl\WpThemeBase;
  * @author   Roy Lindauer <hello@roylindauer.com>
  * @version  1.0
  */
-class WpThemeBase {
+class WpThemeBase
+{
 
     /**
      * Initialize Theme
@@ -19,7 +20,8 @@ class WpThemeBase {
      * @param  array $theme_config User supplied theme configuration options
      * @return boolean
      */
-    public function init($theme_config = array()) {
+    public function init($theme_config = array())
+    {
 
         // Load plugin activator
         if (\Royl\WpThemeBase\Util\Configure::read('dependencies.plugins') != false) {
@@ -30,7 +32,7 @@ class WpThemeBase {
         if (!empty($theme_config)) {
             $config = $theme_config;
         } else {
-            include_once __DIR__ . '/Config/core.php'; 
+            include_once __DIR__ . '/Config/core.php';
         }
 
         \Royl\WpThemeBase\Util\Configure::set($config);

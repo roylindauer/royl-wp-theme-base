@@ -11,7 +11,7 @@ namespace Royl\WpThemeBase\Util;
  * @package     WpThemeBase
  * @subpackage  Util
  * @author      Roy Lindauer <hello@roylindauer.com>
- * @author      Tim Shaw 
+ * @author      Tim Shaw
  * @author      Nitish Narala
  * @version     1.0
  */
@@ -20,7 +20,7 @@ class Tools
     /**
      * Renders a template partial.
      * This method allows us to pass data to the template partial instead of relying on nasty globals
-     * The irony of globally including wp_query is not lost on me. 
+     * The irony of globally including wp_query is not lost on me.
      *
      * @param  [type] $partial [description]
      * @param  array  $data    [description]
