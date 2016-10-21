@@ -36,7 +36,7 @@ class Core
      *
      * @param array $config
      */
-    public function run()
+    public function __construct()
     {
         if (function_exists('add_action')) {
             // Load custom post types, widgets, etc.

@@ -1,7 +1,7 @@
 <?php
 
 // Include core config
-include_once __DIR__ . '/Config/core.php';
+include_once __DIR__ . '/config.php';
 \Royl\WpThemeBase\Util\Configure::set($config);
 
 // Set base Theme Name and Version into Theme Config
@@ -12,6 +12,16 @@ if (function_exists('wp_get_theme')) {
     unset($curtheme);
 }
 
-// Load core
-$royl_wp_core = new \Royl\WpThemeBase\Core\Core();
-$royl_wp_core->run();
+/**
+ * Bootstrap the theme
+ * @param  array $config array of theme config options
+ * @return void
+ */
+function royl_wp_theme_base($config = array()) {
+    \Royl\WpThemeBase\Util\Configure::set($config);
+
+    $royl_wp_theme_base = new \Royl\WpThemeBase\Core\Core();
+
+    $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
+    $reg->set('WpThemeBase', $royl_wp_theme_base);
+}
