@@ -87,7 +87,6 @@ class Core
         }
 
         foreach ($stylesheets as $handle => $data) {
-            $data = $data;
             wp_register_style($handle, $data['source'], $data['dependencies'], $data['version']);
         }
     }
