@@ -41,7 +41,7 @@ class Text
      * Usage:
      *
      * $str = "This is my string!";
-     * $str = \Ecs\Core\Utilties\Text::truncateText($str, 7, '...');
+     * $str = \Ecs\Core\Utilties\Text::truncate($str, 7, '...');
      * // returns "This is..."
      *
      * @param  string   $str, the string to truncate
@@ -49,7 +49,7 @@ class Text
      * @param  string   $suffix, any text to include after the truncated string
      * @param  boolean  $safe, when true will strip html tags before truncating
      */
-    public static function truncateText($str, $len = 50, $suffix = '...', $safe = false)
+    public static function truncate($str, $len = 50, $suffix = '...', $safe = false)
     {
         if ($safe === true) {
             $str = strip_tags($str);

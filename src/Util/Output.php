@@ -44,8 +44,10 @@ class Output
      */
     public static function xml($content = '')
     {
-        header('Content-Type: text/xml');
-        die($content);
+        if (!empty($content)) {
+            header('Content-Type: text/xml');
+            die($content);
+        }
     }
 
     /**
