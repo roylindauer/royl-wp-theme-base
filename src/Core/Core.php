@@ -70,7 +70,6 @@ class Core
             add_action('wp_ajax_nopriv_ns_ajax', array(&$this, 'executeAjax'));
             add_action('wp_enqueue_scripts', array(&$this, 'generateWPNonce'));
         }
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -292,7 +291,7 @@ class Core
     {
         global $wp_theme_error, $wp_theme_error_code;
 
-        if (!isset( $wp_theme_error_code)) {
+        if (!isset($wp_theme_error_code)) {
             $theme_data = wp_get_theme();
             $name = str_replace(' ', '', strtolower($theme_data['Name']));
             $wp_theme_error_code = preg_replace("/[^a-zA-Z0-9\s]/", '', $name);
@@ -538,12 +537,12 @@ class Core
     {
         // Localize the script with new data
         $translation_array = array(
-        	'wp_nonce' => wp_create_nonce( 'execute_ajax_nonce' )
+        	'wp_nonce' => wp_create_nonce('execute_ajax_nonce')
         );
 
         // The handle will need to be changed to a javascript file once the front end
         // javascript file is in place. Use a placeholder now to pevent wp from erroring
-        wp_localize_script( 'wp_nonce_helper', 'wp_nonce', $translation_array );
-        wp_enqueue_script( 'wp_nonce_helper' );
+        wp_localize_script('wp_nonce_helper', 'wp_nonce', $translation_array);
+        wp_enqueue_script('wp_nonce_helper');
     }
 }
