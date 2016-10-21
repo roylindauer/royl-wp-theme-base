@@ -3,7 +3,7 @@
 namespace Royl\WpThemeBase\Util;
 
 /**
- * Utility class for working with Cache
+ * Cache using wp_transients
  *
  * @package     WpThemeBase
  * @subpackage  Util
@@ -30,9 +30,7 @@ class Cache
     }
 
     /**
-     * Given an array of arguments, check for cached query for the args (args
-     * will be converted to a unique hash).  Args are assumed to be valid args
-     * for a WP_Query query.
+     * Get cache
      *
      * @return mixed Returns cached value if it exists or false if not
      **/
@@ -46,8 +44,7 @@ class Cache
     }
 
     /**
-     * Given an array of args used to generate a unique WP_Query, generate
-     * cached version of query result.
+     * Write cache
      *
      * @param  mixed    $data  Data to cache
      * @return boolean  Returns true/false on cache set success/fail
