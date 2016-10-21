@@ -38,7 +38,7 @@ final class Configure
      */
     public static function set($config = array())
     {
-        self::$config = $config;
+        self::$config = array_merge(self::$config, $config);
     }
 
     /**
