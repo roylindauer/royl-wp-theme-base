@@ -26,7 +26,7 @@ Run `composer install`
 
 Include the composer autoloader in your functions.php
 
-`include_once __DIR__ . '/vendor/autoload.php';`
+`include_once ABSPATH . '/vendor/autoload.php';`
 
 Now you can bootstrap your theme:
 
