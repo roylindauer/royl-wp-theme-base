@@ -24,17 +24,20 @@ namespace Royl\WpThemeBase\Core;
  */
 class Core
 {
-    /**
-     * Collection of post type objects.
-     *
-     * @var array $post_types collection of post type objects
-     */
-    public $post_types = array();
+	/**
+	 * @var Royl\WpThemeBase\Core\PostTypeRegistry
+	 */
+	public $PostTypeRegistry;
+
+	/**
+	 * @var Royl\WpThemeBase\Core\TaxonomyRegistry
+	 */
+	public $TaxonomyRegistry;
 	
 	/**
 	 * @var Royl\WpThemeBase\Core\Ajax
 	 */
-	public $Ajax = null;
+	public $Ajax;
 
     /**
      * Do the thing
@@ -44,9 +47,10 @@ class Core
     public function __construct()
     {
         if (function_exists('add_action')) {
-            // Load custom post types, widgets, etc.
-            add_action('init', array(&$this, 'loadPostTypes'));
-            add_action('init', array(&$this, 'registerTaxonomies'));
+			
+			$this->PostTypeRegistry = new PostTypeRegistry();
+			$this->TaxonomyRegistry = new TaxonomyRegistry();
+			$this->Ajax = new Ajax();
 
             // Display admin notices
             add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
@@ -70,7 +74,6 @@ class Core
             add_action('after_setup_theme', array(&$this, 'registerNavMenus'));
             add_action('after_setup_theme', array(&$this, 'registerSidebars'));
 			
-			$this->Ajax = new Ajax();
         }
     }
 
@@ -232,49 +235,7 @@ class Core
             }
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    // Custom Post Types & Taxonomies
-    //
-    ////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Load post type classes
-     *
-     * @return void
-     */
-    public function loadPostTypes()
-    {
-        $post_types = \Royl\WpThemeBase\Util\Configure::read('post_types');
-
-        if ($post_types === false) {
-            return;
-        }
-
-        foreach ($post_types as $post_type => $params) {
-            new \Royl\WpThemeBase\Wp\PostType($post_type, $params);
-        }
-    }
-
-    /**
-     * Register Taxonomies
-     *
-     * @return void
-     */
-    public function registerTaxonomies()
-    {
-        $taxonomies = \Royl\WpThemeBase\Util\Configure::read('taxonomies');
-
-        if (empty($taxonomies)) {
-            return;
-        }
-
-        foreach ($taxonomies as $name => $opts) {
-            new \Royl\WpThemeBase\Wp\TaxonomyType($name, $opts['params'], $opts['args']);
-        }
-    }
-
+	
     ////////////////////////////////////////////////////////////////////////////
     //
     // Error Handling

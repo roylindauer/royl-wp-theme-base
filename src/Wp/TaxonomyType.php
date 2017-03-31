@@ -6,7 +6,7 @@ namespace Royl\WpThemeBase\Wp;
  * WordPress Taxonomy Base Class
  *
  * @package     WpThemeBase
- * @subpackage  Core
+ * @subpackage  Wp
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */

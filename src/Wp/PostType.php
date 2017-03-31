@@ -6,7 +6,7 @@ namespace Royl\WpThemeBase\Wp;
  * WordPress Post Type base class
  *
  * @package     WpThemeBase
- * @subpackage  Core
+ * @subpackage  Wp
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */

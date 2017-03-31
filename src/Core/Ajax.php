@@ -78,13 +78,20 @@ class Ajax
             $result = $Obj->$m();
  
             // Render the response
-            \Ecs\Helpers\json_response($result);
+            $this->json_response($result);
  
         } catch (\Exception $e) {
-            \Ecs\Helpers\json_response(array('error' => $e->getMessage()));
+            $this->json_response(array('error' => $e->getMessage()));
         }
  
         // Make sure this thing dies so it never echoes back that damn zero.
         die();
+	}
+	
+	/**
+	 * 
+	 */
+	private function json_response($payload) {
+		echo json_encode($payload);
 	}
 }
