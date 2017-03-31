@@ -24,4 +24,6 @@ function royl_wp_theme_base($config = array()) {
 
     $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
     $reg->set('WpThemeBase', $royl_wp_theme_base);
+    
+    return $royl_wp_theme_base;
 }

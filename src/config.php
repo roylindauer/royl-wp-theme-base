@@ -11,6 +11,9 @@ $config = array(
     // Misc.
     /*
     'partial_dir' => 'partials', // this directory is relative to your theme root
+    'ajax' => array(
+        'namespace' => ''
+    ),
      */
 
     // Define Post Types

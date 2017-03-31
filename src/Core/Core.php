@@ -40,9 +40,9 @@ class Core
 	public $Assets;
 	
 	/**
-	 * @var Royl\WpThemeBase\Core\Ajax
+	 * @var Royl\WpThemeBase\Core\AjaxHandler
 	 */
-	public $Ajax;
+	public $AjaxHandler;
 
     /**
      * Do the thing
@@ -56,7 +56,7 @@ class Core
 			$this->PostTypeRegistry = new PostTypeRegistry();
 			$this->TaxonomyRegistry = new TaxonomyRegistry();
 			$this->Assets = new Assets();
-			$this->Ajax = new Ajax();
+			$this->AjaxHandler = new AjaxHandler();
 
             // Display admin notices
             add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
