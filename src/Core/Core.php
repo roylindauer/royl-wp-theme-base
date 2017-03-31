@@ -8,7 +8,7 @@ namespace Royl\WpThemeBase\Core;
  * Configures WordPress runtime according to the themes configuration.
  * This class is responsible for:
  *     * Creating custom post types
- *     * Handling taxonomies
+ *     * Creatig custom taxonomies
  *     * Defines & provides AJAX handler
  *     * Registering and enqueing scripts and stylesheets
  *     * Defining sidebars
@@ -33,6 +33,11 @@ class Core
 	 * @var Royl\WpThemeBase\Core\TaxonomyRegistry
 	 */
 	public $TaxonomyRegistry;
+
+	/**
+	 * @var Royl\WpThemeBase\Core\Assets
+	 */
+	public $Assets;
 	
 	/**
 	 * @var Royl\WpThemeBase\Core\Ajax
@@ -50,6 +55,7 @@ class Core
 			
 			$this->PostTypeRegistry = new PostTypeRegistry();
 			$this->TaxonomyRegistry = new TaxonomyRegistry();
+			$this->Assets = new Assets();
 			$this->Ajax = new Ajax();
 
             // Display admin notices
@@ -61,97 +67,12 @@ class Core
             // Require plugins
             add_action('tgmpa_register', array(&$this, 'registerRequiredPlugins'));
 
-            // Load assets
-            add_action('wp_enqueue_scripts', array(&$this, 'registerStylesheets'));
-            add_action('wp_enqueue_scripts', array(&$this, 'registerScripts'));
-
-            add_action('wp_enqueue_scripts', array(&$this, 'enqueueStylesheets'));
-            add_action('wp_enqueue_scripts', array(&$this, 'enqueueScripts'));
-
             // Setup wp theme features
             add_action('after_setup_theme', array(&$this, 'registerThemeFeatures'));
             add_action('after_setup_theme', array(&$this, 'registerImageSizes'));
             add_action('after_setup_theme', array(&$this, 'registerNavMenus'));
             add_action('after_setup_theme', array(&$this, 'registerSidebars'));
 			
-        }
-    }
-
-	////////////////////////////////////////////////////////////////////////////
-    //
-    // Enqueue and Load CSS/JS
-    //
-	////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Does the actual work of registered stylesheets. Must be called before enqueue.
-     *
-     * @return void
-     */
-    public function registerStylesheets()
-    {
-        $stylesheets = \Royl\WpThemeBase\Util\Configure::read('assets.stylesheets');
-
-        if (empty($stylesheets)) {
-            return;
-        }
-
-        foreach ($stylesheets as $handle => $data) {
-            wp_register_style($handle, $data['source'], $data['dependencies'], $data['version']);
-        }
-    }
-
-    /**
-     * Does the actual work of enqueing stylesheets
-     *
-     * @return void
-     */
-    public function enqueueStylesheets()
-    {
-        $stylesheets = \Royl\WpThemeBase\Util\Configure::read('assets.stylesheets');
-
-        if (empty($stylesheets)) {
-            return;
-        }
-
-        foreach ($stylesheets as $handle => $data) {
-            wp_enqueue_style($handle, $data['source'], $data['dependencies'], $data['version']);
-        }
-    }
-
-    /**
-     * Does the actual work of registered scripts. Must be called before enqueue.
-     *
-     * @return void
-     */
-    public function registerScripts()
-    {
-        $scripts = \Royl\WpThemeBase\Util\Configure::read('assets.scripts');
-
-        if (empty($scripts)) {
-            return;
-        }
-
-        foreach ($scripts as $handle => $data) {
-            wp_register_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
-        }
-    }
-
-    /**
-     * Does the actual work of enqueing scripts
-     *
-     * @return void
-     */
-    public function enqueueScripts()
-    {
-        $scripts = \Royl\WpThemeBase\Util\Configure::read('assets.scripts');
-
-        if (empty($scripts)) {
-            return;
-        }
-
-        foreach ($scripts as $handle => $data) {
-            wp_enqueue_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
         }
     }
 
