@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+use Royl\WpThemeBase\Util;
 
 /**
  * WordPress Ajax Handler
@@ -78,10 +79,10 @@ class Ajax
             $result = $Obj->$m();
  
             // Render the response
-            $this->json_response($result);
+            $this->output($result, 'json');
  
         } catch (\Exception $e) {
-            $this->json_response(array('error' => $e->getMessage()));
+            $this->output(array('error' => $e->getMessage()), 'json');
         }
  
         // Make sure this thing dies so it never echoes back that damn zero.
@@ -91,7 +92,18 @@ class Ajax
 	/**
 	 * 
 	 */
-	private function json_response($payload) {
-		echo json_encode($payload);
+	private function output($payload, $format = 'json') {
+		try {
+			$Output = new Output();
+		
+			if (!method_exists($format)) {
+				throw new \Exception(sprintf('Output format, %s, does not exist', $format));
+			}
+			
+			Output::$format($payload);
+			
+		} catch (\Exception $e) {
+			throw $e;
+		}
 	}
 }
