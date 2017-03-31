@@ -30,6 +30,11 @@ class Core
      * @var array $post_types collection of post type objects
      */
     public $post_types = array();
+	
+	/**
+	 * @var Royl\WpThemeBase\Core\Ajax
+	 */
+	public $Ajax = null;
 
     /**
      * Do the thing
@@ -64,9 +69,10 @@ class Core
             add_action('after_setup_theme', array(&$this, 'registerImageSizes'));
             add_action('after_setup_theme', array(&$this, 'registerNavMenus'));
             add_action('after_setup_theme', array(&$this, 'registerSidebars'));
+			
+			$this->Ajax = new Ajax();
         }
     }
-
 
 	////////////////////////////////////////////////////////////////////////////
     //
@@ -247,7 +253,7 @@ class Core
         }
 
         foreach ($post_types as $post_type => $params) {
-            new \Royl\WpThemeBase\Core\PostType($post_type, $params);
+            new \Royl\WpThemeBase\Wp\PostType($post_type, $params);
         }
     }
 
@@ -265,7 +271,7 @@ class Core
         }
 
         foreach ($taxonomies as $name => $opts) {
-            new \Royl\WpThemeBase\Core\TaxonomyType($name, $opts['params'], $opts['args']);
+            new \Royl\WpThemeBase\Wp\TaxonomyType($name, $opts['params'], $opts['args']);
         }
     }
 
