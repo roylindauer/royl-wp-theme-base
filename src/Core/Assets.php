@@ -18,11 +18,8 @@ class Assets
 	 * 
 	 */
 	public function __construct() {
-        add_action('wp_enqueue_scripts', array(&$this, 'registerStylesheets'));
-        add_action('wp_enqueue_scripts', array(&$this, 'registerScripts'));
-
-        add_action('wp_enqueue_scripts', array(&$this, 'enqueueStylesheets'));
-        add_action('wp_enqueue_scripts', array(&$this, 'enqueueScripts'));
+        add_action('wp_enqueue_scripts', array(&$this, 'stylesheets'));
+        add_action('wp_enqueue_scripts', array(&$this, 'scripts'));
 	}
 
     /**
@@ -30,7 +27,7 @@ class Assets
      *
      * @return void
      */
-    public function registerStylesheets()
+    public function stylesheets()
     {
         $stylesheets = Util\Configure::read('assets.stylesheets');
 
@@ -38,24 +35,12 @@ class Assets
             return;
         }
 
+		// Register the stylesheets
         foreach ($stylesheets as $handle => $data) {
             wp_register_style($handle, $data['source'], $data['dependencies'], $data['version']);
         }
-    }
 
-    /**
-     * Does the actual work of enqueing stylesheets
-     *
-     * @return void
-     */
-    public function enqueueStylesheets()
-    {
-        $stylesheets = Util\Configure::read('assets.stylesheets');
-
-        if (empty($stylesheets)) {
-            return;
-        }
-
+		// Enqueue the stylesheets
         foreach ($stylesheets as $handle => $data) {
             wp_enqueue_style($handle, $data['source'], $data['dependencies'], $data['version']);
         }
@@ -66,7 +51,7 @@ class Assets
      *
      * @return void
      */
-    public function registerScripts()
+    public function scripts()
     {
         $scripts = Util\Configure::read('assets.scripts');
 
@@ -74,24 +59,12 @@ class Assets
             return;
         }
 
+		// Register the scripts
         foreach ($scripts as $handle => $data) {
             wp_register_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
         }
-    }
 
-    /**
-     * Does the actual work of enqueing scripts
-     *
-     * @return void
-     */
-    public function enqueueScripts()
-    {
-        $scripts = Util\Configure::read('assets.scripts');
-
-        if (empty($scripts)) {
-            return;
-        }
-
+		// Enqueue the scripts
         foreach ($scripts as $handle => $data) {
             wp_enqueue_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
         }
