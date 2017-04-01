@@ -35,14 +35,14 @@ class PostTypeRegistry
      */
     public function loadPostTypes()
     {
-        $post_types = Configure::read('post_types');
+        $post_types = Util\Configure::read('post_types');
 
         if ($post_types === false) {
             return;
         }
 
         foreach ($post_types as $post_type => $params) {
-            $this->$post_types[$post_type] = new PostType($post_type, $params);
+            $this->$post_types[$post_type] = new Wp\PostType($post_type, $params);
         }
     }
 }

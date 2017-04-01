@@ -27,3 +27,11 @@ function royl_wp_theme_base($config = array()) {
     
     return $royl_wp_theme_base;
 }
+
+/**
+ * 
+ */
+function royl_core() {
+    $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
+	return $reg->get('WpThemeBase');
+}

@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+use Royl\WpThemeBase\Util;
 
 /**
  * Theme Core Class
@@ -43,6 +44,11 @@ class Core
 	 * @var Royl\WpThemeBase\Core\AjaxHandler
 	 */
 	public $AjaxHandler;
+	
+	/**
+	 * @var Royl\WpThemeBase\Core\FilterHandler
+	 */
+	public $FilterHandler;
 
     /**
      * Do the thing
@@ -56,7 +62,8 @@ class Core
 			$this->PostTypeRegistry = new PostTypeRegistry();
 			$this->TaxonomyRegistry = new TaxonomyRegistry();
 			$this->Assets = new Assets();
-			$this->AjaxHandler = new AjaxHandler();
+			$this->AjaxHandler = new Ajax\AjaxHandler();
+			$this->FilterHandler = new Filter\FilterHandler();
 
             // Display admin notices
             add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
@@ -93,7 +100,7 @@ class Core
             return;
         }
 
-        if (($plugins = \Royl\WpThemeBase\Util\Configure::read('dependencies.plugins')) == false) {
+        if (($plugins = Util\Configure::read('dependencies.plugins')) == false) {
             return;
         }
 
@@ -146,11 +153,11 @@ class Core
     public function dependencies()
     {
         // check for required PHP libraries
-        if (\Royl\WpThemeBase\Util\Configure::read('dependencies.classes') !== false) {
-            foreach (\Royl\WpThemeBase\Util\Configure::read('dependencies.classes') as $class) {
+        if (Util\Configure::read('dependencies.classes') !== false) {
+            foreach (Util\Configure::read('dependencies.classes') as $class) {
                 if (!class_exists($class)) {
                     echo '<div class="error"><p>'
-                    . sprintf(\Royl\WpThemeBase\Util\Text::translate('Please make sure that %s is installed'), $class)
+                    . sprintf(Util\Text::translate('Please make sure that %s is installed'), $class)
                     . '</p></div>';
                 }
             }
@@ -223,7 +230,7 @@ class Core
             $output .= '<li>' . $error . '</li>';
         }
 
-        echo '<div class="error"><h4>' . \Royl\WpThemeBase\Util\Text::translate('Theme Errors & Warnings').'</h4><ul>';
+        echo '<div class="error"><h4>' . Util\Text::translate('Theme Errors & Warnings').'</h4><ul>';
         echo $output;
         echo '</ul></div>';
     }
@@ -241,7 +248,7 @@ class Core
      */
     public function registerThemeFeatures()
     {
-        $features = \Royl\WpThemeBase\Util\Configure::read('theme_features');
+        $features = Util\Configure::read('theme_features');
 
         if (empty($features)) {
             return;
@@ -263,7 +270,7 @@ class Core
      */
     public function registerImageSizes()
     {
-        $image_sizes = \Royl\WpThemeBase\Util\Configure::read('image_sizes');
+        $image_sizes = Util\Configure::read('image_sizes');
 
         if (empty($image_sizes)) {
             return;
@@ -286,7 +293,7 @@ class Core
      */
     public function registerNavMenus()
     {
-        $menus = \Royl\WpThemeBase\Util\Configure::read('menus');
+        $menus = Util\Configure::read('menus');
 
         if (empty($menus)) {
             return;
@@ -302,7 +309,7 @@ class Core
      */
     public function registerSidebars()
     {
-        $sidebars = \Royl\WpThemeBase\Util\Configure::read('sidebars');
+        $sidebars = Util\Configure::read('sidebars');
 
         if (empty($sidebars)) {
             return;

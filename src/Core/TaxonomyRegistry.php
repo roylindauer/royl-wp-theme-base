@@ -35,14 +35,14 @@ class TaxonomyRegistry
      */
     public function registerTaxonomies()
     {
-        $taxonomies = Configure::read('taxonomies');
+        $taxonomies = Util\Configure::read('taxonomies');
 
         if (empty($taxonomies)) {
             return;
         }
 
         foreach ($taxonomies as $name => $opts) {
-            $this->taxonomies[$name] = new TaxonomyType($name, $opts['params'], $opts['args']);
+            $this->taxonomies[$name] = new Wp\TaxonomyType($name, $opts['params'], $opts['args']);
         }
     }
 }

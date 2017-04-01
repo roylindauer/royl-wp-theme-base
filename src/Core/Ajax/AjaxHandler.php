@@ -1,6 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Core;
+namespace Royl\WpThemeBase\Core\Ajax;
 use Royl\WpThemeBase\Util;
 
 /**

@@ -32,7 +32,7 @@ class Assets
      */
     public function registerStylesheets()
     {
-        $stylesheets = Configure::read('assets.stylesheets');
+        $stylesheets = Util\Configure::read('assets.stylesheets');
 
         if (empty($stylesheets)) {
             return;
@@ -50,7 +50,7 @@ class Assets
      */
     public function enqueueStylesheets()
     {
-        $stylesheets = Configure::read('assets.stylesheets');
+        $stylesheets = Util\Configure::read('assets.stylesheets');
 
         if (empty($stylesheets)) {
             return;
@@ -68,7 +68,7 @@ class Assets
      */
     public function registerScripts()
     {
-        $scripts = Configure::read('assets.scripts');
+        $scripts = Util\Configure::read('assets.scripts');
 
         if (empty($scripts)) {
             return;
@@ -86,7 +86,7 @@ class Assets
      */
     public function enqueueScripts()
     {
-        $scripts = Configure::read('assets.scripts');
+        $scripts = Util\Configure::read('assets.scripts');
 
         if (empty($scripts)) {
             return;

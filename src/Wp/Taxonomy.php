@@ -17,6 +17,25 @@ namespace Royl\WpThemeBase\Wp;
  */
 class Taxonomy
 {
+	/**
+	 * Return list of taxonomy terms for $taxonomy
+	 * @param  string The taxonomy to use to build the list
+	 * @return array  array of terms [ slug => term ] 
+	 */
+	public static function list($taxonomy) {
+	    $terms = get_terms( [
+	        'taxonomy' => $taxonomy,
+	        'hide_empty' => true
+	    ]);
+    
+	    $ret = [];
+	    foreach ( $terms as $term ) {
+	        $ret[ $term->slug ] = $term->name;
+	    }
+    
+	    return $ret;	
+	}
+	
     /**
      * This safely checks if a taxonomy term exists and creates it if not.
      *
