@@ -22,7 +22,7 @@ class Taxonomy
 	 * @param  string The taxonomy to use to build the list
 	 * @return array  array of terms [ slug => term ] 
 	 */
-	public static function list($taxonomy) {
+	public static function getList($taxonomy) {
 	    $terms = get_terms( [
 	        'taxonomy' => $taxonomy,
 	        'hide_empty' => true
