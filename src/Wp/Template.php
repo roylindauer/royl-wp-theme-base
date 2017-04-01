@@ -26,7 +26,7 @@ class Template
      * @param  array  $data    [description]
      * @return [type]          [description]
      */
-    public static function renderPartial($partial, $data = array())
+    public static function renderPartial($partial, $data = array(), $absdir = false)
     {
         global $wp_query;
 
@@ -38,6 +38,11 @@ class Template
         $wp_query->query_vars = array_merge($wp_query->query_vars, $data);
 
         $file = $partial_dir . '/' . $partial . '.php';
-        locate_template($file, true, false);
+		
+		if ($absdir) {
+			load_template($absdir . '/' . $file, false);
+		} else {
+			locate_template($file, true, false);
+		}
     }
 }

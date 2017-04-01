@@ -96,26 +96,6 @@ class FilterHandler {
 	}
 
 	/**
-	 * Render Filter Bar
-	 * @return bool|void
-	 */	
-	public function getFilterFields($set) {
-	    $filters    = Util\Configure::read( 'filters' );
-	    $filterlist = Util\Configure::read( 'filter_template_map.' . $set );
-
-	    $filter_objects = [];
-	    foreach ( $filterlist as $_f ) {
-	        $filterclass = '\Royl\WpFilter\Core\Filter\\' . $filters[ $_f ][ 'filter_query' ][ 'type' ];
-	        $filter = new $filterclass( $filters[ $_f ] );
-	        $filter_objects[] = $filter;
-	    }
-
-	    do_action( 'royl_before_render_filter_bar' );
-	    Wp\Template::renderPartial( 'filter-bar', [ 'filters' => $filter_objects ] );
-	    do_action( 'royl_after_render_filter_bar' );
-	}
-
-	/**
 	 * Build and return a custom WP_Query object for Stakeholders
 	 * @return WP_Query
 	 */
@@ -125,7 +105,7 @@ class FilterHandler {
 	     * @type array
 	     * Defaults for our filter WP_Query object
 	     */
-	    $args = $this->$defaultQueryArgs;
+	    $args = $this->defaultQueryArgs;
 
 	    /*
 	     * With each Filter Object get its WP_Query args and merge into $args
@@ -155,7 +135,7 @@ class FilterHandler {
 	     */
 	    $args = apply_filters( 'royl_alter_filter_query_args', $args );
 
-	    Util\Debug::pr( $args );
+	    //Util\Debug::pr( $args );
 
 	    /*
 	     * Create new WP_Query object and return it
@@ -180,7 +160,7 @@ class FilterHandler {
 
 	    do_action( 'royl_before_render_filter_bar' );
 
-	    Wp\Template::renderPartial( 'filter-bar', [ 'filters' => $filter_objects ] );
+	    Wp\Template::renderPartial( 'filter-bar', [ 'filters' => $filter_objects ], __DIR__ );
 
 	    do_action( 'royl_after_render_filter_bar' );
 	}
