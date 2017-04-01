@@ -4,13 +4,63 @@ namespace Royl\WpThemeBase\Core\Filter;
 use \Royl\WpThemeBase\Util;
 use \Royl\WpThemeBase\Wp;
 
+/*
+Usage:
+
+// Setup Filters
+add_filter( 'royl_config_filters', 'royl_dmo_setup_filters' );
+function royl_dmo_setup_filters() {
+	return [
+        // Unique filter name. "filter_" is prepended to the name internally
+        'FILTER_NAME_HERE' => [
+            // The filter query determines the data that posts will be filtered by
+            // We can filter by taxonomies, metaboxes, and post data 
+            // modifier should be a Filter Modifier Class. 
+			// the example below is the taxonomy Modifier
+            'filter_query' => [
+                'modifier' => 'Taxonomy',
+                'taxonomy' => 'categories',
+                'post_types' => [ 'post' ],
+            ],
+            // the field to render. Type should be a Field Class
+            'field' => [
+                'type' => 'SelectField',
+                'multi' => false,
+                'options' => Wp\Taxonomy::list( 'stakeholder_type' ),
+                'name' => 'FILTER_NAME_HERE', // use for the name attr on the field
+                'label' => Util\Text::translate('Type'),
+            ]
+        ],
+	];
+}
+
+// Setup up filter sets. This is how you group the defined filters together into unique filter forms.
+add_filter( 'royl_map_filters', 'royl_dmo_map_filters' );
+function royl_dmo_map_filters() {
+	return [
+        'taxonomy-stakeholder_ammenities'      => [ 'type', 'neighborhoods', 'keyword' ],
+        'taxonomy-stakeholder_type'            => [ 'ammenities', 'neighborhoods', 'keyword' ],
+        #'taxonomy-stakeholder_type-activities' => [ 'neighborhoods', 'type', 'ammenities', 'keyword' ],
+        #'taxonomy-stakeholder_type-dining'     => [ 'neighborhoods', 'type', 'ammenities', 'budget', 'keyword' ],
+        #'taxonomy-stakeholder_type-lodging'    => [ 'neighborhoods', 'type', 'ammenities', 'budget', 'keyword' ],
+        #'taxonomy-stakeholder_type-shopping'   => [ 'neighborhoods', 'type', 'ammenities', 'keyword' ],
+    ];
+}
+
+// You can modify the query object even further with the `royl_alter_filter_query_args` action
+add_filter( 'royl_alter_filter_query_args', 'royl_dmo_filter_query_args' );
+function royl_dmo_filter_query_args( $args ) {
+	$args['post_type'] = ['stakeholder']; // define which posts types to include in wp_query
+    $args['posts_per_page'] = '10'; // overwrite default of 50 per page
+	return $args;
+}
+*/
+
+/**
+ * 
+ */
 class FilterHandler {
-	
-	/**
-	 * Collection of Filters
-	 */
-	public $filters = array();
-	
+
 	/**
 	 * 
 	 */
@@ -75,7 +125,7 @@ class FilterHandler {
 	     * @type array
 	     * Defaults for our filter WP_Query object
 	     */
-	    $args = $this->defaultQueryArgs;
+	    $args = $this->$defaultQueryArgs;
 
 	    /*
 	     * With each Filter Object get its WP_Query args and merge into $args
