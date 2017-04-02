@@ -173,7 +173,7 @@ class FilterHandler {
 	    $args = apply_filters('royl_alter_filter_query_args', $args);
 
 	    // Create new WP_Query object and return it
-	    $query = new \WP_Query( $args );
+	    $query = new \WP_Query($args);
 	    return $query;
 	}
 	
@@ -187,8 +187,7 @@ class FilterHandler {
 	    $filter_objects = [];
 	    foreach ($filterlist as $_f) {
 	        $filterclass = '\Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'];
-	        $filter = new $filterclass($filters[$_f]);
-	        $filter_objects[] = $filter;
+	        $filter_objects[] = new $filterclass($filters[$_f]);
 	    }
 
 	    do_action('royl_before_render_filter_form');
