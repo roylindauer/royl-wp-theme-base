@@ -3,6 +3,7 @@
         <?php foreach ($filters as $filter): ?>
         <?php $filter->render(); ?>
         <?php endforeach; ?>
+        <p>Include Order, Num Page, etc... here</p>
         <input type="submit" name="submit" value="Filter">
     </form>
 </div>

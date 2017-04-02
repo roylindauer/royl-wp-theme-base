@@ -1,8 +1,8 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter\Modifiers;
+namespace Royl\WpThemeBase\Core\Filter;
 
-class Taxonomy extends \Royl\WpThemeBase\Core\Filter\Modifiers\Base {
+class TaxonomyFilter extends \Royl\WpThemeBase\Core\Filter\BaseFilter {
     
     public function doFilter() {
         $args = [];

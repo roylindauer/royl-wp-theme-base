@@ -14,6 +14,7 @@ if (function_exists('wp_get_theme')) {
 
 /**
  * Bootstrap the theme
+ *
  * @param  array $config array of theme config options
  * @return void
  */
@@ -29,7 +30,9 @@ function royl_wp_theme_base($config = array()) {
 }
 
 /**
- * 
+ * Returns the WpThemeBase Core object from the object registry
+ *
+ * @return \Royl\WpThemeBase\Core\Core [<description>]
  */
 function royl_core() {
     $reg = \Royl\WpThemeBase\Core\Registry::getInstance();

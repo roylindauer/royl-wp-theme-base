@@ -1,12 +1,18 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter\Modifiers;
+namespace Royl\WpThemeBase\Core\Filter;
 
-class Base {
+class BaseFilter {
     
     public $field_type = '';
     public $field_params = array();
     
+    /**
+     * Field Object
+     * @var Royl\WpThemeBase\Core\Filter\Fields
+     */
+    public $Field;
+
     public function __construct( $params = array() ) {
         
         $this->field_type = $params['field']['type'];
@@ -24,12 +30,13 @@ class Base {
         if ( $this->hasValue() ) {
             $this->field_params['value'] = sanitize_text_field( $_GET[ $this->field_params['name'] ] );
         }
+
+        $fieldclass = '\Royl\WpThemeBase\Core\Filter\Fields\\' . $this->field_type;
+        $this->Field = new $fieldclass($this->field_params);
     }
     
     public function render(){
-        $fieldclass = '\Royl\WpThemeBase\Core\Filter\Fields\\' . $this->field_type;
-        $field = new $fieldclass( $this->field_params );
-        $field->render();
+        $this->Field->render();
     }
 
     public function hasValue() {
