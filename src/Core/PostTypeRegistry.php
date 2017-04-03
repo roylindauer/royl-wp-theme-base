@@ -42,7 +42,7 @@ class PostTypeRegistry
         }
 
         foreach ($post_types as $post_type => $params) {
-            $this->$post_types[$post_type] = new Wp\PostType($post_type, $params);
+            $this->post_types[$post_type] = new Wp\PostType($post_type, $params);
         }
     }
 }
