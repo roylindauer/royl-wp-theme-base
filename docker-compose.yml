@@ -1,0 +1,15 @@
+wordpress:
+  image: wordpress:4.6-apache
+  volumes:
+    - .:/var/www/html/wp-content/plugins/royl-wp-theme-base
+  links:
+    - mysql:mysql
+  ports:
+    - 8080:80
+  environment:
+    WORDPRESS_DB_PASSWORD: example
+
+mysql:
+  image: mariadb
+  environment:
+    MYSQL_ROOT_PASSWORD: example
