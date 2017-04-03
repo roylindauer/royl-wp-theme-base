@@ -12,8 +12,9 @@ branches:
     - master
 
 php:
-  - 5.3
-  - 5.6
+  - "7.0"
+  - "5.6"
+  - "5.5"
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
@@ -24,6 +25,7 @@ matrix:
       env: WP_VERSION=latest WP_MULTISITE=1
 
 before_script:
+  - composer install
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
@@ -37,5 +39,6 @@ before_script:
     phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
 
 script:
+  - find -L src -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
   - phpcs --standard=phpcs.ruleset.xml $(find . -name '*.php')
   - phpunit
