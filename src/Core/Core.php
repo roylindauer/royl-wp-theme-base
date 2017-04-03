@@ -64,6 +64,7 @@ class Core
 			$this->Assets = new Assets();
 			$this->AjaxHandler = new Ajax\AjaxHandler();
 			$this->FilterHandler = new Filter\FilterHandler();
+            $this->ContentSilo = new ContentSilo();
 
             // Display admin notices
             add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
