@@ -94,6 +94,7 @@ class AjaxHandler
             $AjaxResponse->execute($ajaxMethod);
 
         } catch (\Exception $e) {
+            Util\Debug::log( $e->getMessage() );
             wp_die($e->getMessage());
         }
  
