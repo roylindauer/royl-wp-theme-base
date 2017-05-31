@@ -15,6 +15,7 @@ wordpress:
     WODRPRESS_DB_USER: root
     WORDPRESS_DB_PASSWORD: ""
     WORDPRESS_SITE_TITLE: "ROYL WP Theme Base Development"
+    WORDPRESS_CONFIG_EXTRA: "define('WP_DEBUG', 1);"
     PHPUNIT_TEST_DIR: /var/www/html/wp-content/plugins/royl-wp-theme-base
     PHPUNIT_DB_HOST: mysql_phpunit
     PHPUNIT_DB_NAME: wordpress_phpunit

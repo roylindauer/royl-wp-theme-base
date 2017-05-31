@@ -55,4 +55,8 @@ class Debug
             echo '</div>';
         }
     }
+    
+    public static function log($message='') {
+        error_log($message, 4);
+    }
 }
