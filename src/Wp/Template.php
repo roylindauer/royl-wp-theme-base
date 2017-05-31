@@ -25,11 +25,12 @@ class Template
         try {
             global $wp_query;
 
+            // Allow users to change the default location of template partials
             $partial_dir = \Royl\WpThemeBase\Util\Configure::read('partial_dir');
             if (!$partial_dir) {
                 $partial_dir = 'partials';
             }
-        
+
             $filepath = trailingslashit( get_stylesheet_directory() ) . $partial_dir . '/' . $partial . '.php';
         
             if ( is_array( $data ) ) {
@@ -40,9 +41,9 @@ class Template
                 return include ( $filepath );
             }
         
-            throw new \Exception( __( sprintf( 'Template partial not found: %s', $partial ) ) );
+            throw new \Exception( __( sprintf( 'Template partial not found: %s', $filepath ) ) );
         } catch ( \Exception $e ) {
-            Util\Debug::log( $e->getMessage(), 0 );
+            Util\Debug::log( $e->getMessage() );
         }
     }
 }
