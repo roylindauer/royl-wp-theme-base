@@ -30,7 +30,7 @@ function royl_wp_theme_base($config = array()) {
 }
 
 /**
- * Returns the WpThemeBase Core object from the object registry
+ * Returns the WpThemeBase from the object registry
  *
  * @return \Royl\WpThemeBase\Core\Core [<description>]
  */

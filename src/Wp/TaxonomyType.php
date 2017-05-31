@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Wp;
+use \Royl\WpThemeBase\Util;
 
 /**
  * WordPress Taxonomy Base Class
@@ -96,10 +97,13 @@ class TaxonomyType
         $taxname = strtolower($this->name);
 
         // Do not re-register built in tax types..
-        if (!in_array($taxname, array('category', 'tag'))) {
-            register_taxonomy($taxname, $params['post_types'], $this->args);
+        if (in_array($taxname, array('category', 'tag'))) {
+            Util\Debug::addThemeError(sprintf('Taxonomy name "%s" is reserved', $taxname));
+            return;
         }
-
+        
+        register_taxonomy($taxname, $params['post_types'], $this->args);
+        
         /*
         https://codex.wordpress.org/Function_Reference/register_taxonomy
         Better be safe than sorry when registering custom taxonomies for custom post types. 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Ajax;
+namespace Royl\WpThemeBase\Core;
 use Royl\WpThemeBase\Util;
 
 /**
@@ -37,7 +37,7 @@ use Royl\WpThemeBase\Util;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class AjaxHandler
+class Ajax
 {
     private $ajaxClassNamespace = 'Royl\\WpThemeBase\\Ajax';
 

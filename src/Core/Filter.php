@@ -1,6 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter;
+namespace Royl\WpThemeBase\Core;
 use \Royl\WpThemeBase\Util;
 use \Royl\WpThemeBase\Wp;
 
@@ -67,21 +67,18 @@ function after_render_filter_bar() {
     echo '<p>This is after!</p>';
 }
 
+// Render the form:
+\Royl\WpThemeBase\Util\Filter::renderFilterForm( $set );
+
+// Get query object:
+$query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( $set );
+
 */
 
 /**
  * 
  */
-class FilterHandler {
-
-	/**
-	 * 
-	 */
-	private $defaultQueryArgs = [
-        'posts_per_page' => 50,
-        'ignore_sticky_posts' => false,
-        'post_type' => [],
-	];
+class Filter {
 	
 	/**
 	 * 
@@ -119,79 +116,4 @@ class FilterHandler {
             $this->defaultQueryArgs = array_merge($this->defaultQueryArgs, $defs);
         }
     }
-
-    /**
-     * Returns array of defined filters in theme config
-     * @return array|false
-     */
-    private function getDefinedFilters() {
-        return Util\Configure::read('filters.filters');
-    }
-
-    /**
-     * Returns array of filter template mappings
-     * @return array|false
-     */
-    private function getFilterTemplateMap($set) {
-        return Util\Configure::read('filters.filter_template_map.' . $set);
-    }
-
-	/**
-	 * Build and return a custom WP_Query object for Stakeholders
-	 * @return WP_Query
-	 */
-	public function getFilterQuery($set) {
-    
-	    /**
-	     * @type array
-	     * Defaults for our filter WP_Query object
-	     */
-	    $args = $this->defaultQueryArgs;
-
-	    // With each Filter Object get its WP_Query args and merge into $args
-	    $filters    = $this->getDefinedFilters();
-	    $filterlist = $this->getFilterTemplateMap($set);
-
-	    foreach ($filterlist as $_f) {
-	        if (!isset( $filters[$_f])) {
-	            continue;
-	        }
-
-	        // Process Filter Query
-	        $filterclass = '\Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'];
-	        $filter = new $filterclass( $filters[$_f] );
-	        $args = array_merge($args, $filter->doFilter());
-
-	        // Post Types
-	        $args['post_type'] = array_merge($args['post_type'], $filters[$_f]['filter_query']['post_types']);
-	    }
-
-	    // Clean up Post Types
-	    $args['post_type'] = array_unique($args['post_type']);
-    
-	    // last chance to modify filter args before WP_Query object is created
-	    $args = apply_filters('royl_alter_filter_query_args', $args);
-
-	    // Create new WP_Query object and return it
-	    $query = new \WP_Query($args);
-	    return $query;
-	}
-	
-	/**
-	 * Render Filter Bar
-	 */
-	public function renderFilterForm($set, $partial='filter-bar') {
-        $filters    = $this->getDefinedFilters();
-        $filterlist = $this->getFilterTemplateMap($set);
-
-	    $filter_objects = [];
-	    foreach ($filterlist as $_f) {
-	        $filterclass = '\Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'];
-	        $filter_objects[] = new $filterclass($filters[$_f]);
-	    }
-
-	    do_action('royl_before_render_filter_form');
-	    Wp\Template::renderPartial( $partial, ['filters' => $filter_objects], __DIR__);
-	    do_action('royl_after_render_filter_form');
-	}
 }

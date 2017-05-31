@@ -25,31 +25,6 @@ use Royl\WpThemeBase\Util;
  */
 class Core
 {
-	/**
-	 * @var Royl\WpThemeBase\Core\PostTypeRegistry
-	 */
-	public $PostTypeRegistry;
-
-	/**
-	 * @var Royl\WpThemeBase\Core\TaxonomyRegistry
-	 */
-	public $TaxonomyRegistry;
-
-	/**
-	 * @var Royl\WpThemeBase\Core\Assets
-	 */
-	public $Assets;
-	
-	/**
-	 * @var Royl\WpThemeBase\Core\AjaxHandler
-	 */
-	public $AjaxHandler;
-	
-	/**
-	 * @var Royl\WpThemeBase\Core\FilterHandler
-	 */
-	public $FilterHandler;
-
     /**
      * Do the thing
      *
@@ -58,19 +33,16 @@ class Core
     public function __construct()
     {
         if (function_exists('add_action')) {
-			
-			$this->PostTypeRegistry = new PostTypeRegistry();
-			$this->TaxonomyRegistry = new TaxonomyRegistry();
-			$this->Assets = new Assets();
-			$this->AjaxHandler = new Ajax\AjaxHandler();
-			$this->FilterHandler = new Filter\FilterHandler();
-            $this->ContentSilo = new ContentSilo();
+
+			new Assets();
+			new Ajax();
+			new Filter();
+			new PostTypeRegistry();
+			new TaxonomyRegistry();
+            new ContentSilo();
 
             // Display admin notices
             add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
-
-            // Check for PHP library dependencies
-            add_action('admin_notices', array(&$this, 'dependencies'));
 
             // Require plugins
             add_action('tgmpa_register', array(&$this, 'registerRequiredPlugins'));
@@ -83,12 +55,6 @@ class Core
 			
         }
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    // Dependency Checks
-    //
-    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Register Required Plugins
@@ -146,68 +112,6 @@ class Core
     }
 
     /**
-     * Handle theme dependencies
-     *
-     * @return void
-     * @todo  deprecate this in favor of using composer dependencies
-     */
-    public function dependencies()
-    {
-        // check for required PHP libraries
-        if (Util\Configure::read('dependencies.classes') !== false) {
-            foreach (Util\Configure::read('dependencies.classes') as $class) {
-                if (!class_exists($class)) {
-                    echo '<div class="error"><p>'
-                    . sprintf(Util\Text::translate('Please make sure that %s is installed'), $class)
-                    . '</p></div>';
-                }
-            }
-        }
-    }
-	
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    // Error Handling
-    //
-    ////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Adds theme specific messages to the global theme WP_Error object.
-     *
-     * Takes the theme name as $code for the WP_Error object.
-     * Merges old $data and new $data arrays @uses wp_parse_args().
-     *
-     * @param  (string)  $message
-     * @param  (mixed)   $data_key
-     * @param  (mixed)   $data_value
-     * @return WP_Error|Boolean
-     */
-    public function addThemeError($message, $data_key = '', $data_value = '')
-    {
-        global $wp_theme_error, $wp_theme_error_code;
-
-        if (!isset($wp_theme_error_code)) {
-            $theme_data = wp_get_theme();
-            $name = str_replace(' ', '', strtolower($theme_data['Name']));
-            $wp_theme_error_code = preg_replace("/[^a-zA-Z0-9\s]/", '', $name);
-        }
-
-        if (!is_wp_error($wp_theme_error) || !$wp_theme_error) {
-            $data[$data_key] = $data_value;
-            $wp_theme_error = new \WP_Error($wp_theme_error_code, $message, $data);
-            return $wp_theme_error;
-        }
-
-        // merge old and new data
-        $old_data = $wp_theme_error->get_error_data($wp_theme_error_code);
-        $new_data[$data_key] = $data_value;
-        $data = wp_parse_args($new_data, $old_data);
-
-        return $wp_theme_error->add($wp_theme_error_code, $message, $data);
-    }
-
-
-    /**
      * Prints the error messages added to the global theme specific WP_Error object
      *
      * Only displays for users that have 'manage_options' capability,
@@ -235,12 +139,6 @@ class Core
         echo $output;
         echo '</ul></div>';
     }
-
-    ////////////////////////////////////////////////////////////////////////////
-    //
-    // Theme Support, Theme Features, Theme...
-    //
-    ////////////////////////////////////////////////////////////////////////////
 
     /**
      * Add theme features
@@ -280,7 +178,7 @@ class Core
         foreach ($image_sizes as $name => $opts) {
             // Check wp reserved names for image sizes
             if (in_array($name, array('thumb', 'thumbnail'))) {
-                $this->addThemeError(sprintf('Image size identifier "%s" is reserved', $name));
+                Util\Debug::addThemeError(sprintf('Image size identifier "%s" is reserved', $name));
             } else {
                 add_image_size($name, @$opts['width'], @$opts['height'], @$opts['crop']);
             }

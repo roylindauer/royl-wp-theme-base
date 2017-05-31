@@ -59,4 +59,39 @@ class Debug
     public static function log($message='') {
         error_log($message, 4);
     }
+    
+    /**
+     * Adds theme specific messages to the global theme WP_Error object.
+     *
+     * Takes the theme name as $code for the WP_Error object.
+     * Merges old $data and new $data arrays @uses wp_parse_args().
+     *
+     * @param  (string)  $message
+     * @param  (mixed)   $data_key
+     * @param  (mixed)   $data_value
+     * @return WP_Error|Boolean
+     */
+    public static function addThemeError($message, $data_key = '', $data_value = '')
+    {
+        global $wp_theme_error, $wp_theme_error_code;
+
+        if (!isset($wp_theme_error_code)) {
+            $theme_data = wp_get_theme();
+            $name = str_replace(' ', '', strtolower($theme_data['Name']));
+            $wp_theme_error_code = preg_replace("/[^a-zA-Z0-9\s]/", '', $name);
+        }
+
+        if (!is_wp_error($wp_theme_error) || !$wp_theme_error) {
+            $data[$data_key] = $data_value;
+            $wp_theme_error = new \WP_Error($wp_theme_error_code, $message, $data);
+            return $wp_theme_error;
+        }
+
+        // merge old and new data
+        $old_data = $wp_theme_error->get_error_data($wp_theme_error_code);
+        $new_data[$data_key] = $data_value;
+        $data = wp_parse_args($new_data, $old_data);
+
+        return $wp_theme_error->add($wp_theme_error_code, $message, $data);
+    }
 }

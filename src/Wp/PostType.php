@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Wp;
+use \Royl\WpThemeBase\Util;
 
 /**
  * WordPress Post Type base class
@@ -76,7 +77,8 @@ class PostType
         $this->id   = strtolower($this->name);
 
         if (in_array($this->id, array('post', 'page', 'attachment', 'revision', 'nav_menu_item'))) {
-            wp_die(sprintf('That post type is reserved - %s'), $this->id);
+            Util\Debug::addThemeError(sprintf('Post type "%s" is reserved', $this->id));
+            return;
         }
 
         if (isset($params['supports'])) {

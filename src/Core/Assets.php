@@ -18,18 +18,25 @@ class Assets
 	 * 
 	 */
 	public function __construct() {
-        add_action('wp_enqueue_scripts', array(&$this, 'stylesheets'));
-        add_action('wp_enqueue_scripts', array(&$this, 'scripts'));
+        add_action('wp_enqueue_scripts', array(&$this, 'stylesheets'), 'frontend');
+        add_action('wp_enqueue_scripts', array(&$this, 'scripts'), 'frontend');
+        
+        add_action('admin_enqueue_scripts', array(&$this, 'stylesheets'), 'admin');
+        add_action('admin_enqueue_scripts', array(&$this, 'scripts'), 'admin');
+        
+        add_action('login_enqueue_scripts', array(&$this, 'stylesheets'), 'login');
+        add_action('login_enqueue_scripts', array(&$this, 'scripts'), 'login');
 	}
 
     /**
      * Does the actual work of registered stylesheets. Must be called before enqueue.
      *
+     * @param  string  which set of assets to load (frontend, admin, login)
      * @return void
      */
-    public function stylesheets()
+    public function stylesheets($screen = 'frontend')
     {
-        $stylesheets = Util\Configure::read('assets.stylesheets');
+        $stylesheets = Util\Configure::read('assets.' . $screen . '.stylesheets');
 
         if (empty($stylesheets)) {
             return;
@@ -51,9 +58,9 @@ class Assets
      *
      * @return void
      */
-    public function scripts()
+    public function scripts($screen = 'frontend')
     {
-        $scripts = Util\Configure::read('assets.scripts');
+        $scripts = Util\Configure::read('assets.' . $screen . '.scripts');
 
         if (empty($scripts)) {
             return;

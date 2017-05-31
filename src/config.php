@@ -8,9 +8,24 @@
 // Set theme config
 $config = array(
 
-    // Misc.
+    // Post Filtering Defaults
+    /*
+    'filters => [
+        'defaults' => [
+            'posts_per_page' => 50,
+            'ignore_sticky_posts' => false,
+            'post_type' => [],
+    	]
+    ],
+    */
+    
+    // Custom Template Partials directory
     /*
     'partial_dir' => 'partials', // this directory is relative to your theme root
+    */
+
+    // Define a namespace for the ajax classes
+    /*
     'ajax' => array(
         'namespace' => ''
     ),
@@ -140,9 +155,6 @@ $config = array(
                 'required'  => true,
             ),
         ),
-        'classes' => array(
-            'Imagick',
-        ),
     ),
     */
     
@@ -151,20 +163,22 @@ $config = array(
     // This bug should be patched in WordPress core 4.2.3
     /*
     'assets' => array(
-        'stylesheets' => array(
-            'style' => array(
-                'source' => get_stylesheet_directory_uri() . '/style.css',
-                'dependencies' => false,
-                'version' => \Royl\WpThemeBase\Util\Configure::read('version')
+        'frontend' => array(
+            'stylesheets' => array(
+                'style' => array(
+                    'source' => get_stylesheet_directory_uri() . '/style.css',
+                    'dependencies' => false,
+                    'version' => \Royl\WpThemeBase\Util\Configure::read('version')
+                ),
             ),
-        ),
-        'scripts' => array(
-            'main' => array(
-                'source' => get_stylesheet_directory_uri() . '/assets/js/main.js',
-                'dependencies' => false,
-                'version' => \Royl\WpThemeBase\Util\Configure::read('version'),
-                'in_footer' => true
-            ),
+            'scripts' => array(
+                'main' => array(
+                    'source' => get_stylesheet_directory_uri() . '/assets/js/main.js',
+                    'dependencies' => false,
+                    'version' => \Royl\WpThemeBase\Util\Configure::read('version'),
+                    'in_footer' => true
+                ),
+            )
         )
     )
     */
