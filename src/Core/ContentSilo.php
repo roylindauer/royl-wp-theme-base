@@ -15,6 +15,7 @@ use Royl\WpThemeBase\Wp;
  * It seems, for now, the best structure here is to use taxonomies and posts
  *
  * @todo allow user to define mutliple content silo taxonomies
+ * @todo render correct silo url when viewing list of posts
  * 
  * @package     WpThemeBase
  * @subpackage  Core
