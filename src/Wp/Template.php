@@ -44,13 +44,4 @@ class Template
             Util\Debug::log( $e->getMessage() );
         }
     }
-    
-    /**
-     * Get custom logo
-     */
-    public static function logo() {
-        if ( function_exists( 'the_custom_logo' ) ) {
-            the_custom_logo();
-        }
-    }
 }
