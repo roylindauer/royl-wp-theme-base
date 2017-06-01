@@ -61,10 +61,14 @@ final class Configure
      * @return mixed
      * @todo refactor, enhance to support dot notation (Configure::read('my.config.data'))
      */
-    public static function read($key)
+    public static function read($key=false)
     {
-        $key = explode('.', $key);
-        return self::getConfig($key, self::$config);
+        if ($key) {
+            $key = explode('.', $key);
+            return self::getConfig($key, self::$config);
+        }
+        
+        return self::$config;
     }
     
     /**
