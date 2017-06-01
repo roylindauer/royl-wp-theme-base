@@ -30,11 +30,18 @@ function royl_wp_theme_base($config = array()) {
 }
 
 /**
- * Returns the WpThemeBase from the object registry
+ * Get an object from the object registry
  *
- * @return \Royl\WpThemeBase\Core\Core [<description>]
+ * @return mixed
  */
-function royl_core() {
+function royl_instance($class) {
     $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
-	return $reg->get('WpThemeBase');
+	return $reg->get($class);
+}
+
+/**
+ *
+ */
+function royl_create_ajax_nonce() {
+	return wp_create_nonce( 'royl_execute_ajax_nonce' );
 }

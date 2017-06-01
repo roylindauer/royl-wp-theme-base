@@ -47,7 +47,6 @@ class Ajax
 	public function __construct() {
         add_action('wp_ajax_royl_ajax', array(&$this, 'execute'));
         add_action('wp_ajax_nopriv_royl_ajax', array(&$this, 'execute'));
-        add_action('wp_enqueue_scripts', array(&$this, 'generateWPNonce'));
         $this->setClassNamespace();
 	}
     
@@ -100,20 +99,4 @@ class Ajax
  
         die();
 	}
-
-    /**
-     * Generates a nonce and make it available for use in main javascript file
-     */
-    public function generateWPNonce()
-    {
-        // Localize the script with new data
-        $translation_array = array(
-        	'wp_nonce' => wp_create_nonce( 'royl_execute_ajax_nonce' )
-        );
-
-        // The handle will need to be changed to a javascript file once the front end
-        // javascript file is in place. Use a placeholder now to pevent wp from erroring
-        wp_localize_script( 'wp_nonce_helper', 'wp_nonce', $translation_array );
-        wp_enqueue_script( 'wp_nonce_helper' );
-    }
 }

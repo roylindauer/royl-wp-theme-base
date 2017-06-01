@@ -18,12 +18,7 @@ class AjaxBase
     
     public function execute($method) {
         try{
-            if (!method_exists($AjaxResponse, $ajaxMethod)) {
-                throw new \Exception('Ajax method does not exist');
-            }
-        
             $this->$method();
-            
         } catch (\Exception $e) {
             throw $e;
         }
