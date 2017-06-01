@@ -48,5 +48,3 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 }
 
 require_once('src/wp_theme_base.php');
-
-include_once('test/test-theme-integration.php');
