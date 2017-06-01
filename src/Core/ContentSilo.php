@@ -70,8 +70,12 @@ class ContentSilo
         $post_id = $post->ID;
 
         $terms = wp_get_object_terms($post_id, $this->siloTaxonomy);
-        if (!is_wp_error($terms) && !empty($terms) && is_object($terms[0])) { 
-            $taxonomy_slug = $terms[0]->slug;
+        if (!is_wp_error($terms) && !empty($terms) && is_object($terms[0])) {
+            $taxonomy_slug = [];
+            foreach ($terms as $term) {
+                $taxonomy_slug[] = $term->slug;
+            }
+            $taxonomy_slug = implode( '/', $taxonomy_slug );
         } else { 
             $taxonomy_slug = $this->siloDefault; // default "content"
         }
