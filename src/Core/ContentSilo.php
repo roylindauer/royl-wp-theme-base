@@ -60,19 +60,20 @@ class ContentSilo
      * Setup Silo Permalink Structure
      * @return [type] [description]
      */
-    public function silo_permalinks($permalink) {
+    public function silo_permalinks($permalink, $post) {
+        
 
         if (strpos($permalink, $this->siloString) === FALSE) {
             return $permalink;
         }
-
-        global $post_id;
+        
+        $post_id = $post->ID;
 
         $terms = wp_get_object_terms($post_id, $this->siloTaxonomy);
         if (!is_wp_error($terms) && !empty($terms) && is_object($terms[0])) { 
             $taxonomy_slug = $terms[0]->slug;
         } else { 
-            $taxonomy_slug = $this->siloDefault; // default "silo"
+            $taxonomy_slug = $this->siloDefault; // default "content"
         }
 
         return str_replace($this->siloString, $taxonomy_slug, $permalink);
