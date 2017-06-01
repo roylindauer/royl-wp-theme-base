@@ -14,24 +14,22 @@ use Royl\WpThemeBase\Util;
 class Template
 {
     /**
-     * Renders a template partial.
+     * Load and render a template.
      *
-     * @param  string $partial name of the template partial to load
-     * @param  array  $data    array of data to make available to the template
-     * @return bool            return truthy value
+     * @param  string $template name of the template to load
+     * @param  array  $data     array of data to make available to the template
+     * @return bool             return truthy value
      */
-    public static function load($partial, $data = array())
+    public static function load($template, $data = array())
     {
         try {
-            global $wp_query;
-
             // Allow users to change the default location of template partials
-            $partial_dir = \Royl\WpThemeBase\Util\Configure::read('partial_dir');
-            if (!$partial_dir) {
-                $partial_dir = 'partials';
+            $tpl_dir = Util\Configure::read('templates_dir');
+            if (!$tpl_dir) {
+                $tpl_dir = 'templates';
             }
 
-            $filepath = trailingslashit( get_stylesheet_directory() ) . $partial_dir . '/' . $partial . '.php';
+            $filepath = trailingslashit( get_stylesheet_directory() ) . $tpl_dir . '/' . $template . '.php';
         
             if ( is_array( $data ) ) {
                 extract( $data );
@@ -41,7 +39,7 @@ class Template
                 return include ( $filepath );
             }
         
-            throw new \Exception( __( sprintf( 'Template partial not found: %s', $filepath ) ) );
+            throw new \Exception( __( sprintf( 'Template not found: %s', $filepath ) ) );
         } catch ( \Exception $e ) {
             Util\Debug::log( $e->getMessage() );
         }
