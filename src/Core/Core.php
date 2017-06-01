@@ -34,20 +34,20 @@ class Core
     {
         if (function_exists('add_action')) {
 
-			$Assets = new Assets();
-			$Ajax = new Ajax();
-			$Filter = new Filter();
-			$PostTypeRegistry = new PostTypeRegistry();
-			$TaxonomyRegistry = new TaxonomyRegistry();
+            $Assets = new Assets();
             $ContentSilo = new ContentSilo();
+            $Ajax = new Ajax();
+            $Filter = new Filter();
+            $PostTypeRegistry = new PostTypeRegistry();
+            $TaxonomyRegistry = new TaxonomyRegistry();
 
-		    $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
-		    $reg->set('Assets', $Assets);
-		    $reg->set('Ajax', $Ajax);
-		    $reg->set('Filter', $Filter);
-		    $reg->set('PostTypeRegistry', $PostTypeRegistry);
-		    $reg->set('TaxonomyRegistry', $TaxonomyRegistry);
-		    $reg->set('ContentSilo', $ContentSilo);
+            $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
+            $reg->set('Assets', $Assets);
+            $reg->set('Ajax', $Ajax);
+            $reg->set('Filter', $Filter);
+            $reg->set('PostTypeRegistry', $PostTypeRegistry);
+            $reg->set('TaxonomyRegistry', $TaxonomyRegistry);
+            $reg->set('ContentSilo', $ContentSilo);
 
             // Display admin notices
             add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
@@ -60,7 +60,7 @@ class Core
             add_action('after_setup_theme', array(&$this, 'registerImageSizes'));
             add_action('after_setup_theme', array(&$this, 'registerNavMenus'));
             add_action('after_setup_theme', array(&$this, 'registerSidebars'));
-			
+            
         }
     }
 
