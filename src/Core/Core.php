@@ -37,6 +37,7 @@ class Core
             $Assets = new Assets();
             $Ajax = new Ajax();
             $Filter = new Filter();
+            $ContentSilo = new ContentSilo();
             $PostTypeRegistry = new PostTypeRegistry();
             $TaxonomyRegistry = new TaxonomyRegistry();
 
@@ -46,6 +47,7 @@ class Core
             $reg->set('Filter', $Filter);
             $reg->set('PostTypeRegistry', $PostTypeRegistry);
             $reg->set('TaxonomyRegistry', $TaxonomyRegistry);
+            $reg->set('ContentSilo', $ContentSilo);
 
             // Display admin notices
             add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
