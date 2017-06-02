@@ -15,6 +15,7 @@ use Royl\WpThemeBase\Wp;
  * @subpackage  Core
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
+ * @todo - add permalink filters
  */
 class ContentSilo
 {
@@ -64,6 +65,7 @@ class ContentSilo
     
     public function parseQuery($query) {
         return $query;
+        // @todo check for not siloing, if not, check routes table, if match 301, if not let pass through. 
     }
     
     public function addMetaBox() {
