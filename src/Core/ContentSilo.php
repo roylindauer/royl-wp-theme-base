@@ -14,7 +14,6 @@ use Royl\WpThemeBase\Wp;
  * @subpackage  Core
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
- * @todo - add permalink filters
  */
 class ContentSilo
 {
