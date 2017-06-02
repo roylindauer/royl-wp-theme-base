@@ -128,7 +128,6 @@ class ContentSilo
      * @return null|array
      */
     public function parseRequest(\WP $wp) {
-        global $wp_rewrite, $wp_query;
         $result = $this->getPostByURL($wp->request);
         
         if ($result !== null) {
