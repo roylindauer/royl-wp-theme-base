@@ -7,15 +7,9 @@ use Royl\WpThemeBase\Wp;
 /**
  * Content Siloing
  *
- * Interesting plugins we should consider using to help support this:
- *     - https://wordpress.org/plugins/no-category-base-wpml/
- *     - https://wordpress.org/plugins/wp-category-permalink/
- *
- * hierarchical pages are inneficient and should be avoided. 
- * It seems, for now, the best structure here is to use taxonomies and posts
- *
- * @todo allow user to define mutliple content silo taxonomies
- * @todo render correct silo url when viewing list of posts
+ * Allow content creators to define a custom url for a post.
+ * Custom url is stored in a routes table
+ * We hook into WordPress early to look up the route in the table, and to set the appropriate values in the global wp_query object 
  * 
  * @package     WpThemeBase
  * @subpackage  Core
@@ -24,70 +18,101 @@ use Royl\WpThemeBase\Wp;
  */
 class ContentSilo
 {
-    public $siloString   = '%silo%';
-    public $siloTaxonomy = 'silos';
-    public $siloDefault  = 'content';
-
-    /**
-     * 
-     */
+    public $tableName = 'siloroutes';
+    
     public function __construct() {
-        // Setup Silo Taxonomy
-        Util\Configure::write('taxonomies.' . $this->siloTaxonomy, array(
-            'params' => array(
-                'post_types' => array('post')
-            ),
-            'args' => array(
-                'description' => Util\Text::translate('Content Silos'),
-                'hierarchical' => true,
-                'show_in_rest' => true,
-                'rewrite' => true,
-                'query_var' => $this->siloTaxonomy,
-                'public' => true,
-                'show_ui' => true,
-                'show_in_nav_menus' => true,
-            )
-        ));
-        // Add silo to rewrite tag
-        // This is required for WordPress to know what to do with our custom permalink
-        add_action('init', array(&$this, 'silo_rewrite_tag'), 10, 0);
-        // Setup Content Siloing Permalink Structure
-        add_filter('post_link', array(&$this, 'silo_permalinks'), 10, 3);
-        add_filter('post_type_link', array(&$this, 'silo_permalinks'), 10, 3);
-    }
-
-    /**
-     * Setup Silo Permalink Structure
-     * @return [type] [description]
-     */
-    public function silo_permalinks($permalink, $post) {
         
-
-        if (strpos($permalink, $this->siloString) === FALSE) {
-            return $permalink;
+        add_action('add_meta_boxes', array(&$this, 'addMetaBox'));
+        add_action('save_post', array(&$this, 'saveCustomMetabox'), 10, 3);
+        add_action('parse_request', array(&$this, 'parseRequest'), PHP_INT_MAX - 1, 1);
+        
+        add_filter('query_vars', array(&$this, 'queryVars'));
+        
+        $this->init();
+    }
+    
+    public function queryVars($query_vars) {
+        $query_vars[] = 'is_siloing';
+        return $query_vars;
+    }
+    
+    public function parseRequest(\WP $wp) {
+        global $wpdb;
+        
+        $url = '/' . $wp->request;
+        $sql = $wpdb->prepare('SELECT * FROM ' . $wpdb->prefix . $this->tableName . ' WHERE url = "%s"', $url);
+        $result = $wpdb->get_row($sql, ARRAY_A);
+        
+		$wp->query_vars['p']    = $result['post_id'];
+		#$wp->query_vars['page'] = $result['page'];
+    }
+    
+    public function addMetaBox() {
+        add_meta_box('silo-route-id', Util\Text::translate('Content Siloing'), array(&$this, 'renderField'), 'post', 'normal');
+    }
+    
+    public function renderField($post) {
+        wp_nonce_field(basename(__FILE__), 'silo-customurl-nonce');
+        
+        global $wpdb;
+        
+        $metabox_custom_url_path = '';
+        $result = $wpdb->get_row('SELECT * FROM ' . $wpdb->prefix . $this->tableName . ' WHERE post_id = ' . $post->ID, ARRAY_A);
+        if ($result !== null) {
+            $metabox_custom_url_path = $result['url'];
+        }
+        ?>
+        <div>
+            <label for="custom-url-path"><?php echo Util\Text::translate('Custom URL Path') ?></label>
+            <input name="custom-url-path" type="text" value="<?php echo $metabox_custom_url_path; ?>">
+            <p><small><?php echo Util\Text::translate('eg: /my-content-silo/secondary-silo/name-of-the-post') ?></small></p>
+        </div>
+        <?php
+    }
+    
+    public function saveCustomMetabox($post_id, $post, $update) {
+        if (!isset($_POST['silo-customurl-nonce']) || !wp_verify_nonce($_POST['silo-customurl-nonce'], basename(__FILE__))) {
+            return $post_id;
         }
         
-        $post_id = $post->ID;
-
-        $terms = wp_get_object_terms($post_id, $this->siloTaxonomy);
-        if (!is_wp_error($terms) && !empty($terms) && is_object($terms[0])) {
-            $taxonomy_slug = [];
-            foreach ($terms as $term) {
-                $taxonomy_slug[] = $term->slug;
-            }
-            $taxonomy_slug = implode( '/', $taxonomy_slug );
-        } else { 
-            $taxonomy_slug = $this->siloDefault; // default "content"
+        if(!current_user_can("edit_post", $post_id)) {
+            return $post_id;
         }
-
-        return str_replace($this->siloString, $taxonomy_slug, $permalink);
+        
+        if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE) {
+            return $post_id;
+        }
+        
+        global $wpdb;
+        
+        $metabox_custom_url_path = '';
+        if (isset($_POST['custom-url-path'])) {
+            $metabox_custom_url_path = sanitize_text_field($_POST['custom-url-path']);
+        }
+        
+        $result = $wpdb->get_row('SELECT * FROM ' . $wpdb->prefix . $this->tableName . ' WHERE post_id = ' . $post_id, ARRAY_A);
+        if ($result === null) {
+            $wpdb->insert($wpdb->prefix . $this->tableName, array('url' => $metabox_custom_url_path, 'post_id' => $post_id), array('%s', '%d'));
+        } else {
+            $wpdb->update($wpdb->prefix . $this->tableName, array('url' => $metabox_custom_url_path, 'post_id' => $post_id), array('post_id' => $post_id), array('%s', '%d'));
+        }
+        
+        
     }
-
-    /**
-     * [silo_rewrite_tag description]
-     * @return [type] [description]
-     */
-    public function silo_rewrite_tag() {
-        add_rewrite_tag($this->siloString, '(.+)', sprintf('%s=', $this->siloTaxonomy));
+    
+    private function init() {
+        global $wpdb;
+        $table_name = $wpdb->prefix . $this->tableName;
+        
+        $charset_collate = $wpdb->get_charset_collate();
+        $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+                id mediumint(9) NOT NULL AUTO_INCREMENT,
+                url varchar(255) DEFAULT '' NOT NULL,
+                post_id mediumint(9) NOT NULL,
+                PRIMARY KEY  (id)
+            ) $charset_collate;";
+        
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta($sql);
     }
 }

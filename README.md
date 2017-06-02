@@ -1,6 +1,15 @@
 [![Build Status](https://travis-ci.org/roylindauer/royl-wp-theme-base.svg?branch=master)](https://travis-ci.org/roylindauer/royl-wp-theme-base)
 
-# How to include this theme framework in your custom WordPress theme:
+# How to include this theme framework in your WordPress theme:
+
+## Traditional
+
+* Create new theme
+* Add framework folder (called royl-wp-theme-base)
+* Create child theme
+* Start developing your theme!
+
+## Composer
 
 Create `composer.json` in your WordPress theme root. 
 
@@ -16,9 +25,7 @@ Create `composer.json` in your WordPress theme root.
     "require": {
         "royl/wp-theme-base": "master"
     }
-    "require-dev": {
-
-    }
+    "require-dev": {}
 }
 ```
 
@@ -35,11 +42,11 @@ $config = [ ... core config options here ... ];
 royl_wp_theme_base( $config );
 ```
 
-## Configuration
+# Configuration
 
 Refer to src/core.php for available configuration options. 
 
-## Purpose
+# Purpose
 
-To aid in the creation of WordPress themes. Rapid development of custom post types, taxonomies, and general WordPress config. 
+To aid in the creation of WordPress themes. Rapid development of custom post types, taxonomies, and general WordPress config. Provides architectural structure for your theme. 
 
