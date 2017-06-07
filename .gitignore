@@ -1,2 +1,6 @@
+node_modules
+.sass_cache
+*.log
+tmp/
 /vendor
 /themes/royl-wp-theme-base/vendor
