@@ -1,11 +1,8 @@
 <?php
-/**
- * The template for displaying the footer
- *
- * Contains the closing of the #content div and all content after
- */
+use Royl\WpThemeBase\Wp;
 ?>
-
-<?php wp_footer(); ?>
+    </main><!-- .site-content -->
+    <?php Wp\Template::load( 'footer/site--footer' ); ?>
+</div><!-- .site -->
 </body>
 </html>

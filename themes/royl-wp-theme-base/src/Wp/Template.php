@@ -13,6 +13,8 @@ use Royl\WpThemeBase\Util;
  */
 class Template
 {
+    public static $default_template_dir = 'templates';
+
     /**
      * Load and render a template.
      *
@@ -26,20 +28,21 @@ class Template
             // Allow users to change the default location of template partials
             $tpl_dir = Util\Configure::read('templates_dir');
             if (!$tpl_dir) {
-                $tpl_dir = 'templates';
+                $tpl_dir = self::$default_template_dir;
             }
 
-            $filepath = trailingslashit( get_stylesheet_directory() ) . $tpl_dir . '/' . $template . '.php';
-        
+            $filepath = $tpl_dir . DIRECTORY_SEPARATOR . $template . '.php';
+            $located = locate_template( $filepath, false );
+
+            if (!$located) {
+                throw new \Exception( __( sprintf( 'Template not found: %s', $filepath ) ) );
+            }
+
             if ( is_array( $data ) ) {
                 extract( $data );
             }
         
-            if ( file_exists( $filepath ) ) {
-                return include ( $filepath );
-            }
-        
-            throw new \Exception( __( sprintf( 'Template not found: %s', $filepath ) ) );
+            return include ( $located );
         } catch ( \Exception $e ) {
             Util\Debug::log( $e->getMessage() );
         }
