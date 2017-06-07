@@ -5,19 +5,11 @@ use Royl\WpThemeBase\Wp;
 add_action( 'wp_enqueue_scripts', 'royl_child_enqueue_styles' );
 function royl_child_enqueue_styles() {
     wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
-
-}
-
-add_action( 'init', 'royl_test_loading' );
-// Now we can execute source from the parent theme in this functions file. 
-function royl_test_loading() {
-    #$DMO = new \Royl\WpThemeBase\Util\Dmo();
-    #$DMO->say();
-    #\Royl\WpThemeBase\Util\Debug::debug('this is the child theme');
 }
 
 add_action('after_setup_theme', 'royl_init_theme', 10);
 function royl_init_theme() {
+    #return;
     royl_wp_theme_base([
         // Core WP Theme features
         'theme_features' => [
