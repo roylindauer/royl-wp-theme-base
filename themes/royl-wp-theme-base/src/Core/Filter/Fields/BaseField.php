@@ -34,14 +34,14 @@ class BaseField {
      * Render the field
      * @return [type] [description]
      */
-    public function render() {
+    public function doRender() {
         $this->processFieldClasses();
         
         echo '<div class="filter-wrapper">';
         if ( isset( $this->field_params['label'] ) ) {
             echo '<label class="filter-label" for="' . $this->field_params['id'] . '">' . Util\Text::translate( $this->field_params['label'] ) . '</label>';   
         }
-        Wp\Template::load( $this->partial, [ 'field' => $this->field_params ], __DIR__ . '/..' );
+        Wp\Template::load( 'filter/' . $this->partial, [ 'field' => $this->field_params ] );
         echo '</div>';
     }
 

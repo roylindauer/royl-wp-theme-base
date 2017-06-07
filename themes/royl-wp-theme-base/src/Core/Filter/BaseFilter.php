@@ -6,6 +6,7 @@ class BaseFilter {
     
     public $field_type = '';
     public $field_params = array();
+    public $prefix = 'filter_';
     
     /**
      * Field Object
@@ -13,7 +14,10 @@ class BaseFilter {
      */
     public $Field;
 
-    public function __construct( $params = array() ) {
+    /**
+     * Constructor
+     */
+    public function __construct( $params = [] ) {
         
         $this->field_type = $params['field']['type'];
 
@@ -23,30 +27,34 @@ class BaseFilter {
 
         $this->filter_query = $params['filter_query'];
 
-        // Prepend filter_ to field name to avoid clashes and to keep things "namespaced"
-        $this->field_params['name'] = 'filter_' . $this->field_params['name'];
+        // Prefix field name to avoid query var clashes
+        $this->field_params['name'] = $this->prefix . $this->field_params['name'];
 
-        // Set field value if the filter is available in $_GET
-        if ( $this->hasValue() ) {
-            $this->field_params['value'] = sanitize_text_field( $_GET[ $this->field_params['name'] ] );
-        }
+        // Set field value if the filter is available in query params
+        $this->field_params['value'] = $this->hasValue();
 
+        // Init the field class
         $fieldclass = '\Royl\WpThemeBase\Core\Filter\Fields\\' . $this->field_type;
         $this->Field = new $fieldclass($this->field_params);
     }
     
+    /**
+     * Render the field
+     */
     public function render(){
         $this->Field->render();
     }
 
+    /**
+     * Check if the field has a value in the query vars
+     */
     public function hasValue() {
-        if ( isset( $_GET[ $this->field_params['name'] ] ) && !empty( $_GET[ $this->field_params['name'] ] ) ) {
-            return true;
-        }
-        return false;
+        return get_query_var($this->field_params['name'], false);
     }
     
-    public function doFilter() {
-        return [];
-    }
+    /**
+     * This method should be overridden in your filter class
+     * It must return query args to pass to WP_Query
+     */
+    public function doFilter() { }
 }

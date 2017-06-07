@@ -9,7 +9,7 @@ function royl_child_enqueue_styles() {
 
 add_action('after_setup_theme', 'royl_init_theme', 10);
 function royl_init_theme() {
-    #return;
+    # @todo this is for testing. should be removed
     royl_wp_theme_base([
         // Core WP Theme features
         'theme_features' => [
@@ -21,104 +21,36 @@ function royl_init_theme() {
                 'flex-width' => true,
                 'header-text' => array( 'site-title', 'site-description' )
             ]
-        ],
-        // Post Types
-        'post_types' => [
-            'Stakeholder' => [
-                'supports' => [
-                    'title',
-                    'editor',
-                    'thumbnail',
-                    'revisions',
-                    'excerpt',
-                ],
-                'args' => [
-                    'description' => Util\Text::translate( 'Stakeholders' ),
-                    'public' => true,
-                    'exclude_from_search' => false,
-                    'show_ui' => true,
-                    'show_in_nav_menus' => true,
-                    'show_in_menu' => true,
-                    'query_var' => 'stakeholder',
-                    'rewrite' => true,
-                    'has_archive' => true,
-                    'hierarchical' => true,
-                ]
-            ]
-        ],
-        // Taxonomies
-        'taxonomies' => [
-            'stakeholder_type' => [
-                'params' => [
-                    'post_types' => [ 'stakeholder' ]
-                ],
-                'args' => [
-                    'description' => Util\Text::translate('Stakeholder Type'),
-                    'rewrite' => [ 'slug' => 'type' ],
-                    'hierarchical' => true,
-                    'show_in_rest' => true,
-                ]
-            ],
-            'stakeholder_neighborhoods' => [
-                'params' => [
-                    'post_types' => [ 'stakeholder' ]
-                ],
-                'args' => [
-                    'description' => Util\Text::translate('Stakeholder Neighborhoods/Districts'),
-                    'rewrite' => [ 'slug' => 'neighborhood' ],
-                    'hierarchical' => true,
-                    'show_in_rest' => true,
-                ]
-            ],
-            'stakeholder_ammenities' => [
-                'params' => [
-                    'post_types' => [ 'stakeholder' ]
-                ],
-                'args' => [
-                    'description' => Util\Text::translate('Stakeholder Ammenities (dog-friendly, 24hrs, etc.)'),
-                    'rewrite' => [ 'slug' => 'ammenities' ],
-                    'hierarchical' => false,
-                    'show_in_rest' => true,
-                ]
-            ],
-            'stakeholder_budget' => [
-                'params' => [
-                    'post_types' => [ 'stakeholder' ]
-                ],
-                'args' => [
-                    'description' => Util\Text::translate('Budgets'),
-                    'rewrite' => [ 'slug' => 'budget' ],
-                    'hierarchical' => false,
-                    'show_in_rest' => true,
-                    'show_in_nav_menus' => false,
-                    'show_tagcloud' => false,   
-                ]
-            ],
-        ],
-        // Stakeholder Types
-        'stakeholder_types' => [
-            'Activities',
-            'Lodging',
-            'Shopping',
-            'Dining'
-        ],
-        // Budgets
-        'stakeholder_budgets' => [
-            '$',
-            '$$',
-            '$$$',
-            '$$$$'
-        ],
-        // Stakeholder Metaboxes
-        'stakeholder_metaboxes' => [
-            'address',
-            'phone_number',
-            'fax_number',
-            'email_address',
-            'website_url',
-            'booking_url',
-            'lat',
-            'lng'
         ]
     ]);
 }
+
+
+add_filter( 'royl_config_filters', 'setup_filters' );
+function setup_filters() {
+    return [
+        'category' => [
+            'filter_query' => [
+                'type' => 'Taxonomy',
+                'taxonomy' => 'category',
+                'post_types' => [ 'post' ],
+            ],
+            'field' => [
+                'type' => 'SelectField',
+                'multi' => false,
+                'options' => Wp\Taxonomy::getList( 'category' ),
+                'name' => 'category', // use for the name attr on the field
+                'label' => Util\Text::translate('Post Category'),
+            ]
+        ],
+    ];
+}
+
+add_filter( 'royl_map_filters', 'map_filters' );
+function map_filters() {
+    return [
+        'post-category' => [ 'category' ],
+    ];
+}
+
+

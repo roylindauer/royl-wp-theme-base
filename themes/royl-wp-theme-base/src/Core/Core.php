@@ -34,20 +34,14 @@ class Core
     {
         if (function_exists('add_action')) {
 
-            $Assets = new Assets();
-            $Ajax = new Ajax();
-            $Filter = new Filter();
-            $ContentSilo = new ContentSilo();
-            $PostTypeRegistry = new PostTypeRegistry();
-            $TaxonomyRegistry = new TaxonomyRegistry();
-
             $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
-            $reg->set('Assets', $Assets);
-            $reg->set('Ajax', $Ajax);
-            $reg->set('Filter', $Filter);
-            $reg->set('PostTypeRegistry', $PostTypeRegistry);
-            $reg->set('TaxonomyRegistry', $TaxonomyRegistry);
-            $reg->set('ContentSilo', $ContentSilo);
+            
+            $reg->set('Assets', new Assets());
+            $reg->set('Ajax', new Ajax());
+            $reg->set('CoreFilter', new Filter());
+            $reg->set('PostTypeRegistry', new PostTypeRegistry());
+            $reg->set('TaxonomyRegistry', new TaxonomyRegistry());
+            $reg->set('ContentSilo', new ContentSilo());
 
             // Display admin notices
             add_action('admin_notices', array(&$this, 'printThemeErrors'), PHP_INT_MAX-1);

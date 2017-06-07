@@ -26,7 +26,7 @@ function setup_filters() {
             'field' => [
                 'type' => 'SelectField',
                 'multi' => false,
-                'options' => Wp\Taxonomy::list( 'stakeholder_type' ),
+                'options' => Wp\Taxonomy::getList( 'stakeholder_type' ),
                 'name' => 'FILTER_NAME_HERE', // use for the name attr on the field
                 'label' => Util\Text::translate('Type'),
             ]
@@ -80,13 +80,16 @@ $query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( $set );
  */
 class Filter {
 	
+    public $prefix = 'filter_';
+
 	/**
 	 * 
 	 */
 	public function __construct() {
-		add_action('init', array(&$this, 'configFilters'), 20);
-        add_action('init', array(&$this, 'configFilterTemplateMap'), 20);
-        add_action('init', array(&$this, 'setDefaults'), 20);
+		add_action('init', [&$this, 'configFilters'], 20);
+        add_action('init', [&$this, 'configFilterTemplateMap'], 20);
+        add_action('init', [&$this, 'setDefaults'], 20);
+        add_filter('query_vars', [&$this, 'queryVars']);
 	}
 	
 	/**
@@ -115,5 +118,16 @@ class Filter {
         if (!empty($defs)) {
             $this->defaultQueryArgs = array_merge($this->defaultQueryArgs, $defs);
         }
+    }
+
+    /**
+     * Add our filter query vars
+     */
+    public function queryVars($query_vars) {
+        $filters = Util\Configure::read('filters.filters');
+        foreach ($filters as $filter => $data) {
+            $query_vars[] = $this->prefix . $filter;
+        }
+        return $query_vars;
     }
 }

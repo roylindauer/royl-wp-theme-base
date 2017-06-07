@@ -20,17 +20,17 @@ class Filter
      * @param string  $partial  Optional, the custom template partial to use. 
 	 */
 	public static function renderFilterForm($set, $partial='filter-bar') {
-        $filters    = Util\Configure::read('filters.filters');
-        $filterlist = Util\Configure::read('filters.filter_template_map.' . $set);
+        $filters    = Configure::read('filters.filters');
+        $filterlist = Configure::read('filters.filter_template_map.' . $set);
 
 	    $filter_objects = [];
 	    foreach ($filterlist as $_f) {
-	        $filterclass = '\Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'];
+	        $filterclass = 'Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'] . 'Filter';
 	        $filter_objects[] = new $filterclass($filters[$_f]);
 	    }
 
 	    do_action('royl_before_render_filter_form');
-	    Wp\Template::load( $partial, ['filters' => $filter_objects], __DIR__);
+	    Wp\Template::load( 'filter/' . $partial, ['filters' => $filter_objects]);
 	    do_action('royl_after_render_filter_form');
 	}
 
@@ -41,11 +41,16 @@ class Filter
 	public static function getFilterQuery($set) {
     
         // Setup default query args
-        $args = Util\Configure::read('filters.defaults');
+        $args = Configure::read('filters.defaults');
+        if (!$args) {
+        	$args = [];
+        }
+
+        $args['post_type'] = [];
 
 	    // With each Filter Object get its WP_Query args and merge into $args
-	    $filters    = Util\Configure::read('filters.filters');
-	    $filterlist = Util\Configure::read('filters.filter_template_map.' . $set);
+	    $filters    = Configure::read('filters.filters');
+	    $filterlist = Configure::read('filters.filter_template_map.' . $set);
 
 	    foreach ($filterlist as $_f) {
 	        if (!isset( $filters[$_f])) {
@@ -53,7 +58,7 @@ class Filter
 	        }
 
 	        // Process Filter Query
-	        $filterclass = '\Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'];
+	        $filterclass = 'Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'] . 'Filter';
 	        $filter = new $filterclass( $filters[$_f] );
 	        $args = array_merge($args, $filter->doFilter());
 
@@ -62,7 +67,7 @@ class Filter
 	    }
 
 	    // Clean up Post Types
-	    $args['post_type'] = array_unique($args['post_type']);
+	    $args['post_type'] = array_filter(array_unique($args['post_type']));
     
 	    // last chance to modify filter args before WP_Query object is created
 	    $args = apply_filters('royl_alter_filter_query_args', $args);
