@@ -43,12 +43,12 @@ class Debug
 
         if (PHP_SAPI === 'cli') {
             echo str_repeat('-', 50) . "\n";
-            echo 'DEBUG: file: '.$file.' - line: '.$backtrace[0]['line'] . "\n\n";
+            echo 'DEBUG: file: ' . $file . ' - line: ' . $backtrace[0]['line'] . "\n\n";
             var_dump($var);
             echo str_repeat('-', 50) . "\n\n";
         } else {
             echo '<div class="__theme_debug">';
-            echo '<p>DEBUG: file: '.$file.' - line: '.$backtrace[0]['line'].'</p>';
+            echo '<p>DEBUG: file: ' . $file . ' - line: ' . $backtrace[0]['line'].'</p>';
             echo '<pre>';
             var_dump($var);
             echo '</pre>';

@@ -50,16 +50,16 @@ class Core
             $reg->set('ContentSilo', $ContentSilo);
 
             // Display admin notices
-            add_action('admin_notices', array(&$this, 'printThemeErrors'), 9999);
+            add_action('admin_notices', array(&$this, 'printThemeErrors'), PHP_INT_MAX-1);
 
             // Require plugins
             add_action('tgmpa_register', array(&$this, 'registerRequiredPlugins'));
 
             // Setup wp theme features
-            add_action('after_setup_theme', array(&$this, 'registerThemeFeatures'));
-            add_action('after_setup_theme', array(&$this, 'registerImageSizes'));
-            add_action('after_setup_theme', array(&$this, 'registerNavMenus'));
-            add_action('after_setup_theme', array(&$this, 'registerSidebars'));
+            add_action('after_setup_theme', array(&$this, 'registerThemeFeatures'), PHP_INT_MAX-1);
+            add_action('after_setup_theme', array(&$this, 'registerImageSizes'), PHP_INT_MAX-1);
+            add_action('after_setup_theme', array(&$this, 'registerNavMenus'), PHP_INT_MAX-1);
+            add_action('after_setup_theme', array(&$this, 'registerSidebars'), PHP_INT_MAX-1);
             
         }
     }
