@@ -47,6 +47,7 @@ class Filter
         }
 
         $args['post_type'] = [];
+        $_args[] = [];
 
 	    // With each Filter Object get its WP_Query args and merge into $args
 	    $filters    = Configure::read('filters.filters');
@@ -60,7 +61,7 @@ class Filter
 	        // Process Filter Query
 	        $filterclass = 'Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'] . 'Filter';
 	        $filter = new $filterclass( $filters[$_f] );
-	        $args = array_merge($args, $filter->doFilter());
+	        $args = array_merge_recursive($args, $filter->getFilter());
 
 	        // Post Types
 	        $args['post_type'] = array_merge($args['post_type'], $filters[$_f]['filter_query']['post_types']);

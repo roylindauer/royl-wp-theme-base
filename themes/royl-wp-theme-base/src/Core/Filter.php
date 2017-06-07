@@ -12,6 +12,8 @@ add_filter( 'royl_config_filters', 'setup_filters' );
 function setup_filters() {
 	return [
         // Unique filter name. "filter_" is prepended to the name internally
+
+        // TaxQuery
         'FILTER_NAME_HERE' => [
             // The filter query determines the data that posts will be filtered by
             // We can filter by taxonomies, metaboxes, and post data 
@@ -28,7 +30,28 @@ function setup_filters() {
                 'multi' => false,
                 'options' => Wp\Taxonomy::getList( 'stakeholder_type' ),
                 'name' => 'FILTER_NAME_HERE', // use for the name attr on the field
-                'label' => Util\Text::translate('Type'),
+                'label' => Util\Text::translate('Filter Label'),
+            ]
+        ],
+
+        // MetaQuery
+        'FILTER_NAME_HERE' => [
+            // The filter query determines the data that posts will be filtered by
+            // We can filter by taxonomies, metaboxes, and post data 
+            // type should be a Filter Class. 
+            // the example below is the taxonomy type
+            'filter_query' => [
+                'type' => 'Postmeta',
+                'key' => 'metafield',
+                'post_types' => [ 'post' ],
+            ],
+            // the field to render. Type should be a Field Class
+            'field' => [
+                'type' => 'SelectField',
+                'multi' => false,
+                'options' => ['get', 'the', 'values', 'somehow'],
+                'name' => 'FILTER_NAME_HERE', // use for the name attr on the field
+                'label' => Util\Text::translate('Filter Label'),
             ]
         ],
 	];

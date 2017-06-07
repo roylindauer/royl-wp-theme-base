@@ -4,16 +4,16 @@ namespace Royl\WpThemeBase\Core\Filter;
 
 class TaxonomyFilter extends \Royl\WpThemeBase\Core\Filter\BaseFilter {
     
-    public function doFilter() {
+    public function getFilter() {
         $args = [];
-        
-        if ( $this->hasValue() ) {
+
+        if ($this->field_params['value']) {
             $args = [
                 'tax_query' => [
                     [
                         'taxonomy' => $this->filter_query['taxonomy'],
                         'field' => 'slug',
-                        'terms' => $_GET[ $this->field_params['name'] ],
+                        'terms' => $this->field_params['value'],
                     ]
                 ]
             ];

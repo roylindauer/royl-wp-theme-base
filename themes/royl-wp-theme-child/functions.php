@@ -43,13 +43,27 @@ function setup_filters() {
                 'label' => Util\Text::translate('Post Category'),
             ]
         ],
+        'mycustomfield' => [
+            'filter_query' => [
+                'type' => 'Postmeta',
+                'key' => 'mycustomfield',
+                'compare' => 'LIKE',
+                'post_types' => [ 'post' ],
+            ],
+            'field' => [
+                'type' => 'TextField',
+                'multi' => false,
+                'name' => 'mycustomfield', // use for the name attr on the field
+                'label' => Util\Text::translate('Custom Fields'),
+            ]
+        ],
     ];
 }
 
 add_filter( 'royl_map_filters', 'map_filters' );
 function map_filters() {
     return [
-        'post-category' => [ 'category' ],
+        'post-category' => [ 'category', 'mycustomfield' ],
     ];
 }
 
