@@ -1,52 +1,45 @@
 [![Build Status](https://travis-ci.org/roylindauer/royl-wp-theme-base.svg?branch=master)](https://travis-ci.org/roylindauer/royl-wp-theme-base)
 
-# How to include this theme framework in your WordPress theme:
+# ROYL WP Theme Base
 
-## Traditional
+A WordPress rapid development theme framework. 
 
-* Create new theme
-* Add framework folder (called royl-wp-theme-base)
-* Create child theme
-* Start developing your theme!
+# Development
 
-## Composer
+To develop on this project you will need the following:
 
-Create `composer.json` in your WordPress theme root. 
+- Latest [Docker][1]
+- Latest [NodeJS][2]
+- Latest [Composer][3]
 
-```
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/roylindauer/royl-wp-theme-base.git"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {
-        "royl/wp-theme-base": "master"
-    }
-    "require-dev": {}
-}
-```
-
-Run `composer install`
-
-Include the composer autoloader in your functions.php
-
-`include_once ABSPATH . '/vendor/autoload.php';`
-
-Now you can bootstrap your theme:
+Install development dependencies:
 
 ```
-$config = [ ... core config options here ... ];
-royl_wp_theme_base( $config );
+npm install
+composer install
 ```
 
-# Configuration
+## Docker Development Environment 
 
-Refer to src/core.php for available configuration options. 
+This project uses chriszarate/wordpress:4.7.2 (https://hub.docker.com/r/chriszarate/wordpress/). It's a pretty great WordPress development docker setup. You will need to add a hosts record on your computer in order to view the site. 
 
-# Purpose
+```
+127.0.0.1 project.dev
+```
 
-To aid in the creation of WordPress themes. Rapid development of custom post types, taxonomies, and general WordPress config. Provides architectural structure for your theme. 
+You'll be able to view the site at http://project.dev. 
 
+The WordPress u/p is: project:project
+
+### Docker Commands
+
+Build the development environment for the first time by running `docker-compose up` from the project root. 
+
+After it is built you can simply call `docker-compose start` when you want to bring it back up.
+
+Stop the environment with `docker-compose stop` or `ctrl+c` if you are not running it in daemon mode.
+
+
+[1]:http://docker.com/
+[2]:https://nodejs.org/en/
+[3]:http://getcomposer.org/
