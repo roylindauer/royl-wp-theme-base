@@ -13,7 +13,7 @@ use Royl\WpThemeBase\Util;
  */
 class Template
 {
-    public static $default_template_dir = 'templates';
+    public static $default_template_dir = 'template-parts';
 
     /**
      * Load and render a template.
