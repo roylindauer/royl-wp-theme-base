@@ -31,7 +31,7 @@ class ContentSilo
         add_action('init', [&$this, 'addRewriteTags']);
         add_action('init', [&$this, 'addRewriteRules']);
 
-        add_action('admin_init', function (){
+        add_action('admin_init', function () {
             $this->init();
         });
 
@@ -92,7 +92,7 @@ class ContentSilo
 
     /**
      * Get all silo routes
-     * 
+     *
      * @return null|array
      */
     private function getRoutes()

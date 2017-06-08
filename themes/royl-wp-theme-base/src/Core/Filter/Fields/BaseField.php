@@ -27,7 +27,7 @@ class BaseField
      * [__construct description]
      * @param array $params [description]
      */
-    public function __construct( $params = [] )
+    public function __construct($params = [])
     {
         $this->field_params = array_merge( $this->field_params, $params );
         $this->field_params['id'] = $this->field_params['name'] . '_' . uniqid();
@@ -42,10 +42,10 @@ class BaseField
         $this->processFieldClasses();
         
         echo '<div class="filter-wrapper">';
-        if ( isset( $this->field_params['label'] ) ) {
+        if (isset($this->field_params['label'])) {
             echo '<label class="filter-label" for="' . $this->field_params['id'] . '">' . Util\Text::translate( $this->field_params['label'] ) . '</label>';   
         }
-        Wp\Template::load( 'filter/' . $this->partial, [ 'field' => $this->field_params ] );
+        Wp\Template::load('filter/' . $this->partial, [ 'field' => $this->field_params ]);
         echo '</div>';
     }
 
@@ -53,7 +53,7 @@ class BaseField
      * Set the partial to render
      * @param string $partial [description]
      */
-    public function setPartial( $partial = '' )
+    public function setPartial($partial = '')
     {
         $this->partial = $partial;
     }
@@ -62,7 +62,7 @@ class BaseField
      * Add CSS classes to field_params class array
      * @param string $class [description]
      */
-    public function addClass( $class = '' )
+    public function addClass($class = '')
     {
         $this->field_params['classes'][] = $class;
     }
@@ -73,6 +73,6 @@ class BaseField
      */
     private function processFieldClasses()
     {
-        $this->field_params['classes'] = join( ' ', $this->field_params['classes'] );
+        $this->field_params['classes'] = join(' ', $this->field_params['classes']);
     }
 }

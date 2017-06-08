@@ -51,8 +51,7 @@ class BaseFilter
      * This method should be overridden in your filter class
      * It must return query args to pass to WP_Query
      */
-    public function getFilter() 
+    public function getFilter()
     {
-        
     }
 }
