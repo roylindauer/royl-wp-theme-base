@@ -1,39 +1,23 @@
 <?php
 
-use Royl\WpThemeBase\Util;
+// Load the Autoloader
+require_once 'inc/autoload.php';
 
-require_once( 'src/autoload.php' );
-require_once( 'src/royl_wp_theme_base.php' );
+// Load core functions
+require_once 'inc/royl_wp_theme_base.php';
 
-/**
- * Render post meta data. if post type is "post" will render tags and categories
- */
-if ( !function_exists( 'royl_entry_footer' ) ) {
-    function royl_entry_footer() {
-        $separate_meta = Util\Text::translate( ', ' );
-        $categories_list = get_the_category_list( $separate_meta );
-        $tags_list = get_the_tag_list( '', $separate_meta );
-        if ( $categories_list || $tags_list || get_edit_post_link() ) {
-        ?>
-        <footer class="entry-footer">
-            <span class="entry-date"><?php echo Util\Text::translate( 'Posted on: ' ) ?><?php the_date( 'F j, Y' ); ?></span>
-            <?php if ( 'post' === get_post_type() ): ?>
-            <span class="entry-tags"><?php echo Util\Text::translate( 'Tags: ' ) ?><?php echo $tags_list; ?></span>
-            <span class="entry-categories"><?php echo Util\Text::translate( 'Categories: ' ) ?><?php echo $categories_list; ?></span>
-            <?php endif; ?>
-        </footer>
-        <?php
-        }
-    }
-}
+// Include template tags
+require_once 'inc/template-tags.php';
 
-/**
- * Render custom logo
- */
-if ( !function_exists( 'royl_custom_logo' ) ) {
-    function royl_custom_logo() {
-        if ( function_exists( 'the_custom_logo' ) ) {
-            the_custom_logo();
-        }
-    }
+// Setup default theme config
+include_once 'inc/config.php';
+\Royl\WpThemeBase\Util\Configure::set($config);
+
+// Set some theme specific configurations in the global Config
+if (function_exists('wp_get_theme')) {
+    $curtheme = wp_get_theme();
+    \Royl\WpThemeBase\Util\Configure::write('name', $curtheme->get('Name'));
+    \Royl\WpThemeBase\Util\Configure::write('domain', $curtheme->get('TextDomain'));
+    \Royl\WpThemeBase\Util\Configure::write('version', $curtheme->get('Version'));
+    unset($curtheme);
 }

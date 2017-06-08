@@ -1,18 +1,5 @@
 <?php
 
-// Include core config
-include_once __DIR__ . '/config.php';
-\Royl\WpThemeBase\Util\Configure::set($config);
-
-// Set base Theme Name and Version into Theme Config
-if (function_exists('wp_get_theme')) {
-    $curtheme = wp_get_theme();
-    \Royl\WpThemeBase\Util\Configure::write('name', $curtheme->get('Name'));
-    \Royl\WpThemeBase\Util\Configure::write('domain', $curtheme->get('TextDomain'));
-    \Royl\WpThemeBase\Util\Configure::write('version', $curtheme->get('Version'));
-    unset($curtheme);
-}
-
 /**
  * Bootstrap the theme
  *
@@ -42,10 +29,3 @@ function royl_instance($class)
     return $reg->get($class);
 }
 
-/**
- *
- */
-function royl_create_ajax_nonce()
-{
-    return wp_create_nonce( 'royl_execute_ajax_nonce' );
-}
