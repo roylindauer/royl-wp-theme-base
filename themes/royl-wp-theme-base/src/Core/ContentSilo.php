@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
 
@@ -9,7 +10,7 @@ use Royl\WpThemeBase\Wp;
  *
  * Allow content creators to define a custom url for a post.
  * Custom url is stored in a routes table
- * 
+ *
  * @package     WpThemeBase
  * @subpackage  Core
  * @author      Roy Lindauer <hello@roylindauer.com>
@@ -29,7 +30,7 @@ class ContentSilo
         add_action('init', [&$this, 'addRewriteTags']);
         add_action('init', [&$this, 'addRewriteRules']);
         
-        add_action('admin_init', function(){
+        add_action('admin_init', function (){
             $this->init();
         });
         
@@ -42,7 +43,8 @@ class ContentSilo
     /**
      * Create rewrite rules for every entry in the routes table
      */
-    public function addRewriteRules() {
+    public function addRewriteRules()
+    {
         $routes = $this->getRoutes();
         foreach ($routes as $route) {
             add_rewrite_rule('^' . $route['url'] . '$', 'index.php?is_siloing=true', 'top');
@@ -50,14 +52,16 @@ class ContentSilo
         #add_rewrite_rule($this->rewriteRule, 'index.php?is_siloing=true', 'top');
     }
     
-    public function addRewriteTags() {
+    public function addRewriteTags()
+    {
         add_rewrite_tag('is_siloing', '([^&]+)');
     }
     
     /**
      * Add siloing query vars
      */
-    public function queryVars($query_vars) {
+    public function queryVars($query_vars)
+    {
         $query_vars[] = 'is_siloing';
         return $query_vars;
     }
@@ -70,7 +74,8 @@ class ContentSilo
      * @param  bool         $leavename
      * @return string
      */
-    public function permalinks($link, $post, $leavename) {
+    public function permalinks($link, $post, $leavename)
+    {
 
         if (!is_object($post)) {
             $post = get_post($post);
@@ -90,7 +95,8 @@ class ContentSilo
      * 
      * @return null|array
      */
-    private function getRoutes() {
+    private function getRoutes()
+    {
         global $wpdb;
         return $wpdb->get_results('SELECT * FROM ' . $wpdb->prefix . $this->tableName, ARRAY_A);
     }
@@ -101,9 +107,13 @@ class ContentSilo
      * @param  int  $post_id
      * @return null|array
      */
-    private function getSiloRouteByID($post_id) {
+    private function getSiloRouteByID($post_id)
+    {
         global $wpdb;
-        return $wpdb->get_row('SELECT * FROM ' . $wpdb->prefix . $this->tableName . ' WHERE post_id = ' . $post_id, ARRAY_A);
+        return $wpdb->get_row(
+            'SELECT * 
+            FROM ' . $wpdb->prefix . $this->tableName . ' 
+            WHERE post_id = ' . $post_id, ARRAY_A);
     }
     
     /**
@@ -112,7 +122,8 @@ class ContentSilo
      * @param  string  $url
      * @return null|array
      */
-    private function getPostByURL($url) {
+    private function getPostByURL($url)
+    {
         global $wpdb;
         $sql = $wpdb->prepare('SELECT * FROM ' . $wpdb->prefix . $this->tableName . ' WHERE url = "%s"', $url);
         $result = $wpdb->get_row($sql, ARRAY_A);
@@ -127,7 +138,8 @@ class ContentSilo
      * @param  WP  $wp
      * @return null|array
      */
-    public function parseRequest(\WP $wp) {
+    public function parseRequest(\WP $wp)
+    {
         $result = $this->getPostByURL($wp->request);
         
         if ($result !== null) {
@@ -151,20 +163,30 @@ class ContentSilo
     /**
      * Add custom meta box to post and pages
      */
-    public function addMetaBox() {
-        add_meta_box('silo-route-id', Util\Text::translate('Content Siloing'), [&$this, 'renderField'], ['post', 'page'], 'normal');
+    public function addMetaBox()
+    {
+        add_meta_box(
+            'silo-route-id',
+            Util\Text::translate('Content Siloing'),
+            [&$this, 'renderField'], ['post', 'page'],
+            'normal'
+        );
     }
     
     /**
      * Render custom meta box field
      */
-    public function renderField($post) {
+    public function renderField($post)
+    {
         wp_nonce_field(basename(__FILE__), 'silo-customurl-nonce');
         
         global $wpdb;
         
         $metabox_custom_url_path = '';
-        $result = $wpdb->get_row('SELECT * FROM ' . $wpdb->prefix . $this->tableName . ' WHERE post_id = ' . $post->ID, ARRAY_A);
+        $result = $wpdb->get_row(
+            'SELECT * 
+            FROM ' . $wpdb->prefix . $this->tableName . ' 
+            WHERE post_id = ' . $post->ID, ARRAY_A);
         if ($result !== null) {
             $metabox_custom_url_path = $result['url'];
         }
@@ -180,7 +202,8 @@ class ContentSilo
     /**
      * Save meta box data
      */
-    public function saveCustomMetabox($post_id, $post, $update) {
+    public function saveCustomMetabox($post_id, $post, $update)
+    {
         if (!isset($_POST['silo-customurl-nonce']) || !wp_verify_nonce($_POST['silo-customurl-nonce'], basename(__FILE__))) {
             return $post_id;
         }
@@ -202,9 +225,19 @@ class ContentSilo
         
         $result = $this->getSiloRouteByID($post_id);
         if ($result === null) {
-            $wpdb->insert($wpdb->prefix . $this->tableName, ['url' => $metabox_custom_url_path, 'post_id' => $post_id], ['%s', '%d']);
+            $wpdb->insert(
+                $wpdb->prefix . $this->tableName,
+                ['url' => $metabox_custom_url_path,
+                'post_id' => $post_id],
+                ['%s', '%d']
+            );
         } else {
-            $wpdb->update($wpdb->prefix . $this->tableName, ['url' => $metabox_custom_url_path, 'post_id' => $post_id], ['post_id' => $post_id], ['%s', '%d']);
+            $wpdb->update(
+                $wpdb->prefix . $this->tableName,
+                ['url' => $metabox_custom_url_path, 'post_id' => $post_id],
+                ['post_id' => $post_id],
+                ['%s', '%d']
+            );
         }
         
         
@@ -213,7 +246,8 @@ class ContentSilo
     /**
      * Setup content silo
      */
-    private function init() {
+    private function init()
+    {
         global $wpdb;
         $table_name = $wpdb->prefix . $this->tableName;
         

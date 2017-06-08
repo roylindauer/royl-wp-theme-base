@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Core\Ajax;
+
 use Royl\WpThemeBase\Util;
 
 /**
@@ -16,7 +17,8 @@ class AjaxBase
     private $format = 'json';
     private $response;
     
-    public function execute($method) {
+    public function execute($method)
+    {
         try{
             $this->$method();
         } catch (\Exception $e) {
@@ -27,16 +29,15 @@ class AjaxBase
     /**
      * Handle response
      */
-    public function response() {
+    public function response()
+    {
         try {
             $Output = new Output();
         
             if (!method_exists($this->format)) {
                 throw new \Exception(sprintf('Output format, %s, does not exist', $this->format));
             }
-            
             Output::{$this->format}($this->response);
-            
         } catch (\Exception $e) {
             throw $e;
         }

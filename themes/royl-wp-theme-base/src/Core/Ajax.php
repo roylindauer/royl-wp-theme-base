@@ -1,13 +1,14 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+
 use Royl\WpThemeBase\Util;
 
 /**
  * Simple interface for handling ajax requests
  *
  * Usage: /wp-admin/admin-ajax.php?action=royl_ajax&c=CLASS&m=METHOD&_wpnonce=NONCE
- * 
+ *
  * Generate a nonce: wp_create_nonce('royl_execute_ajax_nonce');
  *
  * You will need to set the ajax.namespace in your Config
@@ -19,14 +20,14 @@ use Royl\WpThemeBase\Util;
  * _wpnonce  = WordPress Nonce
  * 
  * <?php
- * 
+ *
  * namespace MyTheme\IsGreat;
  * use Royl\WpThemeBase\Core;
  * use Royl\WpThemeBase\Util;
  * use Royl\WpThemeBase\Wp;
- * 
+ *
  * class MyAjaxThing extends AjaxBase {
- * 
+ *
  * public function doThing {
  *   $this->response(['heyo'], 'json);
  * }
@@ -44,7 +45,8 @@ class Ajax
     /**
      * Setup the Ajax handler
      */
-    public function __construct() {
+    public function __construct()
+    {
         add_action('wp_ajax_royl_ajax', [&$this, 'execute']);
         add_action('wp_ajax_nopriv_royl_ajax', [&$this, 'execute']);
         $this->setClassNamespace();
@@ -53,7 +55,8 @@ class Ajax
     /**
      * Set the custom namespace
      */
-    public function setClassNamespace() {
+    public function setClassNamespace()
+    {
         $customNamespace = Util\Configure::read('ajax.namespace');
         if ($customNamespace) {
             $this->ajaxClassNamespace = $customNamespace;
@@ -63,7 +66,8 @@ class Ajax
     /**
      * Handles the ajax request
      */
-    public function execute() {
+    public function execute()
+    {
         try {
             // Expect a valid wp nonce
             if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'royl_execute_ajax_nonce')) {

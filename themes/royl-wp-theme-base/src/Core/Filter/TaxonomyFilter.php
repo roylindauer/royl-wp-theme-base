@@ -2,11 +2,11 @@
 
 namespace Royl\WpThemeBase\Core\Filter;
 
-class TaxonomyFilter extends \Royl\WpThemeBase\Core\Filter\BaseFilter {
-    
-    public function getFilter() {
+class TaxonomyFilter extends \Royl\WpThemeBase\Core\Filter\BaseFilter
+{
+    public function getFilter()
+    {
         $args = [];
-
         if ($this->field_params['value']) {
             $args = [
                 'tax_query' => [
@@ -18,7 +18,6 @@ class TaxonomyFilter extends \Royl\WpThemeBase\Core\Filter\BaseFilter {
                 ]
             ];
         }
-        
         return $args;
     }
 }

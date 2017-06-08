@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+
 use \Royl\WpThemeBase\Util;
 use \Royl\WpThemeBase\Wp;
 
@@ -99,16 +100,17 @@ $query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( $set );
 */
 
 /**
- * 
+ *
  */
-class Filter {
-    
+class Filter
+{
     public $prefix = 'filter_';
 
     /**
-     * 
+     *
      */
-    public function __construct() {
+    public function __construct()
+    {
         add_action('init', [&$this, 'configFilters'], 20);
         add_action('init', [&$this, 'configFilterTemplateMap'], 20);
         add_action('init', [&$this, 'setDefaults'], 20);
@@ -118,7 +120,8 @@ class Filter {
     /**
      * Setup Filters
      */
-    public function configFilters() {
+    public function configFilters()
+    {
         $filters = [];
         $filters = apply_filters( 'royl_config_filters', $filters );
         Util\Configure::write('filters.filters', $filters);
@@ -127,7 +130,8 @@ class Filter {
     /**
      * Setup filter map
      */
-    public function configFilterTemplateMap() {
+    public function configFilterTemplateMap()
+    {
         $filter_template_map = [];
         $filter_template_map = apply_filters( 'royl_map_filters', $filter_template_map );
         Util\Configure::write('filters.filter_template_map', $filter_template_map);
@@ -136,14 +140,16 @@ class Filter {
     /**
      * User can define filter defaults
      */
-    public function setDefaults() {
+    public function setDefaults()
+    {
         $this->defaultQueryArgs = Util\Configure::read('filters.defaults');
     }
 
     /**
      * Add our filter query vars
      */
-    public function queryVars($query_vars) {
+    public function queryVars($query_vars)
+    {
         $filters = Util\Configure::read('filters.filters');
         foreach ($filters as $filter => $data) {
             $query_vars[] = $this->prefix . $filter;

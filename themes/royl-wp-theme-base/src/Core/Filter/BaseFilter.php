@@ -2,7 +2,8 @@
 
 namespace Royl\WpThemeBase\Core\Filter;
 
-class BaseFilter {
+class BaseFilter
+{
     
     public $field_type = '';
     public $field_params = [];
@@ -17,8 +18,8 @@ class BaseFilter {
     /**
      * Constructor
      */
-    public function __construct( $params = [] ) {
-        
+    public function __construct($params = [])
+    {
         $this->field_type = $params['field']['type'];
 
         // shove all of the user defined field params into the field_params array
@@ -41,7 +42,8 @@ class BaseFilter {
     /**
      * Render the field
      */
-    public function render(){
+    public function render()
+    {
         $this->Field->render();
     }
     

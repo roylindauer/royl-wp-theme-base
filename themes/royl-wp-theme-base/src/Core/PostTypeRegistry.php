@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
 
@@ -22,9 +23,10 @@ class PostTypeRegistry
     public $post_types = [];
     
     /**
-     * 
+     *
      */
-    public function __construct() {
+    public function __construct()
+    {
         add_action('init', [&$this, 'loadPostTypes']);
     }
 

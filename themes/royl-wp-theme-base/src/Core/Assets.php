@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
 
@@ -15,58 +16,65 @@ use Royl\WpThemeBase\Wp;
 class Assets
 {
     /**
-     * 
+     *
      */
-    public function __construct() {
-        add_action('wp_enqueue_scripts', [&$this, 'frontend_stylesheets']);
-        add_action('wp_enqueue_scripts', [&$this, 'frontend_scripts']);
+    public function __construct()
+    {
+        add_action('wp_enqueue_scripts', [&$this, 'frontendStylesheets']);
+        add_action('wp_enqueue_scripts', [&$this, 'frontendScripts']);
         
-        add_action('admin_enqueue_scripts', [&$this, 'admin_stylesheets']);
-        add_action('admin_enqueue_scripts', [&$this, 'admin_scripts']);
+        add_action('admin_enqueue_scripts', [&$this, 'adminStylesheets']);
+        add_action('admin_enqueue_scripts', [&$this, 'adminScripts']);
         
-        add_action('login_enqueue_scripts', [&$this, 'login_stylesheets']);
-        add_action('login_enqueue_scripts', [&$this, 'login_scripts']);
+        add_action('login_enqueue_scripts', [&$this, 'loginStylesheets']);
+        add_action('login_enqueue_scripts', [&$this, 'loginScripts']);
     }
     
     /**
      * Wrapper function to load frontend stylesheets
      */
-    public function frontend_stylesheets() {
+    public function frontendStylesheets()
+    {
         self::stylesheets('frontend');
     }
     
     /**
      * Wrapper function to load frontend scripts
      */
-    public function frontend_scripts() {
+    public function frontendScripts()
+    {
         self::scripts('frontend');
     }
     
     /**
      * Wrapper function to load admin stylesheets
      */
-    public function admin_stylesheets() {
+    public function adminStylesheets()
+    {
         self::stylesheets('admin');
     }
     
     /**
      * Wrapper function to load admin scripts
      */
-    public function admin_scripts() {
+    public function adminScripts()
+    {
         self::scripts('admin');
     }
     
     /**
      * Wrapper function to load login stylesheets
      */
-    public function login_stylesheets() {
+    public function loginStylesheets()
+    {
         self::stylesheets('login');
     }
     
     /**
      * Wrapper function to load login scripts
      */
-    public function login_scripts() {
+    public function loginScripts()
+    {
         self::scripts('login');
     }
 

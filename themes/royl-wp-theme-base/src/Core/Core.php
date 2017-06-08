@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+
 use Royl\WpThemeBase\Util;
 
 /**
@@ -33,7 +34,6 @@ class Core
     public function __construct()
     {
         if (function_exists('add_action')) {
-
             $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
             
             $reg->set('Assets', new Assets());
@@ -81,13 +81,13 @@ class Core
          * end of each line for what each argument will be.
          */
         $config = [
-            'default_path' => '',                      // Default absolute path to pre-packaged plugins.
-            'menu'         => 'tgmpa-install-plugins', // Menu slug.
-            'has_notices'  => true,                    // Show admin notices or not.
-            'dismissable'  => true,                    // If false, a user cannot dismiss the nag message.
-            'dismiss_msg'  => '',                      // If 'dismissable' is false, this message will be output at top of nag.
-            'is_automatic' => false,                   // Automatically activate plugins after installation or not.
-            'message'      => '',                      // Message to output right before the plugins table.
+            'default_path' => '',                      
+            'menu'         => 'tgmpa-install-plugins',
+            'has_notices'  => true,
+            'dismissable'  => true,
+            'dismiss_msg'  => '',
+            'is_automatic' => false,
+            'message'      => '',
             'strings'      => [
                 'page_title'                      => __('Install Required Plugins', 'tgmpa'),
                 'menu_title'                      => __('Install Plugins', 'tgmpa'),
@@ -226,7 +226,8 @@ class Core
      *
      * @return void
      */
-    public function loadTextDomain() {
-        load_theme_textdomain( Util\Configure::read('domain'), get_template_directory() . '/languages' );
+    public function loadTextDomain()
+    {
+        load_theme_textdomain(Util\Configure::read('domain'), get_template_directory() . '/languages');
     }
 }
