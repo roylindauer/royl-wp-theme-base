@@ -1,7 +1,12 @@
 <?php
-// Template for Pages
+/**
+ * The template for displaying all pages
+ *
+ * @link https://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package royl-wp-theme-base
+ */
 
-use Royl\WpThemeBase\Wp;
 get_header(); ?>
 <section class="site-section" id="pages">
     <div class="site-section__content">

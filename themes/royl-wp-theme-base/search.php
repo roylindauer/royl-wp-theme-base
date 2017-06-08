@@ -1,29 +1,25 @@
 <?php
-// Template for posts
+/**
+ * The template for displaying search results pages
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#search-result
+ *
+ * @package royl-wp-theme-base
+ */
 
-use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Util;
 get_header();
 ?>
-<section class="site-section" id="posts">
+<section class="site-section" id="pages">
     <div class="site-section__content">
         <?php
-
-        // Render the filter form:
-        \Royl\WpThemeBase\Util\Filter::renderFilterForm( 'post-category' );
-
-        // Get filtered query object:
-        $query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( 'post-category' );
-        ?>
-        <?php
-        // the loop
-    	if ( $query->have_posts() ) :
+    	if ( have_posts() ) :
             ?>
             <ul class="listing">
             <?php
-    		while ( $query->have_posts() ) : $query->the_post();
+    		while ( have_posts() ) : the_post();
                 ?><li class="listing__item"><?php
-                get_template_part( 'template-parts/post/content', get_post_format() );
+                get_template_part( 'template-parts/post/content', 'search' );
                 ?></li><?php
             endwhile;
             ?>
@@ -35,10 +31,9 @@ get_header();
     			'before_page_number' => '<span class="meta-nav screen-reader-text">' . Util\Text::translate( 'Page' ) . ' </span>',
     		) );
     	else :
-    		get_template_part( 'templates/post/content', 'none' );
+    		get_template_part( 'template-parts/post/content', 'none' );
         endif;
         ?>
     </div>
 </section>
-<?php get_sidebar(); ?>
 <?php get_footer();

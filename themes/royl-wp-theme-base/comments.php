@@ -1,4 +1,12 @@
 <?php
+/**
+ * The template for displaying comments
+ *
+ * @link https://codex.wordpress.org/Template_Hierarchy
+ *
+ * @package royl-wp-theme-base
+ */
+
 use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Util;
 

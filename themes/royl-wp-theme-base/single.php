@@ -1,7 +1,12 @@
 <?php
-// Template for single post
+/**
+ * The template for displaying all single posts
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-hierarchy/#single-post
+ *
+ * @package royl-wp-theme-base
+ */
 
-use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Util;
 get_header();
 ?>
