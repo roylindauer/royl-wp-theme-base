@@ -14,7 +14,7 @@ spl_autoload_register(function ($class) {
 
     $relative_class = substr($class, $len);
 
-    $located = locate_template('src/' . str_replace('\\', '/', $relative_class) . '.php', TRUE);
+    $located = locate_template('src/' . str_replace('\\', '/', $relative_class) . '.php', true);
 
     return $located ? true : false;
 });

@@ -5,8 +5,7 @@ include_once __DIR__ . '/config.php';
 \Royl\WpThemeBase\Util\Configure::set($config);
 
 // Set base Theme Name and Version into Theme Config
-if (function_exists('wp_get_theme'))
-{
+if (function_exists('wp_get_theme')) {
     $curtheme = wp_get_theme();
     \Royl\WpThemeBase\Util\Configure::write('name', $curtheme->get('Name'));
     \Royl\WpThemeBase\Util\Configure::write('domain', $curtheme->get('TextDomain'));

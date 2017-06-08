@@ -43,7 +43,7 @@ class BaseField
         
         echo '<div class="filter-wrapper">';
         if (isset($this->field_params['label'])) {
-            echo '<label class="filter-label" for="' . $this->field_params['id'] . '">' . Util\Text::translate( $this->field_params['label'] ) . '</label>';   
+            echo '<label class="filter-label" for="' . $this->field_params['id'] . '">' . Util\Text::translate( $this->field_params['label'] ) . '</label>';
         }
         Wp\Template::load('filter/' . $this->partial, [ 'field' => $this->field_params ]);
         echo '</div>';

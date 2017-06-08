@@ -35,7 +35,7 @@ class Text
     }
     
     /**
-     * Wrapper for https://codex.wordpress.org/Function_Reference/_nx 
+     * Wrapper for https://codex.wordpress.org/Function_Reference/_nx
      */
     public static function nx($single, $plural, $number, $context)
     {

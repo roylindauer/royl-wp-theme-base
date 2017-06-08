@@ -20,9 +20,10 @@ class Taxonomy
     /**
      * Return list of taxonomy terms for $taxonomy
      * @param  string The taxonomy to use to build the list
-     * @return array  array of terms [ slug => term ] 
+     * @return array  array of terms [ slug => term ]
      */
-    public static function getList($taxonomy) {
+    public static function getList($taxonomy)
+    {
         $terms = get_terms( [
             'taxonomy' => $taxonomy,
             'hide_empty' => true
@@ -32,8 +33,7 @@ class Taxonomy
         foreach ($terms as $term) {
             $ret[ $term->slug ] = $term->name;
         }
-    
-        return $ret;    
+        return $ret;
     }
     
     /**
