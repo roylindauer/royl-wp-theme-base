@@ -53,8 +53,8 @@ class Core
             add_action('after_setup_theme', array(&$this, 'registerThemeFeatures'), PHP_INT_MAX-1);
             add_action('after_setup_theme', array(&$this, 'registerImageSizes'), PHP_INT_MAX-1);
             add_action('after_setup_theme', array(&$this, 'registerNavMenus'), PHP_INT_MAX-1);
-            add_action('after_setup_theme', array(&$this, 'registerSidebars'), PHP_INT_MAX-1);
             add_action('after_setup_theme', [&$this, 'loadTextDomain'], PHP_INT_MAX-1);
+            add_action('widgets_init', array(&$this, 'registerSidebars'), PHP_INT_MAX-1);
         }
     }
 

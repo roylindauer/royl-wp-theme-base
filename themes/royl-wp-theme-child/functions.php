@@ -9,24 +9,8 @@ function royl_child_enqueue_styles() {
 
 add_action('after_setup_theme', 'royl_init_theme', 10);
 function royl_init_theme() {
-    # @todo this is for testing. should be removed
-    royl_wp_theme_base([
-        // Core WP Theme features
-        'theme_features' => [
-            'automatic-feed-links',
-            'post-thumbnails',
-            'custom-logo' => [
-                'height' => 100,
-                'width' => 400,
-                'flex-width' => true,
-                'header-text' => array( 'site-title', 'site-description' )
-            ]
-        ]
-    ]);
-
-    Util\Debug::debug(Util\Configure::read('domain'));
+    royl_wp_theme_base();
 }
-
 
 add_filter( 'royl_config_filters', 'setup_filters' );
 function setup_filters() {
