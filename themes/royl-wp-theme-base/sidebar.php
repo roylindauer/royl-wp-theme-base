@@ -8,9 +8,9 @@
  */
 
 if ( ! is_active_sidebar( 'default-sidebar' ) ) {
-	return;
+    return;
 }
 ?>
 <aside id="sidebar" class="widget-area" role="complementary">
-    <?php dynamic_sidebar( 'default-sidebar' ); ?>
+  <?php dynamic_sidebar( 'default-sidebar' ); ?>
 </aside>

@@ -20,13 +20,13 @@ class PostTypeRegistry
      * @var array $post_types collection of post type objects
      */
     public $post_types = [];
-	
-	/**
-	 * 
-	 */
-	public function __construct() {
+    
+    /**
+     * 
+     */
+    public function __construct() {
         add_action('init', [&$this, 'loadPostTypes']);
-	}
+    }
 
     /**
      * Load post type classes

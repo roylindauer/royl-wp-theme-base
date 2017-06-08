@@ -24,21 +24,21 @@ class AjaxBase
         }
     }
     
-	/**
-	 * Handle response
-	 */
-	public function response() {
-		try {
-			$Output = new Output();
-		
-			if (!method_exists($this->format)) {
-				throw new \Exception(sprintf('Output format, %s, does not exist', $this->format));
-			}
-			
-			Output::{$this->format}($this->response);
-			
-		} catch (\Exception $e) {
-			throw $e;
-		}
-	}
+    /**
+     * Handle response
+     */
+    public function response() {
+        try {
+            $Output = new Output();
+        
+            if (!method_exists($this->format)) {
+                throw new \Exception(sprintf('Output format, %s, does not exist', $this->format));
+            }
+            
+            Output::{$this->format}($this->response);
+            
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
 }

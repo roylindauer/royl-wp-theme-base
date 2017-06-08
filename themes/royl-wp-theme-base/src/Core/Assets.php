@@ -14,10 +14,10 @@ use Royl\WpThemeBase\Wp;
  */
 class Assets
 {
-	/**
-	 * 
-	 */
-	public function __construct() {
+    /**
+     * 
+     */
+    public function __construct() {
         add_action('wp_enqueue_scripts', [&$this, 'frontend_stylesheets']);
         add_action('wp_enqueue_scripts', [&$this, 'frontend_scripts']);
         
@@ -26,7 +26,7 @@ class Assets
         
         add_action('login_enqueue_scripts', [&$this, 'login_stylesheets']);
         add_action('login_enqueue_scripts', [&$this, 'login_scripts']);
-	}
+    }
     
     /**
      * Wrapper function to load frontend stylesheets
@@ -84,12 +84,12 @@ class Assets
             return;
         }
 
-		// Register the stylesheets
+        // Register the stylesheets
         foreach ($stylesheets as $handle => $data) {
             wp_register_style($handle, $data['source'], $data['dependencies'], $data['version']);
         }
 
-		// Enqueue the stylesheets
+        // Enqueue the stylesheets
         foreach ($stylesheets as $handle => $data) {
             wp_enqueue_style($handle, $data['source'], $data['dependencies'], $data['version']);
         }
@@ -108,12 +108,12 @@ class Assets
             return;
         }
 
-		// Register the scripts
+        // Register the scripts
         foreach ($scripts as $handle => $data) {
             wp_register_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
         }
 
-		// Enqueue the scripts
+        // Enqueue the scripts
         foreach ($scripts as $handle => $data) {
             wp_enqueue_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
         }

@@ -142,7 +142,7 @@ class ContentSilo
              * Normally WordPress would auto fill this information.
              */
             $post = get_post($result['post_id']);
-		    $wp->query_vars['p']         = $post->ID;
+            $wp->query_vars['p']         = $post->ID;
             $wp->query_vars['post_name'] = $post->post_name;
             $wp->query_vars['post_type'] = $post->post_type;
         }

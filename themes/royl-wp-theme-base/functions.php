@@ -10,9 +10,9 @@ require_once( 'src/royl_wp_theme_base.php' );
  */
 if ( !function_exists( 'royl_entry_footer' ) ) {
     function royl_entry_footer() {
-    	$separate_meta = Util\Text::translate( ', ' );
-    	$categories_list = get_the_category_list( $separate_meta );
-    	$tags_list = get_the_tag_list( '', $separate_meta );
+        $separate_meta = Util\Text::translate( ', ' );
+        $categories_list = get_the_category_list( $separate_meta );
+        $tags_list = get_the_tag_list( '', $separate_meta );
         if ( $categories_list || $tags_list || get_edit_post_link() ) {
         ?>
         <footer class="entry-footer">

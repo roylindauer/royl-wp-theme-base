@@ -10,7 +10,7 @@ Usage:
 // Setup Filters
 add_filter( 'royl_config_filters', 'setup_filters' );
 function setup_filters() {
-	return [
+    return [
         // Unique filter name. "filter_" is prepended to the name internally
 
         // TaxQuery
@@ -18,7 +18,7 @@ function setup_filters() {
             // The filter query determines the data that posts will be filtered by
             // We can filter by taxonomies, metaboxes, and post data 
             // type should be a Filter Class. 
-			// the example below is the taxonomy type
+            // the example below is the taxonomy type
             'filter_query' => [
                 'type' => 'Taxonomy',
                 'taxonomy' => 'categories',
@@ -54,13 +54,13 @@ function setup_filters() {
                 'label' => Util\Text::translate('Filter Label'),
             ]
         ],
-	];
+    ];
 }
 
 // Setup up filter sets. This is how you group the defined filters together into unique filter forms.
 add_filter( 'royl_map_filters', 'map_filters' );
 function map_filters() {
-	return [
+    return [
         'taxonomy-stakeholder_ammenities'      => [ 'type', 'neighborhoods', 'keyword' ],
         'taxonomy-stakeholder_type'            => [ 'ammenities', 'neighborhoods', 'keyword' ],
         #'taxonomy-stakeholder_type-activities' => [ 'neighborhoods', 'type', 'ammenities', 'keyword' ],
@@ -73,9 +73,9 @@ function map_filters() {
 // You can modify the query object even further with the `royl_alter_filter_query_args` action
 add_filter( 'royl_alter_filter_query_args', 'royl_dmo_filter_query_args' );
 function royl_dmo_filter_query_args( $args ) {
-	$args['post_type'] = ['stakeholder']; // define which posts types to include in wp_query
+    $args['post_type'] = ['stakeholder']; // define which posts types to include in wp_query
     $args['posts_per_page'] = '10'; // overwrite default of 50 per page
-	return $args;
+    return $args;
 }
 
 // Inject some stuff before the filter form is rendered
@@ -102,27 +102,27 @@ $query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( $set );
  * 
  */
 class Filter {
-	
+    
     public $prefix = 'filter_';
 
-	/**
-	 * 
-	 */
-	public function __construct() {
-		add_action('init', [&$this, 'configFilters'], 20);
+    /**
+     * 
+     */
+    public function __construct() {
+        add_action('init', [&$this, 'configFilters'], 20);
         add_action('init', [&$this, 'configFilterTemplateMap'], 20);
         add_action('init', [&$this, 'setDefaults'], 20);
         add_filter('query_vars', [&$this, 'queryVars']);
-	}
-	
-	/**
-	 * Setup Filters
-	 */
-	public function configFilters() {
-	    $filters = [];
-	    $filters = apply_filters( 'royl_config_filters', $filters );
-	    Util\Configure::write('filters.filters', $filters);
-	}
+    }
+    
+    /**
+     * Setup Filters
+     */
+    public function configFilters() {
+        $filters = [];
+        $filters = apply_filters( 'royl_config_filters', $filters );
+        Util\Configure::write('filters.filters', $filters);
+    }
 
     /**
      * Setup filter map

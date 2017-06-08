@@ -14,7 +14,7 @@ $config = [
             'posts_per_page' => 6,
             'ignore_sticky_posts' => false,
             'post_type' => [],
-    	]
+        ]
     ],
     
     // Custom Template Partials directory

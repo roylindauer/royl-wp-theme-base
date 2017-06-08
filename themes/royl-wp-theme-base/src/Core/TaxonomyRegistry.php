@@ -20,13 +20,13 @@ class TaxonomyRegistry
      * @var array $post_types collection of post type objects
      */
     public $taxonomies = [];
-	
-	/**
-	 * 
-	 */
-	public function __construct() {
-		add_action('init', [&$this, 'registerTaxonomies']);
-	}
+    
+    /**
+     * 
+     */
+    public function __construct() {
+        add_action('init', [&$this, 'registerTaxonomies']);
+    }
 
     /**
      * Register Taxonomies

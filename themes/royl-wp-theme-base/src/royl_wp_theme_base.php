@@ -37,12 +37,12 @@ function royl_wp_theme_base($config = []) {
  */
 function royl_instance($class) {
     $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
-	return $reg->get($class);
+    return $reg->get($class);
 }
 
 /**
  *
  */
 function royl_create_ajax_nonce() {
-	return wp_create_nonce( 'royl_execute_ajax_nonce' );
+    return wp_create_nonce( 'royl_execute_ajax_nonce' );
 }

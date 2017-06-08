@@ -41,14 +41,14 @@ class Ajax
 {
     private $ajaxClassNamespace = 'Royl\\WpThemeBase\\Ajax';
 
-	/**
-	 * Setup the Ajax handler
-	 */
-	public function __construct() {
+    /**
+     * Setup the Ajax handler
+     */
+    public function __construct() {
         add_action('wp_ajax_royl_ajax', [&$this, 'execute']);
         add_action('wp_ajax_nopriv_royl_ajax', [&$this, 'execute']);
         $this->setClassNamespace();
-	}
+    }
     
     /**
      * Set the custom namespace
@@ -59,11 +59,11 @@ class Ajax
             $this->ajaxClassNamespace = $customNamespace;
         }
     }
-	
+    
     /**
      * Handles the ajax request
      */
-	public function execute() {
+    public function execute() {
         try {
             // Expect a valid wp nonce
             if (!isset($_REQUEST['_wpnonce']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'royl_execute_ajax_nonce')) {
@@ -86,7 +86,7 @@ class Ajax
             // Instantiate new Ajax Response object
             $AjaxResponse = new $class();
  
-			// Get the requested method
+            // Get the requested method
             $ajaxMethod = filter_var($_REQUEST['m'], FILTER_SANITIZE_STRING);
  
             // Execute method
@@ -98,5 +98,5 @@ class Ajax
         }
  
         die();
-	}
+    }
 }
