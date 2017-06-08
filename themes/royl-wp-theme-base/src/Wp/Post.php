@@ -222,12 +222,12 @@ class Post
     public static function createPost($post_title, $post_type)
     {
         // Enter the basic post
-        $post = array(
+        $post = [
             'post_title'    => $post_title,
             'post_status'   => 'publish',
             'post_type'     => $post_type,
             'post_author'   => 1
-        );
+        ];
 
         $post_id = wp_insert_post($post);
 
@@ -245,7 +245,7 @@ class Post
      **/
     public static function addTermsToPost($postId, $taxonomy, $terms, $append = false)
     {
-        $categoryIds = array();
+        $categoryIds = [];
 
         foreach ($terms as $term) {
             $categoryIds[] = \Royl\WpThemeBase\Wp\Taxonomy::upsertTaxonomyTerm($term, $taxonomy);

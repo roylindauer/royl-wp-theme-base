@@ -25,7 +25,7 @@ class Registry
      * Array of registered objects
      * @var array
      */
-    private $registry = array();
+    private $registry = [];
 
     /**
      * Register an object

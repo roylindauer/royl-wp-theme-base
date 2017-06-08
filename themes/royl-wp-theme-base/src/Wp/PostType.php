@@ -40,7 +40,7 @@ class PostType
      *
      * @var array $supports
      */
-    public $supports = array(
+    public $supports = [
         'title',
         'editor',
         'page-attributes',
@@ -50,33 +50,33 @@ class PostType
         'revisions',
         'page-attributes',
         'post-formats',
-    );
+    ];
 
     /**
      * Default args.
      *
      * @var array $args
      */
-    public $args = array();
+    public $args = array[];
     
     /**
      * Label sets.
      *
      * @var array $labels
      */
-    public $labels = array();
+    public $labels = array[];
 
     /**
      * Class Constructor. Does the heavy lifting of registering posttype
      * @param string $name   Name of the post type to generate
      * @param array  $params Array of options to configure posttype
      */
-    public function __construct($name, $params = array())
+    public function __construct($name, $params = array[]
     {
         $this->name = $name;
         $this->id   = strtolower($this->name);
 
-        if (in_array($this->id, array('post', 'page', 'attachment', 'revision', 'nav_menu_item'))) {
+        if (in_array($this->id, ['post', 'page', 'attachment', 'revision', 'nav_menu_item'])) {
             Util\Debug::addThemeError(sprintf('Post type "%s" is reserved', $this->id));
             return;
         }
@@ -91,7 +91,7 @@ class PostType
         $singular = \Royl\WpThemeBase\Util\Text::humanize($this->name);
         $plural   = \Royl\WpThemeBase\Util\Text::humanize($this->Inflector->pluralize($this->name));
         
-        $this->labels = array(
+        $this->labels = [
             'name' =>                   $plural,
             'singular_name' =>          $singular,
             'add_new' =>                sprintf(\Royl\WpThemeBase\Util\Text::translate('Add New %s'), $singular),
@@ -105,10 +105,10 @@ class PostType
             'not_found_in_trash' =>     sprintf(\Royl\WpThemeBase\Util\Text::translate('No %s found in trash'), $plural),
             'parent_item_colon' =>      '',
             'menu_name' =>              $plural
-        );
+        ];
         
         // Post type defaults
-        $this->args = array(
+        $this->args = [
             'labels' => $this->labels,
             'description' => '',
             'public' => true,
@@ -124,7 +124,7 @@ class PostType
             'hierarchical' => false,
             'supports' => $this->supports,
             'slug' => $singular
-        );
+        ];
 
         if (isset($params['args'])) {
             $this->args = array_merge($this->args, $params['args']);

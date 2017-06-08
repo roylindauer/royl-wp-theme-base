@@ -5,7 +5,7 @@ namespace Royl\WpThemeBase\Core\Filter;
 class BaseFilter {
     
     public $field_type = '';
-    public $field_params = array();
+    public $field_params = [];
     public $prefix = 'filter_';
     
     /**

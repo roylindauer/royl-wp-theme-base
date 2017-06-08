@@ -21,22 +21,22 @@ class ContentSilo
     
     public function __construct() {
         
-        add_action('add_meta_boxes', array(&$this, 'addMetaBox'));
-        add_action('save_post', array(&$this, 'saveCustomMetabox'), 10, 3);
+        add_action('add_meta_boxes', [&$this, 'addMetaBox']);
+        add_action('save_post', [&$this, 'saveCustomMetabox'], 10, 3);
         
-        add_action('parse_request', array(&$this, 'parseRequest'), PHP_INT_MAX - 1, 1);
+        add_action('parse_request', [&$this, 'parseRequest'], PHP_INT_MAX - 1, 1);
 
-        add_action('init', array(&$this, 'addRewriteTags'));
-        add_action('init', array(&$this, 'addRewriteRules'));
+        add_action('init', [&$this, 'addRewriteTags']);
+        add_action('init', [&$this, 'addRewriteRules']);
         
         add_action('admin_init', function(){
             $this->init();
         });
         
-        add_filter('post_link', array(&$this, 'permalinks'), 10, 3);
-        add_filter('page_link', array(&$this, 'permalinks'), 10, 3);
-        add_filter('post_type_link', array(&$this, 'permalinks'), 10, 3);
-        add_filter('query_vars', array(&$this, 'queryVars'));
+        add_filter('post_link', [&$this, 'permalinks'], 10, 3);
+        add_filter('page_link', [&$this, 'permalinks'], 10, 3);
+        add_filter('post_type_link', [&$this, 'permalinks'], 10, 3);
+        add_filter('query_vars', [&$this, 'queryVars']);
     }
     
     /**
@@ -152,7 +152,7 @@ class ContentSilo
      * Add custom meta box to post and pages
      */
     public function addMetaBox() {
-        add_meta_box('silo-route-id', Util\Text::translate('Content Siloing'), array(&$this, 'renderField'), ['post', 'page'], 'normal');
+        add_meta_box('silo-route-id', Util\Text::translate('Content Siloing'), [&$this, 'renderField'], ['post', 'page'], 'normal');
     }
     
     /**
@@ -202,9 +202,9 @@ class ContentSilo
         
         $result = $this->getSiloRouteByID($post_id);
         if ($result === null) {
-            $wpdb->insert($wpdb->prefix . $this->tableName, array('url' => $metabox_custom_url_path, 'post_id' => $post_id), array('%s', '%d'));
+            $wpdb->insert($wpdb->prefix . $this->tableName, ['url' => $metabox_custom_url_path, 'post_id' => $post_id], ['%s', '%d']);
         } else {
-            $wpdb->update($wpdb->prefix . $this->tableName, array('url' => $metabox_custom_url_path, 'post_id' => $post_id), array('post_id' => $post_id), array('%s', '%d'));
+            $wpdb->update($wpdb->prefix . $this->tableName, ['url' => $metabox_custom_url_path, 'post_id' => $post_id], ['post_id' => $post_id], ['%s', '%d']);
         }
         
         

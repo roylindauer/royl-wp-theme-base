@@ -22,7 +22,7 @@ class Template
      * @param  array  $data     array of data to make available to the template
      * @return bool             return truthy value
      */
-    public static function load($template, $data = array())
+    public static function load($template, $data = [])
     {
         try {
             // Allow users to change the default location of template partials
@@ -35,16 +35,16 @@ class Template
             $located = locate_template( $filepath, false );
 
             if (!$located) {
-                throw new \Exception( __( sprintf( 'Template not found: %s', $filepath ) ) );
+                throw new \Exception(__(sprintf('Template not found: %s', $filepath)));
             }
 
-            if ( is_array( $data ) ) {
-                extract( $data );
+            if (is_array($data)) {
+                extract($data);
             }
         
-            return include ( $located );
-        } catch ( \Exception $e ) {
-            Util\Debug::log( $e->getMessage() );
+            return include ($located);
+        } catch (\Exception $e) {
+            Util\Debug::log($e->getMessage());
         }
     }
 }

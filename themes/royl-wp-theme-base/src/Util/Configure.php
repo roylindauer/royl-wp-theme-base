@@ -11,7 +11,7 @@ namespace Royl\WpThemeBase\Util;
  * \Ecs\Core\Utilities\Configure::write('key', 'value');
  * $val = \Ecs\Core\Utilities\Configure::read('key');
  *
- * \Ecs\Core\Utilities\Configure::write('data', array('test' => 'value'));
+ * \Ecs\Core\Utilities\Configure::write('data', ['test' => 'value']);
  * $val = \Ecs\Core\Utilities\Configure::read('data.test');
  *
  * @package     WpThemeBase
@@ -27,7 +27,7 @@ final class Configure
      *
      * @param $config array
      */
-    protected static $config = array();
+    protected static $config = [];
 
     /**
      * Set $config. Used to initialize the Configure object
@@ -36,7 +36,7 @@ final class Configure
      *
      * @todo refactor, remove this method and use write()
      */
-    public static function set($config = array())
+    public static function set($config = [])
     {
         self::$config = array_merge(self::$config, $config);
     }
@@ -90,7 +90,7 @@ final class Configure
             } else {
                 foreach ($keys as $key) {
                     if (!isset(self::$config[$key])) {
-                        $link[$key] = array();
+                        $link[$key] = [];
                     }
 
                     $link =& $link[$key];

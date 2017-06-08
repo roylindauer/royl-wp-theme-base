@@ -27,13 +27,13 @@ class Attachment
     public static function createImageAttachment($file_info, $post_id = null)
     {
         $wp_filetype = wp_check_filetype($file_info->filename, null);
-        $attachment = array(
+        $attachment = [
             'guid' => $file_info->url,
             'post_mime_type' => $wp_filetype['type'],
             'post_title' => $file_info->filename,
             'post_content' => '',
             'post_status' => 'inherit'
-        );
+        ];
         $attach_id = wp_insert_attachment($attachment, $file_info->path, $post_id);
 
         require_once(ABSPATH . 'wp-admin/includes/image.php');

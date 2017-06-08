@@ -19,7 +19,7 @@ if (function_exists('wp_get_theme')) {
  * @param  array $config array of theme config options
  * @return void
  */
-function royl_wp_theme_base($config = array()) {
+function royl_wp_theme_base($config = []) {
     \Royl\WpThemeBase\Util\Configure::set($config);
 
     $royl_wp_theme_base = new \Royl\WpThemeBase\Core\Core();

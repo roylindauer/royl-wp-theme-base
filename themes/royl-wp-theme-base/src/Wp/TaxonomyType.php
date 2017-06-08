@@ -26,14 +26,14 @@ class TaxonomyType
      *
      * @var array $args
      */
-    public $args = array();
+    public $args = [];
     
     /**
      * Label sets.
      *
      * @var array $labels
      */
-    public $labels = array();
+    public $labels = [];
 
     /**
      * Class Constructor
@@ -41,7 +41,7 @@ class TaxonomyType
      * @param array  $params currently only an array of posttypes to attach tax to
      * @param array  $args   array of tax arguments (labels and capabilities, etc)
      */
-    public function __construct($name, $params = array(), $args = array())
+    public function __construct($name, $params = [], $args = [])
     {
         $this->name = $name;
 
@@ -51,7 +51,7 @@ class TaxonomyType
         $singular = \Royl\WpThemeBase\Util\Text::humanize($this->name);
         $plural   = \Royl\WpThemeBase\Util\Text::humanize($this->Inflector->pluralize($this->name));
 
-        $this->labels = array(
+        $this->labels = [
             'name' =>                   $plural,
             'singular_name' =>          $singular,
             'add_new' =>                sprintf(\Royl\WpThemeBase\Util\Text::translate('Add New %s'), $singular),
@@ -70,10 +70,10 @@ class TaxonomyType
             'separate_items_with_commas' => sprintf(\Royl\WpThemeBase\Util\Text::translate('Separate %s with commas'), $plural),
             'add_or_remove_items' =>    sprintf(\Royl\WpThemeBase\Util\Text::translate('Add or remove %s'), $plural),
             'choose_from_most_used' =>  sprintf(\Royl\WpThemeBase\Util\Text::translate('Choose from the most used %s'), $plural),
-        );
+        ];
         
         // Post type defaults
-        $this->args = array(
+        $this->args = [
             'labels' => $this->labels,
             'public' => true,
             'description' => '',
@@ -90,14 +90,14 @@ class TaxonomyType
             'show_tagcloud' => true,
             'show_in_quick_edit' => true,
             'show_admin_column' => true
-        );
+        ];
 
         $this->args = array_merge($this->args, $args);
 
         $taxname = strtolower($this->name);
 
         // Do not re-register built in tax types..
-        if (in_array($taxname, array('category', 'tag'))) {
+        if (in_array($taxname, ['category', 'tag'])) {
             Util\Debug::addThemeError(sprintf('Taxonomy name "%s" is reserved', $taxname));
             return;
         }

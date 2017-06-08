@@ -45,8 +45,8 @@ class Ajax
 	 * Setup the Ajax handler
 	 */
 	public function __construct() {
-        add_action('wp_ajax_royl_ajax', array(&$this, 'execute'));
-        add_action('wp_ajax_nopriv_royl_ajax', array(&$this, 'execute'));
+        add_action('wp_ajax_royl_ajax', [&$this, 'execute']);
+        add_action('wp_ajax_nopriv_royl_ajax', [&$this, 'execute']);
         $this->setClassNamespace();
 	}
     

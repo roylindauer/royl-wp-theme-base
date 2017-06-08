@@ -50,10 +50,10 @@ class Taxonomy
         $category = term_exists($termName, $taxonomy, $parent);
 
         if (!$category) {
-            $category = wp_insert_term($termName, $taxonomy, array(
+            $category = wp_insert_term($termName, $taxonomy, [
                 'parent'      => $parent,
                 'description' => $description
-            ));
+            ]);
         }
 
         if (!is_wp_error($category)) {
@@ -79,14 +79,14 @@ class Taxonomy
     public static function flushTaxonomy($taxonomy = null)
     {
         if ($taxonomy) {
-            $terms = get_terms($taxonomy, array('hide_empty' => false));
+            $terms = get_terms($taxonomy, ['hide_empty' => false]);
             foreach ($terms as $term) {
                 wp_delete_term($term->term_id, $taxonomy);
             }
 
             echo 'Deleted all ' . $taxonomy . ' terms.' . "\n";
         } else {
-            $terms = get_categories(array('hide_empty' => 0));
+            $terms = get_categories(['hide_empty' => 0]);
             foreach ($terms as $term) {
                 wp_delete_category($term->term_id);
             }
