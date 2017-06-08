@@ -54,7 +54,7 @@ class Core
             add_action('after_setup_theme', array(&$this, 'registerImageSizes'), PHP_INT_MAX-1);
             add_action('after_setup_theme', array(&$this, 'registerNavMenus'), PHP_INT_MAX-1);
             add_action('after_setup_theme', array(&$this, 'registerSidebars'), PHP_INT_MAX-1);
-            
+            add_action('after_setup_theme', [&$this, 'loadTextDomain'], PHP_INT_MAX-1);
         }
     }
 
@@ -219,5 +219,14 @@ class Core
         foreach ($sidebars as $sidebar) {
             register_sidebar($sidebar);
         }
+    }
+
+    /**
+     * Load Text for Theme Translations
+     *
+     * @return void
+     */
+    public function loadTextDomain() {
+        load_theme_textdomain( Util\Configure::read('domain'), get_template_directory() . '/languages' );
     }
 }

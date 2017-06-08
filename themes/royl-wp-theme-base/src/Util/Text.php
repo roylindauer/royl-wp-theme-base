@@ -27,7 +27,7 @@ class Text
     {
         // Default domain to theme
         if ($domain === false) {
-            $domain = \Royl\WpThemeBase\Util\Configure::read('name');
+            $domain = Util\Configure::read('domain');
         }
 
         return \__($str, $domain);
@@ -39,7 +39,7 @@ class Text
     public static function _nx( $single, $plural, $number, $context )
     {
         // Default domain to theme
-        $domain = Util\Configure::read('name');
+        $domain = Util\Configure::read('domain');
         return \_nx( $single, $plural, $number, $context, $domain );
     }
 

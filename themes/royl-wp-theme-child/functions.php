@@ -23,6 +23,8 @@ function royl_init_theme() {
             ]
         ]
     ]);
+
+    Util\Debug::debug(Util\Configure::read('domain'));
 }
 
 

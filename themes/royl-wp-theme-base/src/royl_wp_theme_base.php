@@ -8,6 +8,7 @@ include_once __DIR__ . '/config.php';
 if (function_exists('wp_get_theme')) {
     $curtheme = wp_get_theme();
     \Royl\WpThemeBase\Util\Configure::write('name', $curtheme->get('Name'));
+    \Royl\WpThemeBase\Util\Configure::write('domain', $curtheme->get('TextDomain'));
     \Royl\WpThemeBase\Util\Configure::write('version', $curtheme->get('Version'));
     unset($curtheme);
 }
