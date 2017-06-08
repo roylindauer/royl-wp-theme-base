@@ -11,7 +11,7 @@ $config = array(
     // Post Filtering Defaults
     'filters' => [
         'defaults' => [
-            'posts_per_page' => 24,
+            'posts_per_page' => 6,
             'ignore_sticky_posts' => false,
             'post_type' => [],
     	]

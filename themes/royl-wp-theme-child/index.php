@@ -14,6 +14,11 @@ get_header();
 
         // Get filtered query object:
         $query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( 'post-category' );
+
+        // WordPress pagination is based on the Main query.
+        // We have to kinda trick WP when we use a custom query object in the main loop.. 
+        $temp_query = $wp_query;
+        $wp_query = $query;
         ?>
         <?php
         // the loop
@@ -37,6 +42,7 @@ get_header();
     	else :
     		get_template_part( 'templates/post/content', 'none' );
         endif;
+        $wp_query = $temp_query;
         ?>
     </div>
 </section>
