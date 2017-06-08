@@ -57,21 +57,21 @@ class PostType
      *
      * @var array $args
      */
-    public $args = array[];
+    public $args = [];
     
     /**
      * Label sets.
      *
      * @var array $labels
      */
-    public $labels = array[];
+    public $labels = [];
 
     /**
      * Class Constructor. Does the heavy lifting of registering posttype
      * @param string $name   Name of the post type to generate
      * @param array  $params Array of options to configure posttype
      */
-    public function __construct($name, $params = array[]
+    public function __construct($name, $params = []
     {
         $this->name = $name;
         $this->id   = strtolower($this->name);
