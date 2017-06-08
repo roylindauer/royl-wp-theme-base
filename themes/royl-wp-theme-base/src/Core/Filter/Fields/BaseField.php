@@ -13,6 +13,7 @@ class BaseField {
      */
     public $field_params = [
         'classes' => [ 'filter-field' ],
+        'placeholder' => ''
     ];
 
     /**

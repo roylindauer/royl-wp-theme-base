@@ -4,4 +4,5 @@
     id="<?=$field['id']?>" 
     value="<?=$field['value']?>" 
     class="<?=$field['classes']?>" 
-    placeholder="<?=\Royl\WpThemeBase\Util\Text::translate( $field['placeholder'] );?>" >
+    placeholder="<?=\Royl\WpThemeBase\Util\Text::translate( $field['placeholder'] );?>"
+	>
