@@ -71,7 +71,7 @@ class PostType
      * @param string $name   Name of the post type to generate
      * @param array  $params Array of options to configure posttype
      */
-    public function __construct($name, $params = []
+    public function __construct($name, $params = [])
     {
         $this->name = $name;
         $this->id   = strtolower($this->name);
