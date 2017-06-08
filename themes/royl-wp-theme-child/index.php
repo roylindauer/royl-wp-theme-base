@@ -40,7 +40,7 @@ get_header();
     			'before_page_number' => '<span class="meta-nav screen-reader-text">' . Util\Text::translate( 'Page' ) . ' </span>',
     		) );
     	else :
-    		get_template_part( 'templates/post/content', 'none' );
+    		get_template_part( 'template-parts/post/content', 'none' );
         endif;
         $wp_query = $temp_query;
         ?>
