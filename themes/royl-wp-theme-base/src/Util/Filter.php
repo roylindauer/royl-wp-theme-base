@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Util;
+
 use \Royl\WpThemeBase\Wp;
 
 /**
@@ -15,11 +16,12 @@ class Filter
 {
     /**
      * Render Filter Bar
-     * 
+     *
      * @param string  $set      Required, the set of filters to render in the filter bar
-     * @param string  $partial  Optional, the custom template partial to use. 
+     * @param string  $partial  Optional, the custom template partial to use.
      */
-    public static function renderFilterForm($set, $partial='filter-bar') {
+    public static function renderFilterForm($set, $partial = 'filter-bar')
+    {
         $filters    = Configure::read('filters.filters');
         $filterlist = Configure::read('filters.filter_template_map.' . $set);
 
@@ -38,7 +40,8 @@ class Filter
      * Build and return a custom filtered WP_Query object
      * @return WP_Query
      */
-    public static function getFilterQuery($set) {
+    public static function getFilterQuery($set)
+    {
     
         // Setup default query args
         $args = Configure::read('filters.defaults');
