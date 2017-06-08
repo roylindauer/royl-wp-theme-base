@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Util;
+
 use Royl\WpThemeBase\Util;
 
 /**
@@ -36,11 +37,11 @@ class Text
     /**
      * Wrapper for https://codex.wordpress.org/Function_Reference/_nx 
      */
-    public static function _nx( $single, $plural, $number, $context )
+    public static function nx($single, $plural, $number, $context)
     {
         // Default domain to theme
         $domain = Util\Configure::read('domain');
-        return \_nx( $single, $plural, $number, $context, $domain );
+        return \_nx($single, $plural, $number, $context, $domain);
     }
 
     /**

@@ -18,7 +18,7 @@ use Royl\WpThemeBase\Util;
  * c         = class to instantiate
  * m         = method to run
  * _wpnonce  = WordPress Nonce
- * 
+ *
  * <?php
  *
  * namespace MyTheme\IsGreat;
@@ -95,12 +95,10 @@ class Ajax
  
             // Execute method
             $AjaxResponse->execute($ajaxMethod);
-
         } catch (\Exception $e) {
             Util\Debug::log( $e->getMessage() );
             wp_die($e->getMessage());
         }
- 
         die();
     }
 }

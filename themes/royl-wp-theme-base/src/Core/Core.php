@@ -81,7 +81,7 @@ class Core
          * end of each line for what each argument will be.
          */
         $config = [
-            'default_path' => '',                      
+            'default_path' => '',
             'menu'         => 'tgmpa-install-plugins',
             'has_notices'  => true,
             'dismissable'  => true,
@@ -105,8 +105,8 @@ class Core
                 'activate_link'                   => _n_noop('Begin activating plugin', 'Begin activating plugins'),
                 'return'                          => __('Return to Required Plugins Installer', 'tgmpa'),
                 'plugin_activated'                => __('Plugin activated successfully.', 'tgmpa'),
-                'complete'                        => __('All plugins installed and activated successfully. %s', 'tgmpa'), // %s = dashboard link.
-                'nag_type'                        => 'updated' // Determines admin notice type - can only be 'updated', 'update-nag' or 'error'.
+                'complete'                        => __('All plugins installed and activated successfully. %s', 'tgmpa'),
+                'nag_type'                        => 'updated',
             ]
         ];
 

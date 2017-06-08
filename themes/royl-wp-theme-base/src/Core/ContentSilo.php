@@ -20,26 +20,27 @@ class ContentSilo
 {
     public $tableName = 'siloroutes';
     
-    public function __construct() {
+    public function __construct()
+    {
         
         add_action('add_meta_boxes', [&$this, 'addMetaBox']);
         add_action('save_post', [&$this, 'saveCustomMetabox'], 10, 3);
-        
+
         add_action('parse_request', [&$this, 'parseRequest'], PHP_INT_MAX - 1, 1);
 
         add_action('init', [&$this, 'addRewriteTags']);
         add_action('init', [&$this, 'addRewriteRules']);
-        
+
         add_action('admin_init', function (){
             $this->init();
         });
-        
+
         add_filter('post_link', [&$this, 'permalinks'], 10, 3);
         add_filter('page_link', [&$this, 'permalinks'], 10, 3);
         add_filter('post_type_link', [&$this, 'permalinks'], 10, 3);
         add_filter('query_vars', [&$this, 'queryVars']);
     }
-    
+
     /**
      * Create rewrite rules for every entry in the routes table
      */
@@ -49,14 +50,13 @@ class ContentSilo
         foreach ($routes as $route) {
             add_rewrite_rule('^' . $route['url'] . '$', 'index.php?is_siloing=true', 'top');
         }
-        #add_rewrite_rule($this->rewriteRule, 'index.php?is_siloing=true', 'top');
     }
-    
+
     public function addRewriteTags()
     {
         add_rewrite_tag('is_siloing', '([^&]+)');
     }
-    
+
     /**
      * Add siloing query vars
      */
@@ -65,7 +65,7 @@ class ContentSilo
         $query_vars[] = 'is_siloing';
         return $query_vars;
     }
-    
+
     /**
      * Will return the user defined route if it is available
      *
@@ -89,7 +89,7 @@ class ContentSilo
         
         return $link;
     }
-    
+
     /**
      * Get all silo routes
      * 
@@ -100,7 +100,7 @@ class ContentSilo
         global $wpdb;
         return $wpdb->get_results('SELECT * FROM ' . $wpdb->prefix . $this->tableName, ARRAY_A);
     }
-    
+
     /**
      * Retrieve siloroute record by post id
      *
@@ -115,7 +115,7 @@ class ContentSilo
             FROM ' . $wpdb->prefix . $this->tableName . ' 
             WHERE post_id = ' . $post_id, ARRAY_A);
     }
-    
+
     /**
      * Retrieve siloroute record by exact url
      *
@@ -129,7 +129,7 @@ class ContentSilo
         $result = $wpdb->get_row($sql, ARRAY_A);
         return $result;
     }
-    
+
     /**
      * Hijack the initial request.
      *
@@ -159,7 +159,7 @@ class ContentSilo
             $wp->query_vars['post_type'] = $post->post_type;
         }
     }
-    
+
     /**
      * Add custom meta box to post and pages
      */
@@ -172,7 +172,7 @@ class ContentSilo
             'normal'
         );
     }
-    
+
     /**
      * Render custom meta box field
      */
@@ -198,7 +198,7 @@ class ContentSilo
         </div>
         <?php
     }
-    
+
     /**
      * Save meta box data
      */
@@ -208,11 +208,11 @@ class ContentSilo
             return $post_id;
         }
         
-        if(!current_user_can("edit_post", $post_id)) {
+        if (!current_user_can("edit_post", $post_id)) {
             return $post_id;
         }
         
-        if(defined("DOING_AUTOSAVE") && DOING_AUTOSAVE) {
+        if (defined("DOING_AUTOSAVE") && DOING_AUTOSAVE) {
             return $post_id;
         }
         
@@ -239,10 +239,8 @@ class ContentSilo
                 ['%s', '%d']
             );
         }
-        
-        
     }
-    
+
     /**
      * Setup content silo
      */

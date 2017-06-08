@@ -23,7 +23,7 @@ class BaseFilter
         $this->field_type = $params['field']['type'];
 
         // shove all of the user defined field params into the field_params array
-        // this array gets passed around a bit... 
+        // this array gets passed around a bit...
         $this->field_params = $params['field'];
         $this->filter_query = $params['filter_query'];
 
@@ -51,5 +51,8 @@ class BaseFilter
      * This method should be overridden in your filter class
      * It must return query args to pass to WP_Query
      */
-    public function getFilter() { }
+    public function getFilter() 
+    {
+        
+    }
 }

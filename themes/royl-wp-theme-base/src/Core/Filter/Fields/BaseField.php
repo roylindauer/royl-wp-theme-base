@@ -5,8 +5,8 @@ namespace Royl\WpThemeBase\Core\Filter\Fields;
 use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Util;
 
-class BaseField {
-
+class BaseField
+{
     /**
      * Array of field parameter
      * Sets some default classes for the field
@@ -27,7 +27,8 @@ class BaseField {
      * [__construct description]
      * @param array $params [description]
      */
-    public function __construct( $params = [] ) {
+    public function __construct( $params = [] )
+    {
         $this->field_params = array_merge( $this->field_params, $params );
         $this->field_params['id'] = $this->field_params['name'] . '_' . uniqid();
     }
@@ -36,7 +37,8 @@ class BaseField {
      * Render the field
      * @return [type] [description]
      */
-    public function doRender() {
+    public function doRender()
+    {
         $this->processFieldClasses();
         
         echo '<div class="filter-wrapper">';
@@ -51,7 +53,8 @@ class BaseField {
      * Set the partial to render
      * @param string $partial [description]
      */
-    public function setPartial( $partial = '' ) {
+    public function setPartial( $partial = '' )
+    {
         $this->partial = $partial;
     }
 
@@ -59,7 +62,8 @@ class BaseField {
      * Add CSS classes to field_params class array
      * @param string $class [description]
      */
-    public function addClass( $class = '' ) {
+    public function addClass( $class = '' )
+    {
         $this->field_params['classes'][] = $class;
     }
 
@@ -67,7 +71,8 @@ class BaseField {
      * Convert array of classes intro string
      * @return [type] [description]
      */
-    private function processFieldClasses() {
+    private function processFieldClasses()
+    {
         $this->field_params['classes'] = join( ' ', $this->field_params['classes'] );
     }
 }

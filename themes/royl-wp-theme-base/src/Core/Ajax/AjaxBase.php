@@ -19,7 +19,7 @@ class AjaxBase
     
     public function execute($method)
     {
-        try{
+        try {
             $this->$method();
         } catch (\Exception $e) {
             throw $e;

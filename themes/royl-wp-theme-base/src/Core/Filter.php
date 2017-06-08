@@ -17,8 +17,8 @@ function setup_filters() {
         // TaxQuery
         'FILTER_NAME_HERE' => [
             // The filter query determines the data that posts will be filtered by
-            // We can filter by taxonomies, metaboxes, and post data 
-            // type should be a Filter Class. 
+            // We can filter by taxonomies, metaboxes, and post data
+            // type should be a Filter Class.
             // the example below is the taxonomy type
             'filter_query' => [
                 'type' => 'Taxonomy',
@@ -39,7 +39,7 @@ function setup_filters() {
         'FILTER_NAME_HERE' => [
             // The filter query determines the data that posts will be filtered by
             // We can filter by taxonomies, metaboxes, and post data 
-            // type should be a Filter Class. 
+            // type should be a Filter Class.
             // the example below is the taxonomy type
             'filter_query' => [
                 'type' => 'Postmeta',
@@ -96,7 +96,6 @@ function after_render_filter_bar() {
 
 // Get query object:
 $query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( $set );
-
 */
 
 /**

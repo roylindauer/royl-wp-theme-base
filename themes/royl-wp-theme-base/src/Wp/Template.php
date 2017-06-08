@@ -1,6 +1,7 @@
 <?php
 
 namespace Royl\WpThemeBase\Wp;
+
 use Royl\WpThemeBase\Util;
 
 /**

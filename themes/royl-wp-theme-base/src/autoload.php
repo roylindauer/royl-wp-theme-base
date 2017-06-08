@@ -1,8 +1,6 @@
 <?php
-if ( file_exists( __DIR__ . '/../vendor/autoload.php' ) ) {
-    // Try to find autoloader in the current directory
+if (file_exists( __DIR__ . '/../vendor/autoload.php')) {
     include_once __DIR__ . '/../vendor/autoload.php';
-
 }
 
 spl_autoload_register(function ($class) {
@@ -16,7 +14,7 @@ spl_autoload_register(function ($class) {
 
     $relative_class = substr($class, $len);
 
-    $located = locate_template( 'src/' . str_replace('\\', '/', $relative_class) . '.php', TRUE );
+    $located = locate_template('src/' . str_replace('\\', '/', $relative_class) . '.php', TRUE);
 
-    return $located ?  true : false ;
+    return $located ? true : false;
 });

@@ -5,7 +5,8 @@ include_once __DIR__ . '/config.php';
 \Royl\WpThemeBase\Util\Configure::set($config);
 
 // Set base Theme Name and Version into Theme Config
-if (function_exists('wp_get_theme')) {
+if (function_exists('wp_get_theme'))
+{
     $curtheme = wp_get_theme();
     \Royl\WpThemeBase\Util\Configure::write('name', $curtheme->get('Name'));
     \Royl\WpThemeBase\Util\Configure::write('domain', $curtheme->get('TextDomain'));
@@ -19,7 +20,8 @@ if (function_exists('wp_get_theme')) {
  * @param  array $config array of theme config options
  * @return void
  */
-function royl_wp_theme_base($config = []) {
+function royl_wp_theme_base($config = [])
+{
     \Royl\WpThemeBase\Util\Configure::set($config);
 
     $royl_wp_theme_base = new \Royl\WpThemeBase\Core\Core();
@@ -35,7 +37,8 @@ function royl_wp_theme_base($config = []) {
  *
  * @return mixed
  */
-function royl_instance($class) {
+function royl_instance($class)
+{
     $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
     return $reg->get($class);
 }
@@ -43,6 +46,7 @@ function royl_instance($class) {
 /**
  *
  */
-function royl_create_ajax_nonce() {
+function royl_create_ajax_nonce()
+{
     return wp_create_nonce( 'royl_execute_ajax_nonce' );
 }

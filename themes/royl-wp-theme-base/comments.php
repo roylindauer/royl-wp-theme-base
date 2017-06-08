@@ -32,7 +32,7 @@ if ( post_password_required() ) {
         } else {
           printf(
             /* translators: 1: number of comments, 2: post title */
-            Util\Text::_nx(
+            Util\Text::nx(
               '%1$s Reply to &ldquo;%2$s&rdquo;',
               '%1$s Replies to &ldquo;%2$s&rdquo;',
               $comments_number,
