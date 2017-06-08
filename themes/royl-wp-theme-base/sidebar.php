@@ -7,10 +7,10 @@
  * @package royl-wp-theme-base
  */
 
-if ( ! is_active_sidebar( 'basic-sidebar' ) ) {
+if ( ! is_active_sidebar( 'default-sidebar' ) ) {
 	return;
 }
 ?>
 <aside id="sidebar" class="widget-area" role="complementary">
-    <?php dynamic_sidebar( 'basic-sidebar' ); ?>
+    <?php dynamic_sidebar( 'default-sidebar' ); ?>
 </aside>

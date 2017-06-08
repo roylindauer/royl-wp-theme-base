@@ -137,10 +137,7 @@ class Filter {
      * User can define filter defaults
      */
     public function setDefaults() {
-        $defs = Util\Configure::read('filters.defaults');
-        if (!empty($defs)) {
-            $this->defaultQueryArgs = array_merge($this->defaultQueryArgs, $defs);
-        }
+        $this->defaultQueryArgs = Util\Configure::read('filters.defaults');
     }
 
     /**

@@ -9,19 +9,17 @@
 $config = array(
 
     // Post Filtering Defaults
-    /*
-    'filters => [
+    'filters' => [
         'defaults' => [
-            'posts_per_page' => 50,
+            'posts_per_page' => 24,
             'ignore_sticky_posts' => false,
             'post_type' => [],
     	]
     ],
-    */
     
     // Custom Template Partials directory
     /*
-    'partial_dir' => 'partials', // this directory is relative to your theme root
+    'partial_dir' => 'template-parts', // this directory is relative to your theme root
     */
 
     // Define a namespace for the ajax classes
@@ -82,16 +80,31 @@ $config = array(
 
     // Define theme features
     // http://codex.wordpress.org/Function_Reference/add_theme_support
-    /*
     'theme_features' => array(
         'automatic-feed-links',
         'post-thumbnails',
         'post-formats' => array(
             'aside',
-            'gallery'
-        )
+            'gallery',
+            'link',
+            'image',
+            'quote',
+            'status',
+            'video',
+            'audio',
+            'chat',
+        ),
+        'title-tag',
+        'automatic-feed-links',
+        'customize-selective-refresh-widgets',
+        'html5' => [
+            'search-form',
+            'comment-form',
+            'comment-list',
+            'gallery',
+            'caption',
+        ]
     ),
-    */
 
     // Custom Image Sizes
     /*
@@ -116,11 +129,10 @@ $config = array(
 
     // Define custom sidebars
     // https://codex.wordpress.org/Function_Reference/register_sidebar
-    /*
     'sidebars' => array(
         array(
-            'id'            => 'my-custom-sidebar',
-            'name'          => \Royl\WpThemeBase\Util\Text::translate('My Custom Sidebar'),
+            'id'            => 'default-sidebar',
+            'name'          => \Royl\WpThemeBase\Util\Text::translate('Default Sidebar'),
             'description'   => '',
             'class'         => '',
             'before_widget' => '<li id="%1$s" class="widget %2$s">',
@@ -129,7 +141,6 @@ $config = array(
             'after_title'   => '</h2>',
         ),
     ),
-    */
 
     // Define theme dependencies
     // Require WP Plugins - http://tgmpluginactivation.com/
@@ -137,13 +148,11 @@ $config = array(
     /*
     'dependencies' => array(
         'plugins' => array(
-            // MetaBox is amazing, and we use it in the PostType model
             array(
                 'name'      => 'Meta Box',
                 'slug'      => 'meta-box',
                 'required'  => true,
             ),
-            // Options Framework is also amazing
             array(
                 'name'      => 'Options Framework',
                 'slug'      => 'options-framework',
@@ -179,7 +188,15 @@ $config = array(
                     'in_footer' => true
                 ),
             )
-        )
+        ),
+        'admin' => [
+            'stylesheets' => [],
+            'scripts' => [],
+        ],
+        'login' => [
+            'stylesheets' => [],
+            'scripts' => [],
+        ],
     )
     */
 );
