@@ -7,6 +7,8 @@ get_header();
 ?>
 <section class="site-section" id="posts">
     <div class="site-section__content">
+
+    <a href="#" class="js-ajax-test">AJAX TESTERINO</a>
         <?php
 
         // Render the filter form:
@@ -45,6 +47,24 @@ get_header();
         $wp_query = $temp_query;
         ?>
     </div>
+
+    <script type="text/javascript">
+    jQuery('.js-ajax-test').click(function(evt){
+        evt.preventDefault();
+        jQuery.ajax({
+            url: '<?php echo royl_ajax_url('AjaxFilter', 'doFilter');?>',
+            data: {
+                'test': 'test'
+            },
+            success: function(){
+                console.log('success');
+            },
+            error: function(){
+                console.log('error');
+            }
+        });
+    });
+    </script>
 </section>
 <?php get_sidebar(); ?>
 <?php get_footer();

@@ -30,11 +30,12 @@ class Output
      * Return a JSON response
      * @param  string $content The JSON payload
      */
-    public static function json($content = '')
+    public static function json($content = false)
     {
-        if (!empty($content)) {
+        if ($content) {
             header('Content-type: application/json');
-            die(json_encode($content));
+            echo json_encode($content);
+            die();
         }
     }
 

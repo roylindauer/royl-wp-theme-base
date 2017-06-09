@@ -40,7 +40,7 @@ use Royl\WpThemeBase\Util;
  */
 class Ajax
 {
-    private $ajaxClassNamespace = 'Royl\\WpThemeBase\\Ajax';
+    private $ajaxClassNamespace = 'Royl\\WpThemeBase\\Core\Ajax';
 
     /**
      * Setup the Ajax handler

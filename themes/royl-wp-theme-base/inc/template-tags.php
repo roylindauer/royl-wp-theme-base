@@ -5,7 +5,7 @@ use Royl\WpThemeBase\Util;
 /**
  * Render post meta data. if post type is "post" will render tags and categories
  */
-if (!function_exists( 'royl_entry_footer')) {
+if (!function_exists('royl_entry_footer')) {
     function royl_entry_footer()
     {
         $separate_meta = Util\Text::translate( ', ' );
@@ -28,7 +28,7 @@ if (!function_exists( 'royl_entry_footer')) {
 /**
  * Render custom logo
  */
-if (!function_exists( 'royl_custom_logo')) {
+if (!function_exists('royl_custom_logo')) {
     function royl_custom_logo()
     {
         if (function_exists('the_custom_logo')) {
@@ -41,9 +41,18 @@ if (!function_exists( 'royl_custom_logo')) {
 /**
  * Create Nonce for Ajax requests
  */
-if (!function_exists( 'royl_create_ajax_nonce')) {
+if (!function_exists('royl_create_ajax_nonce')) {
     function royl_create_ajax_nonce()
     {
         return wp_create_nonce('royl_execute_ajax_nonce');
+    }
+}
+
+/**
+ * Generate an ajax url
+ */
+if (!function_exists('royl_ajax_url')) {
+    function royl_ajax_url($c, $m) {
+        return admin_url('admin-ajax.php?_wpnonce=' . royl_create_ajax_nonce() . '&action=royl_ajax&c=' . $c . '&m=' . $m);
     }
 }
