@@ -28,4 +28,3 @@ function royl_instance($class)
     $reg = \Royl\WpThemeBase\Core\Registry::getInstance();
     return $reg->get($class);
 }
-
