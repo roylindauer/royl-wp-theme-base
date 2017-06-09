@@ -47,14 +47,16 @@ get_header();
         $wp_query = $temp_query;
         ?>
     </div>
-
-    <script type="text/javascript">
-    jQuery('.js-ajax-test').click(function(evt){
+</section>
+<?php get_sidebar(); ?>
+<?php get_footer(); ?>
+<script type="text/javascript" defer>
+    $('.js-ajax-test').click(function(evt){
         evt.preventDefault();
-        jQuery.ajax({
+        $.ajax({
             url: '<?php echo royl_ajax_url('AjaxFilter', 'doFilter');?>',
             data: {
-                'test': 'test'
+                'filter_query': 'post-category'
             },
             success: function(){
                 console.log('success');
@@ -65,6 +67,3 @@ get_header();
         });
     });
     </script>
-</section>
-<?php get_sidebar(); ?>
-<?php get_footer();
