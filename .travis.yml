@@ -38,5 +38,5 @@ before_script:
 
 script:
   - find -L themes/royl-wp-theme-base/src -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
-  - phpcs --standard=phpcs.ruleset.xml $(find themes/royl-wp-theme-base/src -name '*.php')
+  - phpcs --config-set ignore_warnings_on_exit 1 --standard=phpcs.ruleset.xml $(find themes/royl-wp-theme-base/src -name '*.php')
   - phpunit
