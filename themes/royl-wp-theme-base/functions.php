@@ -3,14 +3,14 @@
 // Load the Autoloader
 require_once 'inc/autoload.php';
 
-// Load core functions
-require_once 'inc/royl_wp_theme_base.php';
+// Load core theme functions
+require_once 'inc/royl-wp-theme-base.php';
 
 // Include template tags
 require_once 'inc/template-tags.php';
 
 // Setup default theme config
-include_once 'inc/config.php';
+include_once 'inc/config-default.php';
 \Royl\WpThemeBase\Util\Configure::set($config);
 
 // Set some theme specific configurations in the global Config
