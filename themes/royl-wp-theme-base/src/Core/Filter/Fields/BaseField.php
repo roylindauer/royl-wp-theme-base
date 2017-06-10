@@ -30,7 +30,6 @@ class BaseField
     public function __construct($params = [])
     {
         $this->field_params = array_merge( $this->field_params, $params );
-        $this->field_params['id'] = $this->field_params['name'] . '_' . uniqid();
     }
     
     /**

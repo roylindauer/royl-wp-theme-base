@@ -29,6 +29,17 @@ function setup_filters() {
                 'label' => Util\Text::translate('Post Category'),
             ]
         ],
+        'search' => [
+            'filter_query' => [
+                'type' => 'Search',
+                'post_types' => [ 'post' ],
+            ],
+            'field' => [
+                'type' => 'TextField',
+                'name' => 'search', // use for the name attr on the field
+                'label' => Util\Text::translate('Search'),
+            ]
+        ],
         'mycustomfield' => [
             'filter_query' => [
                 'type' => 'Postmeta',
@@ -38,7 +49,6 @@ function setup_filters() {
             ],
             'field' => [
                 'type' => 'TextField',
-                'multi' => false,
                 'name' => 'mycustomfield', // use for the name attr on the field
                 'label' => Util\Text::translate('Custom Fields'),
             ]
@@ -49,7 +59,7 @@ function setup_filters() {
 add_filter( 'royl_map_filters', 'map_filters' );
 function map_filters() {
     return [
-        'post-category' => [ 'category', 'mycustomfield' ],
+        'post-category' => [ 'category', 'mycustomfield', 'search' ],
     ];
 }
 

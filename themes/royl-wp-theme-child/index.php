@@ -8,9 +8,9 @@ get_header();
 <section class="site-section" id="posts">
     <div class="site-section__content">
 
-    <a href="#" class="js-ajax-test">AJAX TESTERINO</a>
-        <?php
+        <a href="#" class="js-ajax-test">AJAX TESTERINO</a>
 
+        <?php
         // Render the filter form:
         \Royl\WpThemeBase\Util\Filter::renderFilterForm( 'post-category' );
 
@@ -50,20 +50,33 @@ get_header();
 </section>
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>
-<script type="text/javascript" defer>
-    $('.js-ajax-test').click(function(evt){
-        evt.preventDefault();
-        $.ajax({
-            url: '<?php echo royl_ajax_url('AjaxFilter', 'doFilter');?>',
-            data: {
-                'filter_query': 'post-category'
-            },
-            success: function(){
-                console.log('success');
-            },
-            error: function(){
-                console.log('error');
-            }
-        });
+
+<script type="text/javascript">
+$.ajax({
+    url: '<?php echo royl_ajax_url('AjaxFilter', 'getQueryVars'); ?>',
+    data: {
+        'filter_query': 'post-category'
+    },
+    success: function(res){
+        console.log(res);
+    },
+    error: function(res){
+        console.log(res);
+    }
+});
+$('.js-ajax-test').click(function(evt){
+    evt.preventDefault();
+    $.ajax({
+        url: '<?php echo royl_ajax_url('AjaxFilter', 'doFilter'); ?>',
+        data: {
+            'filter_query': 'post-category'
+        },
+        success: function(){
+            console.log('success');
+        },
+        error: function(){
+            console.log('error');
+        }
     });
-    </script>
+});
+</script>

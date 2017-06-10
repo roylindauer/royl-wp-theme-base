@@ -103,8 +103,6 @@ $query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( $set );
  */
 class Filter
 {
-    public $prefix = 'filter_';
-
     /**
      *
      */
@@ -113,7 +111,19 @@ class Filter
         add_action('init', [&$this, 'configFilters'], 20);
         add_action('init', [&$this, 'configFilterTemplateMap'], 20);
         add_action('init', [&$this, 'setDefaults'], 20);
+        add_filter('royl_config_filters', [&$this, 'preProcessFilters']);
         add_filter('query_vars', [&$this, 'queryVars']);
+    }
+
+    /**
+     * Pre Process Filters
+     */
+    public function preProcessFilters($filters = []) {
+        foreach ($filters as $k => $v) {
+            $filters[$k]['field']['name'] = 'filter_' . $v['field']['name'];
+            $filters[$k]['field']['id'] = 'filter_' . $v['field']['name'];
+        }
+        return $filters;
     }
     
     /**
@@ -151,7 +161,7 @@ class Filter
     {
         $filters = Util\Configure::read('filters.filters');
         foreach ($filters as $filter => $data) {
-            $query_vars[] = $this->prefix . $filter;
+            $query_vars[] = $data['field']['name'];
         }
         return $query_vars;
     }

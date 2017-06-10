@@ -7,7 +7,6 @@ class BaseFilter
     
     public $field_type = '';
     public $field_params = [];
-    public $prefix = 'filter_';
     
     /**
      * Field Object
@@ -26,9 +25,6 @@ class BaseFilter
         // this array gets passed around a bit...
         $this->field_params = $params['field'];
         $this->filter_query = $params['filter_query'];
-
-        // Prefix field name to avoid query var clashes
-        $this->field_params['name'] = $this->prefix . $this->field_params['name'];
 
         // Set field value if the filter is available in query params
         // Use this in child classes to get the value passed in query vars
