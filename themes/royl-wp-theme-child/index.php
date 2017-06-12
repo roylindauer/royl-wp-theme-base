@@ -3,6 +3,7 @@
 
 use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Util;
+use Royl\WpThemeBase\Ajax;
 get_header();
 ?>
 <section class="site-section" id="posts">
@@ -53,7 +54,7 @@ get_header();
 
 <script type="text/javascript">
 $.ajax({
-    url: '<?php echo royl_ajax_url('AjaxFilter', 'getQueryVars'); ?>',
+    url: '<?php echo Ajax\Util::url('FilterPost', 'getQueryVars'); ?>',
     data: {
         'filter_query': 'post-category'
     },
@@ -67,7 +68,7 @@ $.ajax({
 $('.js-ajax-test').click(function(evt){
     evt.preventDefault();
     $.ajax({
-        url: '<?php echo royl_ajax_url('AjaxFilter', 'doFilter'); ?>',
+        url: '<?php echo Ajax\Util::url('FilterPost', 'doFilter'); ?>',
         data: {
             'filter_query': 'post-category'
         },

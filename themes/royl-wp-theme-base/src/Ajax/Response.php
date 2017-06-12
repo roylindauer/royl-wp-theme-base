@@ -1,6 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Ajax;
+namespace Royl\WpThemeBase\Ajax;
 
 use Royl\WpThemeBase\Util;
 
@@ -12,7 +12,7 @@ use Royl\WpThemeBase\Util;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class AjaxBase
+class Response
 {
     private $format = 'json';
     private $response;

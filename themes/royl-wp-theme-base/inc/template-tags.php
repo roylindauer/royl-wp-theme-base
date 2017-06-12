@@ -36,23 +36,3 @@ if (!function_exists('royl_custom_logo')) {
         }
     }
 }
-
-
-/**
- * Create Nonce for Ajax requests
- */
-if (!function_exists('royl_create_ajax_nonce')) {
-    function royl_create_ajax_nonce()
-    {
-        return wp_create_nonce('royl_execute_ajax_nonce');
-    }
-}
-
-/**
- * Generate an ajax url
- */
-if (!function_exists('royl_ajax_url')) {
-    function royl_ajax_url($c, $m) {
-        return admin_url('admin-ajax.php?_wpnonce=' . royl_create_ajax_nonce() . '&action=royl_ajax&c=' . $c . '&m=' . $m);
-    }
-}
