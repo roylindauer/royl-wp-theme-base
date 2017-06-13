@@ -22,7 +22,7 @@ function setup_filters() {
                 'post_types' => [ 'post' ],
             ],
             'field' => [
-                'type' => 'SelectField',
+                'type' => 'Select',
                 'multi' => false,
                 'options' => Wp\Taxonomy::getList( 'category' ),
                 'name' => 'category', // use for the name attr on the field
@@ -35,7 +35,7 @@ function setup_filters() {
                 'post_types' => [ 'post' ],
             ],
             'field' => [
-                'type' => 'TextField',
+                'type' => 'Text',
                 'name' => 'search', // use for the name attr on the field
                 'label' => Util\Text::translate('Search'),
             ]
@@ -48,7 +48,7 @@ function setup_filters() {
                 'post_types' => [ 'post' ],
             ],
             'field' => [
-                'type' => 'TextField',
+                'type' => 'Text',
                 'name' => 'mycustomfield', // use for the name attr on the field
                 'label' => Util\Text::translate('Custom Fields'),
             ]

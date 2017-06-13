@@ -2,7 +2,7 @@
 
 namespace Royl\WpThemeBase\Filter;
 
-use \Royl\WpThemeBase\Wp;
+use Royl\WpThemeBase\Wp;
 
 /**
  * Utility class for working with content Filters
@@ -14,6 +14,17 @@ use \Royl\WpThemeBase\Wp;
  */
 class Util
 {
+    private static function getDefinedFilterData($set) {
+
+        $filters    = \Royl\WpThemeBase\Util\Configure::read('filters.filters');
+        $filterlist = \Royl\WpThemeBase\Util\Configure::read('filters.filter_template_map.' . $set);
+
+        return [
+            'filters' => $filters,
+            'filterlist' => $filterlist
+        ];
+    }
+
     /**
      * Render Filter Bar
      *
@@ -22,13 +33,12 @@ class Util
      */
     public static function renderFilterForm($set, $partial = 'filter-bar')
     {
-        $filters    = Configure::read('filters.filters');
-        $filterlist = Configure::read('filters.filter_template_map.' . $set);
+        $filterdata = self::getDefinedFilterData($set);
 
         $filter_objects = [];
-        foreach ($filterlist as $_f) {
-            $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filters[$_f]['filter_query']['type'] . 'Query';
-            $filter_objects[] = new $filterclass($filters[$_f]);
+        foreach ($filterdata['filterlist'] as $_f) {
+            $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filterdata['filters'][$_f]['filter_query']['type'];
+            $filter_objects[] = new $filterclass($filterdata['filters'][$_f]);
         }
 
         do_action('royl_before_render_filter_form');
@@ -42,32 +52,30 @@ class Util
      */
     public static function getFilterQuery($set)
     {
-    
         // Setup default query args
-        $args = Configure::read('filters.defaults');
+        $args = \Royl\WpThemeBase\Util\Configure::read('filters.defaults');
         if (!$args) {
             $args = [];
         }
 
         $args['post_type'] = [];
-        $_args[] = [];
 
-        // With each Filter Object get its WP_Query args and merge into $args
-        $filters    = Configure::read('filters.filters');
-        $filterlist = Configure::read('filters.filter_template_map.' . $set);
+        $filterdata = self::getDefinedFilterData($set);
 
-        foreach ($filterlist as $_f) {
-            if (!isset( $filters[$_f])) {
+        foreach ($filterdata['filterlist'] as $_f) {
+            if (!isset( $filterdata['filters'][$_f])) {
                 continue;
             }
 
+            $filter_conf = $filterdata['filters'][$_f];
+
             // Process Filter Query
-            $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filters[$_f]['filter_query']['type'] . 'Query';
-            $filter = new $filterclass( $filters[$_f] );
+            $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filter_conf['filter_query']['type'];
+            $filter = new $filterclass($filter_conf);
             $args = array_merge_recursive($args, $filter->getFilter());
 
             // Post Types
-            $args['post_type'] = array_merge($args['post_type'], $filters[$_f]['filter_query']['post_types']);
+            $args['post_type'] = array_merge($args['post_type'], $filter_conf['filter_query']['post_types']);
         }
 
         // Clean up Post Types

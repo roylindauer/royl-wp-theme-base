@@ -2,7 +2,7 @@
 
 namespace Royl\WpThemeBase\Filter\Query;
 
-class PostmetaQuery extends \Royl\WpThemeBase\Filter\Query\Query
+class Postmeta extends \Royl\WpThemeBase\Filter\Query
 {
     public function getFilter()
     {

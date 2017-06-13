@@ -2,9 +2,6 @@
 
 namespace Royl\WpThemeBase\Filter;
 
-use \Royl\WpThemeBase\Util;
-use \Royl\WpThemeBase\Wp;
-
 /*
 Usage:
 
@@ -27,7 +24,7 @@ function setup_filters() {
             ],
             // the field to render. Type should be a Field Class
             'field' => [
-                'type' => 'SelectField',
+                'type' => 'Select',
                 'multi' => false,
                 'options' => Wp\Taxonomy::getList( 'stakeholder_type' ),
                 'name' => 'FILTER_NAME_HERE', // use for the name attr on the field
@@ -48,7 +45,7 @@ function setup_filters() {
             ],
             // the field to render. Type should be a Field Class
             'field' => [
-                'type' => 'SelectField',
+                'type' => 'Select',
                 'multi' => false,
                 'options' => ['get', 'the', 'values', 'somehow'],
                 'name' => 'FILTER_NAME_HERE', // use for the name attr on the field
@@ -133,7 +130,7 @@ class Filter
     {
         $filters = [];
         $filters = apply_filters( 'royl_config_filters', $filters );
-        Util\Configure::write('filters.filters', $filters);
+        \Royl\WpThemeBase\Util\Configure::write('filters.filters', $filters);
     }
 
     /**
@@ -143,7 +140,7 @@ class Filter
     {
         $filter_template_map = [];
         $filter_template_map = apply_filters( 'royl_map_filters', $filter_template_map );
-        Util\Configure::write('filters.filter_template_map', $filter_template_map);
+        \Royl\WpThemeBase\Util\Configure::write('filters.filter_template_map', $filter_template_map);
     }
 
     /**
@@ -151,7 +148,7 @@ class Filter
      */
     public function setDefaults()
     {
-        $this->defaultQueryArgs = Util\Configure::read('filters.defaults');
+        $this->defaultQueryArgs = \Royl\WpThemeBase\Util\Configure::read('filters.defaults');
     }
 
     /**
@@ -159,7 +156,7 @@ class Filter
      */
     public function queryVars($query_vars)
     {
-        $filters = Util\Configure::read('filters.filters');
+        $filters = \Royl\WpThemeBase\Util\Configure::read('filters.filters');
         foreach ($filters as $filter => $data) {
             $query_vars[] = $data['field']['name'];
         }

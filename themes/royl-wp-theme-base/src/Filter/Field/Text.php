@@ -1,8 +1,8 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter\Fields;
+namespace Royl\WpThemeBase\Filter\Field;
 
-class TextField extends \Royl\WpThemeBase\Core\Filter\Fields\BaseField
+class Text extends \Royl\WpThemeBase\Filter\Field
 {
     public function render()
     {

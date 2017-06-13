@@ -1,11 +1,11 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter\Fields;
+namespace Royl\WpThemeBase\Filter;
 
 use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Util;
 
-class BaseField
+class Field
 {
     /**
      * Array of field parameter

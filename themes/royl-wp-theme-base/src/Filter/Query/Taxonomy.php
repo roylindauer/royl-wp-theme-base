@@ -2,7 +2,7 @@
 
 namespace Royl\WpThemeBase\Filter\Query;
 
-class TaxonomyQuery extends \Royl\WpThemeBase\Filter\Query
+class Taxonomy extends \Royl\WpThemeBase\Filter\Query
 {
     public function getFilter()
     {

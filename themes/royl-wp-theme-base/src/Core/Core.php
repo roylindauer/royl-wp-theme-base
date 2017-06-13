@@ -4,6 +4,7 @@ namespace Royl\WpThemeBase\Core;
 
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Ajax;
+use Royl\WpThemeBase\Filter;
 
 /**
  * Theme Core Class
@@ -39,7 +40,7 @@ class Core
             
             $reg->set('Assets', new Assets());
             $reg->set('Ajax', new Ajax\Ajax());
-            $reg->set('CoreFilter', new Filter());
+            $reg->set('CoreFilter', new Filter\Filter());
             $reg->set('PostTypeRegistry', new PostTypeRegistry());
             $reg->set('TaxonomyRegistry', new TaxonomyRegistry());
             #$reg->set('ContentSilo', new ContentSilo());

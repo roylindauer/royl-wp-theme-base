@@ -4,6 +4,7 @@
 use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Ajax;
+use Royl\WpThemeBase\Filter;
 get_header();
 ?>
 <section class="site-section" id="posts">
@@ -13,10 +14,10 @@ get_header();
 
         <?php
         // Render the filter form:
-        \Royl\WpThemeBase\Util\Filter::renderFilterForm( 'post-category' );
+        Filter\Util::renderFilterForm( 'post-category' );
 
         // Get filtered query object:
-        $query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( 'post-category' );
+        $query = Filter\Util::getFilterQuery( 'post-category' );
 
         // WordPress pagination is based on the Main query.
         // We have to kinda trick WP when we use a custom query object in the main loop.. 
