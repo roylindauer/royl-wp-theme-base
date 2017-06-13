@@ -1,6 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Util;
+namespace Royl\WpThemeBase\Filter;
 
 use \Royl\WpThemeBase\Wp;
 
@@ -12,7 +12,7 @@ use \Royl\WpThemeBase\Wp;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class Filter
+class Util
 {
     /**
      * Render Filter Bar
@@ -27,7 +27,7 @@ class Filter
 
         $filter_objects = [];
         foreach ($filterlist as $_f) {
-            $filterclass = 'Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'] . 'Filter';
+            $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filters[$_f]['filter_query']['type'] . 'Query';
             $filter_objects[] = new $filterclass($filters[$_f]);
         }
 
@@ -62,7 +62,7 @@ class Filter
             }
 
             // Process Filter Query
-            $filterclass = 'Royl\WpThemeBase\Core\Filter\\' . $filters[$_f]['filter_query']['type'] . 'Filter';
+            $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filters[$_f]['filter_query']['type'] . 'Query';
             $filter = new $filterclass( $filters[$_f] );
             $args = array_merge_recursive($args, $filter->getFilter());
 

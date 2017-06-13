@@ -1,8 +1,8 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter;
+namespace Royl\WpThemeBase\Filter\Query;
 
-class TaxonomyFilter extends \Royl\WpThemeBase\Core\Filter\BaseFilter
+class TaxonomyQuery extends \Royl\WpThemeBase\Filter\Query
 {
     public function getFilter()
     {

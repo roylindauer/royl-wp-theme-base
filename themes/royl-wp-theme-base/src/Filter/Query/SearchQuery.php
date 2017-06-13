@@ -1,8 +1,8 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter;
+namespace Royl\WpThemeBase\Filter\Query;
 
-class SearchFilter extends \Royl\WpThemeBase\Core\Filter\BaseFilter
+class SearchQuery extends \Royl\WpThemeBase\Filter\Query
 {
     public function getFilter()
     {

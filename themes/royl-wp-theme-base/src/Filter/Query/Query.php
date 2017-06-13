@@ -1,8 +1,8 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter;
+namespace Royl\WpThemeBase\Filter\Query;
 
-class BaseFilter
+class Query
 {
     
     public $field_type = '';
@@ -31,7 +31,7 @@ class BaseFilter
         $this->field_params['value'] = get_query_var($this->field_params['name'], false);
 
         // Init the field class
-        $fieldclass = '\Royl\WpThemeBase\Core\Filter\Fields\\' . $this->field_type;
+        $fieldclass = '\Royl\WpThemeBase\Filter\Fields\\' . $this->field_type;
         $this->Field = new $fieldclass($this->field_params);
     }
     

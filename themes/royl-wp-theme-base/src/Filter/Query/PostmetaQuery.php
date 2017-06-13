@@ -1,8 +1,8 @@
 <?php
 
-namespace Royl\WpThemeBase\Core\Filter;
+namespace Royl\WpThemeBase\Filter\Query;
 
-class PostmetaFilter extends \Royl\WpThemeBase\Core\Filter\BaseFilter
+class PostmetaQuery extends \Royl\WpThemeBase\Filter\Query\Query
 {
     public function getFilter()
     {
