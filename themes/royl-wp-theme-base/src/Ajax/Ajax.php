@@ -40,7 +40,7 @@ use Royl\WpThemeBase\Util;
  */
 class Ajax
 {
-    private $ajaxClassNamespace = 'Royl\\WpThemeBase\\Ajax';
+    private $ajaxClassNamespace = '\Royl\WpThemeBase\Ajax\Response';
 
     /**
      * Setup the Ajax handler
@@ -84,7 +84,7 @@ class Ajax
             $class = "{$this->ajaxClassNamespace}\\$c";
  
             if (!class_exists($class)) {
-                throw new \Exception('Class does not exist');
+                throw new \Exception(sprintf('Class %s does not exist', $class));
             }
  
             // Instantiate new Ajax Response object

@@ -1,6 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Ajax;
+namespace Royl\WpThemeBase\Ajax\Response;
 
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Filter;
@@ -13,7 +13,7 @@ use Royl\WpThemeBase\Filter;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class FilterPost extends Response
+class FilterPost extends \Royl\WpThemeBase\Ajax\Response
 {
     private $format = 'json';
     private $response;
