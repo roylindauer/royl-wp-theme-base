@@ -3,6 +3,7 @@
 namespace Royl\WpThemeBase\Ajax;
 
 use Royl\WpThemeBase\Util;
+use Royl\WpThemeBase\Filter;
 
 /**
  * Ajax End Point for Filtering
@@ -22,7 +23,7 @@ class FilterPost extends Response
         if (isset($_GET['filter_query'])) {
             $set = filter_var($_GET['filter_query']);
 
-            $query = Util\Filter::getFilterQuery($set);
+            $query = Filter\Util::getFilterQuery($set);
             $this->response([
                 'posts' => $query->posts,
                 'post_count' => $query->post_count,
