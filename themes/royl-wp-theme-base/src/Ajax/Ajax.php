@@ -9,28 +9,10 @@ use Royl\WpThemeBase\Util;
  *
  * Usage: /wp-admin/admin-ajax.php?action=royl_ajax&c=CLASS&m=METHOD&_wpnonce=NONCE
  *
- * Generate a nonce: wp_create_nonce('royl_execute_ajax_nonce');
- *
- * You will need to set the ajax.namespace in your Config
- * Configure::write('ajax.namespace', 'MyTheme\\IsGreat');
- *
  * Params for ajax request:
  * c         = class to instantiate
  * m         = method to run
  * _wpnonce  = WordPress Nonce
- *
- * <?php
- *
- * namespace MyTheme\IsGreat;
- * use Royl\WpThemeBase\Core;
- * use Royl\WpThemeBase\Util;
- * use Royl\WpThemeBase\Wp;
- *
- * class MyAjaxThing extends AjaxBase {
- *
- * public function doThing {
- *   $this->response(['heyo'], 'json);
- * }
  *
  *
  * @package     WpThemeBase
