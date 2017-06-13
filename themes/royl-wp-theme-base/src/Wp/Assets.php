@@ -1,6 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Core;
+namespace Royl\WpThemeBase\Wp;
 
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
