@@ -16,8 +16,8 @@ class Util
 {
     /**
      * Get Query Var
-     * @param  [type] $var [description]
-     * @return [type]      [description]
+     * @param  string  $var the query var
+     * @return mixed        returns false if no value found
      */
     public static function getQueryVar($var) {
         $ret = get_query_var($var, false);
@@ -30,7 +30,7 @@ class Util
     }
 
     /**
-     * [getDefinedFilterData description]
+     * Get an array of all of the defined filters and the filter template mappings for specific filter set
      * @param  [type] $set [description]
      * @return [type]      [description]
      */
@@ -53,18 +53,31 @@ class Util
      */
     public static function renderFilterForm($set, $partial = 'filter-bar')
     {
+        /**
+         * Collection of all defined filters and the template mapping for $set
+         * @var [type]
+         */
         $filterdata = self::getDefinedFilterData($set);
 
+        /**
+         * Collection of Filter Query Objects for $set
+         * @var array
+         */
         $filter_objects = [];
+
+        // Instantiate new Filter Objects for each of the filters in our $set
         foreach ($filterdata['filterlist'] as $_f) {
             $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filterdata['filters'][$_f]['filter_query']['type'];
             $filter_objects[] = new $filterclass($filterdata['filters'][$_f]);
         }
 
+        // Modify output before the filter form is rendered
         do_action('royl_before_render_filter_form');
 
+        // Load the filter form
         Wp\Template::load( 'filter/' . $partial, ['filters' => $filter_objects]);
 
+        // Modify output after the filter form is rendered
         do_action('royl_after_render_filter_form');
     }
 
