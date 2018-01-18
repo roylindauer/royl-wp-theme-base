@@ -6,7 +6,7 @@ use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
 
 /**
- * Content Siloing
+ * Vanity URL Router
  *
  * Allow content creators to define a custom url for a post.
  * Custom url is stored in a routes table
@@ -16,29 +16,68 @@ use Royl\WpThemeBase\Wp;
  * @author      Roy Lindauer <hello@roylindauer.com>
  * @version     1.0
  */
-class ContentSilo
+class VanityUrlRouter
 {
-    public $tableName = 'siloroutes';
+    public $tableName = 'vanityurls';
+    public $queryVar = 'is_vanityurl';
     
     public function __construct()
     {
-        
+        /**
+         * Define meta box to manage vanity url
+         */
         add_action('add_meta_boxes', [&$this, 'addMetaBox']);
-        add_action('save_post', [&$this, 'saveCustomMetabox'], 10, 3);
+        add_action('save_post', [&$this, 'saveCustomMetabox'], 99, 3);
 
+        /**
+         * This does most of the work of handling the custoM URL
+         */
         add_action('parse_request', [&$this, 'parseRequest'], PHP_INT_MAX - 1, 1);
 
-        add_action('init', [&$this, 'addRewriteTags']);
-        add_action('init', [&$this, 'addRewriteRules']);
+        /**
+         * We define a custom rewrite rule for EVERY VANITY URL
+         * @todo  this may not be scalable, test it, and refactor if required
+         */
+        add_action('init', [&$this, 'addRewriteTags'], 10);
+        add_action('init', [&$this, 'addRewriteRules'], 10);
 
+        /**
+         * Flushes rewrite rules if required. This must be executed after addRewriteRules()
+         */
+        add_action('init', [&$this, 'maybeUpdateRewriteRules'], 9999);
+
+        /**
+         * Does the initial setup. 
+         * @todo  this should be part of theme activation
+         */
         add_action('admin_init', function () {
             $this->init();
         });
 
+        /**
+         * Show vanity URLs in permalinks
+         */
         add_filter('post_link', [&$this, 'permalinks'], 10, 3);
         add_filter('page_link', [&$this, 'permalinks'], 10, 3);
         add_filter('post_type_link', [&$this, 'permalinks'], 10, 3);
+
+        /**
+         * Adds a custom query var so we know we are in a vanity url request
+         */
         add_filter('query_vars', [&$this, 'queryVars']);
+    }
+
+    /**
+     * Flushes Rewrite Rules if required
+     * @return [type] [description]
+     */
+    public function maybeUpdateRewriteRules() {
+        if (get_option('vanityurl_requires_update')) {
+            global $wp_rewrite;
+            flush_rewrite_rules( false );
+            $wp_rewrite->flush_rules();
+            update_option('vanityurl_requires_update', false);
+        }
     }
 
     /**
@@ -48,21 +87,21 @@ class ContentSilo
     {
         $routes = $this->getRoutes();
         foreach ($routes as $route) {
-            add_rewrite_rule('^' . $route['url'] . '$', 'index.php?is_siloing=true', 'top');
+            add_rewrite_rule('^' . $route['url'] . '$', 'index.php?' . $this->queryVar . '=true', 'top');
         }
     }
 
     public function addRewriteTags()
     {
-        add_rewrite_tag('is_siloing', '([^&]+)');
+        add_rewrite_tag($this->queryVar, '([^&]+)');
     }
 
     /**
-     * Add siloing query vars
+     * Add query var
      */
     public function queryVars($query_vars)
     {
-        $query_vars[] = 'is_siloing';
+        $query_vars[] = $this->queryVar;
         return $query_vars;
     }
 
@@ -81,7 +120,7 @@ class ContentSilo
             $post = get_post($post);
         }
         
-        $result = $this->getSiloRouteByID($post->ID);
+        $result = $this->getVanityUrlRouteByID($post->ID);
         
         if ($result !== null) {
             return get_site_url(null, $result['url']);
@@ -91,7 +130,7 @@ class ContentSilo
     }
 
     /**
-     * Get all silo routes
+     * Get all vanity url routes
      *
      * @return null|array
      */
@@ -102,12 +141,12 @@ class ContentSilo
     }
 
     /**
-     * Retrieve siloroute record by post id
+     * Retrieve route record by post id
      *
      * @param  int  $post_id
      * @return null|array
      */
-    private function getSiloRouteByID($post_id)
+    private function getVanityUrlRouteByID($post_id)
     {
         global $wpdb;
         return $wpdb->get_row(
@@ -117,7 +156,29 @@ class ContentSilo
     }
 
     /**
-     * Retrieve siloroute record by exact url
+     * Returns a clean URL
+     * No trailing slas. No beginning slash. Returns a relative url
+     * @param  [type] $url [description]
+     * @return [type]      [description]
+     */
+    private function cleanUrl($url) {
+
+        // Remove prefixed slash
+        if (substr($url, 0, 1) == '/') {
+            $url = ltrim($url, '/');
+        }
+
+        // Rermove trailing slash
+        if (substr($url, 0, -1) == '/') {
+            $url = rtrim($url, '/');
+        }
+
+
+        return $url;
+    }
+
+    /**
+     * Retrieve vanity url route record by exact url
      *
      * @param  string  $url
      * @return null|array
@@ -125,6 +186,8 @@ class ContentSilo
     private function getPostByURL($url)
     {
         global $wpdb;
+
+        $url = $this->cleanUrl($url);
         $sql = $wpdb->prepare('SELECT * FROM ' . $wpdb->prefix . $this->tableName . ' WHERE url = "%s"', $url);
         $result = $wpdb->get_row($sql, ARRAY_A);
         return $result;
@@ -133,7 +196,7 @@ class ContentSilo
     /**
      * Hijack the initial request.
      *
-     * Checks for matching siloroute, if found then populates query params with the proper post data
+     * Checks for matching vanity url route, if found then populates query params with the proper post data
      *
      * @param  WP  $wp
      * @return null|array
@@ -143,6 +206,7 @@ class ContentSilo
         $result = $this->getPostByURL($wp->request);
         
         if ($result !== null) {
+
             /*
              * WordPress will redirect to the internal canonical url unless we 
              * explicitly tell it not to here. 
@@ -154,10 +218,18 @@ class ContentSilo
              * Normally WordPress would auto fill this information.
              */
             $post = get_post($result['post_id']);
-            $wp->query_vars['p']         = $post->ID;
-            $wp->query_vars['post_name'] = $post->post_name;
-            $wp->query_vars['post_type'] = $post->post_type;
+
+            if ($post->post_type == 'page') {
+                $wp->query_vars['page']     = '';
+                $wp->query_vars['pagename'] = $post->post_name;
+            } else {
+                $wp->query_vars['p']         = $post->ID;
+                $wp->query_vars['post_name'] = $post->post_name;
+                $wp->query_vars['post_type'] = $post->post_type;
+            }
         }
+
+        return $wp;
     }
 
     /**
@@ -166,8 +238,8 @@ class ContentSilo
     public function addMetaBox()
     {
         add_meta_box(
-            'silo-route-id',
-            Util\Text::translate('Content Siloing'),
+            'vanityurl-route-id',
+            Util\Text::translate('Vanity URL'),
             [&$this, 'renderField'], ['post', 'page'],
             'normal'
         );
@@ -178,7 +250,7 @@ class ContentSilo
      */
     public function renderField($post)
     {
-        wp_nonce_field(basename(__FILE__), 'silo-customurl-nonce');
+        wp_nonce_field(basename(__FILE__), 'vanityurl-customurl-nonce');
         
         global $wpdb;
         
@@ -194,7 +266,7 @@ class ContentSilo
         <div>
             <label for="custom-url-path"><?php echo Util\Text::translate('Custom URL Path') ?></label>
             <input name="custom-url-path" type="text" value="<?php echo $metabox_custom_url_path; ?>">
-            <p><small><?php echo Util\Text::translate('eg: /my-content-silo/secondary-silo/name-of-the-post') ?></small></p>
+            <p><small><?php echo Util\Text::translate('eg: /primary-content-container/secondary-structure/name-of-the-post') ?></small></p>
         </div>
         <?php
     }
@@ -204,15 +276,15 @@ class ContentSilo
      */
     public function saveCustomMetabox($post_id, $post, $update)
     {
-        if (!isset($_POST['silo-customurl-nonce']) || !wp_verify_nonce($_POST['silo-customurl-nonce'], basename(__FILE__))) {
+        if (!isset($_POST['vanityurl-customurl-nonce']) || !wp_verify_nonce($_POST['vanityurl-customurl-nonce'], basename(__FILE__))) {
             return $post_id;
         }
         
-        if (!current_user_can("edit_post", $post_id)) {
+        if (!current_user_can('edit_post', $post_id)) {
             return $post_id;
         }
         
-        if (defined("DOING_AUTOSAVE") && DOING_AUTOSAVE) {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return $post_id;
         }
         
@@ -221,28 +293,31 @@ class ContentSilo
         $metabox_custom_url_path = '';
         if (isset($_POST['custom-url-path'])) {
             $metabox_custom_url_path = sanitize_text_field($_POST['custom-url-path']);
+            $metabox_custom_url_path = $this->cleanUrl($metabox_custom_url_path);
         }
-        
-        $result = $this->getSiloRouteByID($post_id);
+
+        $result = $this->getVanityUrlRouteByID($post->ID);
+
         if ($result === null) {
             $wpdb->insert(
                 $wpdb->prefix . $this->tableName,
-                ['url' => $metabox_custom_url_path,
-                'post_id' => $post_id],
+                ['url' => $metabox_custom_url_path, 'post_id' => $post->ID],
                 ['%s', '%d']
             );
         } else {
             $wpdb->update(
                 $wpdb->prefix . $this->tableName,
-                ['url' => $metabox_custom_url_path, 'post_id' => $post_id],
-                ['post_id' => $post_id],
+                ['url' => $metabox_custom_url_path, 'post_id' => $post->ID],
+                ['post_id' => $post->ID],
                 ['%s', '%d']
             );
         }
+
+        update_option('vanityurl_requires_update', true);
     }
 
     /**
-     * Setup content silo
+     * Setup Vanity URL Table
      */
     private function init()
     {

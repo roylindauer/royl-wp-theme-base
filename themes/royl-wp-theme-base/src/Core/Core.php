@@ -44,7 +44,7 @@ class Core
             $reg->set('CoreFilter', new Filter\Filter());
             $reg->set('PostTypeRegistry', new PostTypeRegistry());
             $reg->set('TaxonomyRegistry', new TaxonomyRegistry());
-            #$reg->set('ContentSilo', new ContentSilo());
+            $reg->set('VanityUrlRouter', new VanityUrlRouter());
 
             // Display admin notices
             add_action('admin_notices', [&$this, 'printThemeErrors'], PHP_INT_MAX-1);
