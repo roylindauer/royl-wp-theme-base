@@ -39,12 +39,14 @@ class Field
     public function doRender()
     {
         $this->processFieldClasses();
-        
+
         echo '<div class="filter-wrapper">';
+        do_action('royl_before_render_filter_field_' . $this->field_params['name']);
         if (isset($this->field_params['label'])) {
             echo '<label class="filter-label" for="' . $this->field_params['id'] . '">' . Util\Text::translate( $this->field_params['label'] ) . '</label>';
         }
         Wp\Template::load('filter/' . $this->partial, [ 'field' => $this->field_params ]);
+        do_action('royl_after_render_filter_field_' . $this->field_params['name']);
         echo '</div>';
     }
 

@@ -63,6 +63,13 @@ function map_filters() {
     ];
 }
 
+add_action( 'royl_before_render_filter_field_filter_search', function(){
+    echo '<i>This is before the field...</i> ';
+} );
+add_action( 'royl_after_render_filter_field_filter_search', function(){
+    echo ' <i>This is after the field...</i>';
+} );
+
 // include custom jQuery
 function royl_include_custom_jquery()
 {
