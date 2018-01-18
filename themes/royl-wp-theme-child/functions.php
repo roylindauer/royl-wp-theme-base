@@ -64,10 +64,10 @@ function map_filters() {
 }
 
 add_action( 'royl_before_render_filter_field_filter_search', function(){
-    echo '<i>This is before the field...</i> ';
+    echo '<u>stuff before the field</u>&nbsp;';
 } );
 add_action( 'royl_after_render_filter_field_filter_search', function(){
-    echo ' <i>This is after the field...</i>';
+    echo ' <br><em>You can add a custom description or something using the action <code>royl_after_render_filter_field_filter_{$field_name}</code>.</em>';
 } );
 
 // include custom jQuery
