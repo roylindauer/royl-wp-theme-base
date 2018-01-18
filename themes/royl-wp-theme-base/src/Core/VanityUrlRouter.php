@@ -149,10 +149,7 @@ class VanityUrlRouter
     private function getVanityUrlRouteByID($post_id)
     {
         global $wpdb;
-        return $wpdb->get_row(
-            'SELECT * 
-            FROM ' . $wpdb->prefix . $this->tableName . ' 
-            WHERE post_id = ' . $post_id, ARRAY_A);
+        return $wpdb->get_row('SELECT *  FROM ' . $wpdb->prefix . $this->tableName . ' WHERE post_id = ' . $post_id . ' ORDER BY post_id ASC', ARRAY_A);
     }
 
     /**
@@ -285,6 +282,11 @@ class VanityUrlRouter
         }
         
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+            return $post_id;
+        }
+
+        // DO NOT store vanity urls for revisions. This will only cause you pain.
+        if ($post->post_type == 'revision') {
             return $post_id;
         }
         
