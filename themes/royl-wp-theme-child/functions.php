@@ -12,7 +12,7 @@ function royl_init_theme() {
     royl_wp_theme_base();
 }
 
-add_filter( 'royl_config_filters', 'setup_filters' );
+add_filter( 'royl_config_filters', 'setup_filters', 10 );
 function setup_filters() {
     return [
         'category' => [

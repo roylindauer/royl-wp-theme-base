@@ -8,6 +8,9 @@ require_once 'inc/autoload.php';
 // Load core theme functions
 require_once 'inc/royl-wp-theme-base.php';
 
+// Load the Autoloader
+require_once 'inc/init.php';
+
 // Include template tags
 require_once 'inc/template-tags.php';
 
