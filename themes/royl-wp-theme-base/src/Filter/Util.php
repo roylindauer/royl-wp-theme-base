@@ -14,6 +14,26 @@ use Royl\WpThemeBase\Wp;
  */
 class Util
 {
+    /**
+     * Get Query Var
+     * @param  [type] $var [description]
+     * @return [type]      [description]
+     */
+    public static function getQueryVar($var) {
+        $ret = get_query_var($var, false);
+        if ($ret === false) {
+            if (isset($_REQUEST[$var])) {
+                $ret = $_REQUEST[$var];
+            }
+        }
+        return filter_var($ret);
+    }
+
+    /**
+     * [getDefinedFilterData description]
+     * @param  [type] $set [description]
+     * @return [type]      [description]
+     */
     private static function getDefinedFilterData($set) {
 
         $filters    = \Royl\WpThemeBase\Util\Configure::read('filters.filters');
@@ -42,7 +62,9 @@ class Util
         }
 
         do_action('royl_before_render_filter_form');
+
         Wp\Template::load( 'filter/' . $partial, ['filters' => $filter_objects]);
+
         do_action('royl_after_render_filter_form');
     }
 
@@ -81,7 +103,7 @@ class Util
         // Clean up Post Types
         $args['post_type'] = array_filter(array_unique($args['post_type']));
         
-        $args['paged'] = get_query_var('paged');
+        $args['paged'] = self::getQueryVar('paged');
         
         // last chance to modify filter args before WP_Query object is created
         $args = apply_filters('royl_alter_filter_query_args', $args);

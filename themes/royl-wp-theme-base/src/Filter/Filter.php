@@ -56,15 +56,19 @@ function setup_filters() {
 }
 
 // Setup up filter sets. This is how you group the defined filters together into unique filter forms.
+// structure is :
+array(
+    'filter-set-name' => array(
+        'filter-name',
+        'filter-name',
+        'filter-name'
+    )
+)
 add_filter( 'royl_map_filters', 'map_filters' );
 function map_filters() {
     return [
         'taxonomy-stakeholder_ammenities'      => [ 'type', 'neighborhoods', 'keyword' ],
         'taxonomy-stakeholder_type'            => [ 'ammenities', 'neighborhoods', 'keyword' ],
-        #'taxonomy-stakeholder_type-activities' => [ 'neighborhoods', 'type', 'ammenities', 'keyword' ],
-        #'taxonomy-stakeholder_type-dining'     => [ 'neighborhoods', 'type', 'ammenities', 'budget', 'keyword' ],
-        #'taxonomy-stakeholder_type-lodging'    => [ 'neighborhoods', 'type', 'ammenities', 'budget', 'keyword' ],
-        #'taxonomy-stakeholder_type-shopping'   => [ 'neighborhoods', 'type', 'ammenities', 'keyword' ],
     ];
 }
 
@@ -89,10 +93,10 @@ function after_render_filter_bar() {
 }
 
 // Render the form:
-\Royl\WpThemeBase\Util\Filter::renderFilterForm( $set );
+\Royl\WpThemeBase\Filter\Util::renderFilterForm( $set );
 
 // Get query object:
-$query = \Royl\WpThemeBase\Util\Filter::getFilterQuery( $set );
+$query = \Royl\WpThemeBase\Filter\Util::getFilterQuery( $set );
 */
 
 /**
@@ -157,9 +161,12 @@ class Filter
     public function queryVars($query_vars)
     {
         $filters = \Royl\WpThemeBase\Util\Configure::read('filters.filters');
+        
+        // Add each of our defined filters as query var
         foreach ($filters as $filter => $data) {
             $query_vars[] = $data['field']['name'];
         }
+        
         return $query_vars;
     }
 }

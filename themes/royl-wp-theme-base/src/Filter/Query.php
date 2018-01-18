@@ -28,7 +28,7 @@ class Query
 
         // Set field value if the filter is available in query params
         // Use this in child classes to get the value passed in query vars
-        $this->field_params['value'] = get_query_var($this->field_params['name'], false);
+        $this->field_params['value'] = $_REQUEST[$this->field_params['name']];
 
         // Init the field class
         $fieldclass = '\Royl\WpThemeBase\Filter\Field\\' . $this->field_type;

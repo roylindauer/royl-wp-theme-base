@@ -54,10 +54,12 @@ get_header();
 <?php get_footer(); ?>
 
 <script type="text/javascript">
+
+// Returns list of fields for filter set
 $.ajax({
-    url: '<?php echo Ajax\Util::url('FilterPost', 'getQueryVars'); ?>',
+    url: '<?php echo Ajax\Util::url('FilterPost', 'getFields'); ?>',
     data: {
-        'filter_query': 'post-category'
+        'filter_set': 'post-category'
     },
     success: function(res){
         console.log(res);
@@ -66,12 +68,15 @@ $.ajax({
         console.log(res);
     }
 });
+
+// 
 $('.js-ajax-test').click(function(evt){
     evt.preventDefault();
     $.ajax({
         url: '<?php echo Ajax\Util::url('FilterPost', 'doFilter'); ?>',
         data: {
-            'filter_query': 'post-category'
+            'filter_set': 'post-category',
+            'filter_search': "test"
         },
         success: function(){
             console.log('success');

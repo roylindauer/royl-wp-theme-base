@@ -18,11 +18,15 @@ class FilterPost extends \Royl\WpThemeBase\Ajax\Response
     private $format = 'json';
     private $response;
     
+    /**
+     * Process Filter Request
+     *
+     * @return [type] [description]
+     */
     public function doFilter()
     {
-        if (isset($_GET['filter_query'])) {
-            $set = filter_var($_GET['filter_query']);
-
+        $set = Filter\Util::getQueryVar('filter_set');
+        if ($set) {
             $query = Filter\Util::getFilterQuery($set);
             $this->response([
                 'posts' => $query->posts,
@@ -35,11 +39,15 @@ class FilterPost extends \Royl\WpThemeBase\Ajax\Response
         }
     }
 
-    public function getQueryVars() {
+    /**
+     * Returns an array of Fields for a defined Filter Set
+     * @return [type] [description]
+     */
+    public function getFields() {
 
-        if (isset($_GET['filter_query'])) {
+        $set = Filter\Util::getQueryVar('filter_set');
+        if ($set) {
             $ret = [];
-            $set = filter_var($_GET['filter_query']);
             $filters    = Util\Configure::read('filters.filters');
             $filterlist = Util\Configure::read('filters.filter_template_map.' . $set);
 
