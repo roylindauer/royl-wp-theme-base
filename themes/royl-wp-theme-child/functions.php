@@ -33,49 +33,64 @@ add_action( 'shutdown', function(){
 });
 
 /**
- * Example: Pass config array for custom Post Types and Taxonomies
+ * Example: Register Custom Post Types
  */
-add_filter('royl_set_theme_config', function( $config = [] ){
-    $theme_config = [
-        'post_types' => [
-            'Cover' => [
-                // Default supports
-                'supports' => [
-                    'title',
-                    'editor',
-                    'thumbnail',
-                    'revisions',
-                ],
-                // Default args
-                'args' => [
-                    'description' => Util\Text::translate('Describe the post type'),
-                ]
+add_filter( 'royl_register_post_types', function( $post_types ){
+
+    $custom_post_types = [
+        'Cover' => [
+            // Default supports
+            'supports' => [
+                'title',
+                'editor',
+                'thumbnail',
+                'revisions',
+            ],
+            // Default args
+            'args' => [
+                'description' => Util\Text::translate('Describe the post type'),
+            ]
+        ]
+    ];
+    return array_merge( $post_types, $custom_post_types );
+});
+
+/**
+ * Example: Register Custom Taxonomies
+ */
+add_filter( 'royl_register_taxonomies', function( $tax ){
+
+    $custom_tax = [
+        'cover_categories' => [
+            'params' => [
+                'post_types'   => ['cover', 'post', 'page'], // this can include built in post types (page, post, etc)
+            ],
+            'args' => [
+                'label'        => Util\Text::translate('Cover Categories'),
+                'rewrite'      => 'cover_categories',
+                'hierarchical' => true,
             ]
         ],
-        'taxonomies' => [
-            'cover_categories' => [
-                'params' => [
-                    'post_types'   => ['cover', 'post', 'page'], // this can include built in post types (page, post, etc)
-                ],
-                'args' => [
-                    'label'        => Util\Text::translate('Cover Categories'),
-                    'rewrite'      => 'cover_categories',
-                    'hierarchical' => true,
-                ]
+        'cover_tags' => [
+            'params' => [
+                'post_types'   => ['cover'],
             ],
-            'cover_tags' => [
-                'params' => [
-                    'post_types'   => ['cover'],
-                ],
-                'args' => [
-                    'label'        => Util\Text::translate('Cover Tags'),
-                    'rewrite'      => 'cover_tags',
-                    'hierarchical' => false,
-                    'show_admin_column' => false
-                ]
-            ],
+            'args' => [
+                'label'        => Util\Text::translate('Cover Tags'),
+                'rewrite'      => 'cover_tags',
+                'hierarchical' => false,
+                'show_admin_column' => false
+            ]
         ],
     ];
+    return array_merge( $tax, $custom_tax );
+});
+
+/**
+ * Example: Set Theme Config Options
+ */
+add_filter( 'royl_set_theme_config', function( $config = [] ){
+    $theme_config = [];
     $config = array_merge( $config, $theme_config );
 
     return $config;

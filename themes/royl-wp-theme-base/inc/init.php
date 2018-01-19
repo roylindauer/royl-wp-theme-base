@@ -70,18 +70,56 @@ add_action( 'wp_enqueue_scripts', n( 'load_frontend_scripts' ), PHP_INT_MAX-1 );
 add_action( 'wp_enqueue_scripts', n( 'load_admin_scripts' ), PHP_INT_MAX-1 );
 add_action( 'wp_enqueue_scripts', n( 'load_login_scripts' ), PHP_INT_MAX-1 );
 
-add_action( 'after_setup_theme', n( 'royl_set_theme_config' ), PHP_INT_MAX-1 );
+add_action( 'after_setup_theme', n( 'set_theme_config' ), PHP_INT_MAX-1 );
+
+add_action( 'init', n( 'register_post_types' ), PHP_INT_MAX-1 );
+add_action( 'init', n( 'register_taxonomies' ), PHP_INT_MAX-1 );
 
 /*****************************************************************************
  A C T I O N   F U N C T I O N S
 *****************************************************************************/
 
 /**
- * Set Core Theme Config (you know, post types, taxonomies)
+ * Register Custom Post Types
+ * @return [type] [description]
+ */
+function register_post_types() {
+    $post_types = [];
+    $post_types = apply_filters( 'royl_register_post_types', $post_types );
+
+    if ( empty( $post_types ) ) {
+        return;
+    }
+
+    foreach ( $post_types as $post_type => $params ) {
+        new Wp\PostType( $post_type, $params );
+    }
+}
+
+/**
+ * Register Custom Taxonomies
+ * @return [type] [description]
+ */
+function register_taxonomies() {
+
+    $taxonomies = [];
+    $taxonomies = apply_filters( 'royl_register_taxonomies', $taxonomies );
+
+    if (empty($taxonomies)) {
+        return;
+    }
+
+    foreach ($taxonomies as $name => $opts) {
+        new Wp\TaxonomyType($name, $opts['params'], $opts['args']);
+    }
+}
+
+/**
+ * Set Core Theme Config (i suppose things like, api keys, or other data you want to pass around)
  * @param  array  $config [description]
  * @return [type]         [description]
  */
-function royl_set_theme_config() {
+function set_theme_config() {
     $config = [];
     $config = apply_filters( 'royl_set_theme_config', $config );
     Util\Configure::set($config);

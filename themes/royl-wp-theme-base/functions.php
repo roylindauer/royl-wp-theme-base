@@ -21,9 +21,7 @@ require_once 'inc/template-tags.php';
 
 $Ajax             = new Ajax\Ajax();
 $CoreFilter       = new Filter\Filter();
-$PostTypeRegistry = new PostTypeRegistry();
-$TaxonomyRegistry = new TaxonomyRegistry();
-$VanityUrlRouter  = new VanityUrlRouter();
+$VanityUrlRouter  = new Util\VanityUrlRouter();
 
 // Set some theme specific configurations in the global Config
 if (function_exists('wp_get_theme')) {

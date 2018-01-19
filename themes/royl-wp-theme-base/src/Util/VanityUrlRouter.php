@@ -1,8 +1,6 @@
 <?php
 
-namespace Royl\WpThemeBase\Core;
-
-use Royl\WpThemeBase\Util;
+namespace Royl\WpThemeBase\Util;
 
 /**
  * Vanity URL Router
@@ -235,7 +233,7 @@ class VanityUrlRouter
     {
         add_meta_box(
             'vanityurl-route-id',
-            Util\Text::translate('Vanity URL'),
+            Text::translate('Vanity URL'),
             [&$this, 'renderField'], ['post', 'page'],
             'normal'
         );
@@ -260,9 +258,9 @@ class VanityUrlRouter
         }
         ?>
         <div>
-            <label for="custom-url-path"><?php echo Util\Text::translate('Custom URL Path') ?></label>
+            <label for="custom-url-path"><?php echo Text::translate('Custom URL Path') ?></label>
             <input name="custom-url-path" type="text" value="<?php echo $metabox_custom_url_path; ?>">
-            <p><small><?php echo Util\Text::translate('eg: primary-content-container/secondary-structure/name-of-the-post') ?></small></p>
+            <p><small><?php echo Text::translate('eg: primary-content-container/secondary-structure/name-of-the-post') ?></small></p>
         </div>
         <?php
     }
