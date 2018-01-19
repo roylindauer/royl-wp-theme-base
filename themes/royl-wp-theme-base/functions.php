@@ -5,18 +5,11 @@ Use \Royl\WpThemeBase\Util;
 // Load the Autoloader
 require_once 'inc/autoload.php';
 
-// Load core theme functions
-require_once 'inc/royl-wp-theme-base.php';
-
 // WP Actions and Filters and Bootstrapyness
 require_once 'inc/init.php';
 
 // Include template tags
 require_once 'inc/template-tags.php';
-
-// Setup default theme config
-include_once 'inc/config-default.php';
-Util\Configure::set($config);
 
 // Set some theme specific configurations in the global Config
 if (function_exists('wp_get_theme')) {

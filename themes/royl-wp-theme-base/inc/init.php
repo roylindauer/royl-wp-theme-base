@@ -6,14 +6,56 @@ use Royl\WpThemeBase\Ajax;
 use Royl\WpThemeBase\Filter;
 use Royl\WpThemeBase\Wp;
 
+/*****************************************************************************
+ H E L P E R   F U N C T I O N S
+*****************************************************************************/
+
 /**
- * Helper function to use NAMESPACE in callbacks
- * @param  [type] $function [description]
- * @return [type]           [description]
+ * Helper function to make it easier to use NAMESPACE in callbacks
+ * @param  string  $function  function to namespace
+ * @return string
  */
 function n($function) {
     return __NAMESPACE__ . '\\' . $function;
 }
+
+/**
+ * Register and Enqueue Stylesheets
+ * @param  array  $stylesheets  multidim array - [ HANDLE => [ SOURCE, DEPENDENCIES, VERSION ] ]
+ * @return void
+ */
+function do_load_stylesheets( $stylesheets=[] ) {
+    // Register the stylesheets
+    foreach ($stylesheets as $handle => $data) {
+        wp_register_style($handle, $data['source'], $data['dependencies'], $data['version']);
+    }
+
+    // Enqueue the stylesheets
+    foreach ($stylesheets as $handle => $data) {
+        wp_enqueue_style($handle, $data['source'], $data['dependencies'], $data['version']);
+    }
+}
+
+/**
+ * Register and Enqueue Scripts
+ * @param  array  $scripts  multidim array - [ HANDLE => [ SOURCE, DEPENDENCIES, VERSION, IN-FOOTER ] 
+ * @return void
+ */
+function do_load_scripts( $scripts=[] ) {
+    // Register the scripts
+    foreach ($scripts as $handle => $data) {
+        wp_register_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
+    }
+
+    // Enqueue the scripts
+    foreach ($scripts as $handle => $data) {
+        wp_enqueue_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
+    }
+}
+
+/*****************************************************************************
+ A C T I O N S   &   F I L T E R S
+*****************************************************************************/
 
 add_action( 'after_setup_theme', n( 'register_theme_features' ), PHP_INT_MAX-1 );
 add_action( 'after_setup_theme', n( 'register_image_sizes' ), PHP_INT_MAX-1 );
@@ -28,14 +70,33 @@ add_action( 'wp_enqueue_scripts', n( 'load_frontend_scripts' ), PHP_INT_MAX-1 );
 add_action( 'wp_enqueue_scripts', n( 'load_admin_scripts' ), PHP_INT_MAX-1 );
 add_action( 'wp_enqueue_scripts', n( 'load_login_scripts' ), PHP_INT_MAX-1 );
 
-/*
- * Setup Core WP Objects
- */
-$Ajax = new Ajax\Ajax();
-$CoreFilter = new Filter\Filter();
+add_action( 'after_setup_theme', n( 'royl_set_theme_config' ), PHP_INT_MAX-1 );
+
+
+/*****************************************************************************
+ I N I T   C O R E   O B J E C T S  &   S E R V I C E S
+*****************************************************************************/
+
+$Ajax             = new Ajax\Ajax();
+$CoreFilter       = new Filter\Filter();
 $PostTypeRegistry = new PostTypeRegistry();
 $TaxonomyRegistry = new TaxonomyRegistry();
-$VanityUrlRouter = new VanityUrlRouter();
+$VanityUrlRouter  = new VanityUrlRouter();
+
+/*****************************************************************************
+ A C T I O N   F U N C T I O N S
+*****************************************************************************/
+
+/**
+ * Set Core Theme Config (you know, post types, taxonomies)
+ * @param  array  $config [description]
+ * @return [type]         [description]
+ */
+function royl_set_theme_config() {
+    $config = [];
+    $config = apply_filters( 'royl_set_theme_config', $config );
+    Util\Configure::set($config);
+}
 
 /**
  * [load_frontend_scripts description]
@@ -89,40 +150,6 @@ function load_login_scripts() {
     $scripts = [];
     $scripts = apply_filters( 'royl_login_scripts', $scripts );
     do_load_scripts( $scripts );
-}
-
-/**
- * Helper function to load stylehseets
- * @param  array  $stylesheets [description]
- * @return [type]              [description]
- */
-function do_load_stylesheets( $stylesheets=[] ) {
-    // Register the stylesheets
-    foreach ($stylesheets as $handle => $data) {
-        wp_register_style($handle, $data['source'], $data['dependencies'], $data['version']);
-    }
-
-    // Enqueue the stylesheets
-    foreach ($stylesheets as $handle => $data) {
-        wp_enqueue_style($handle, $data['source'], $data['dependencies'], $data['version']);
-    }
-}
-
-/**
- * [do_load_scripts description]
- * @param  array  $scripts [description]
- * @return [type]          [description]
- */
-function do_load_scripts( $scripts=[] ) {
-    // Register the scripts
-    foreach ($scripts as $handle => $data) {
-        wp_register_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
-    }
-
-    // Enqueue the scripts
-    foreach ($scripts as $handle => $data) {
-        wp_enqueue_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
-    }
 }
 
 /**

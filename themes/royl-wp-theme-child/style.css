@@ -9,3 +9,7 @@
  Tags: Theme Framework
  Template: royl-wp-theme-base
 */
+*
+body{
+	padding: 20px;
+}
