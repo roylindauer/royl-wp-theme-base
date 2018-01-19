@@ -32,4 +32,4 @@ function change_reader_heading( $template, $class ) {
 
     return $template;
 }
-add_filter( 'navigation_markup_template', 'change_reader_heading', 10, 2 );
+add_filter( 'navigation_markup_template', n( 'change_reader_heading' ), 10, 2 );
