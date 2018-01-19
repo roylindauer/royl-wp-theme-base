@@ -11,6 +11,18 @@ function royl_child_enqueue_styles() {
 }
 
 /**
+ * Example: Enqueue Stylesheets
+ */
+add_filter( 'royl_frontend_stylesheets', function( $styles ){
+    $styles['bootstrap'] = [
+        'source' => 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
+        'dependencies' => false,
+        'version' => '4.0.0'
+    ];
+    return $styles;
+});
+
+/**
  * Example: I GUESS DO SOMETHING??? THIS IS NOT REALLY NEEDED
  */
 add_action('after_setup_theme', 'royl_init_theme', 10);

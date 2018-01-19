@@ -22,17 +22,108 @@ add_action( 'after_setup_theme', n( 'load_textdomain' ), PHP_INT_MAX-1 );
 
 add_action( 'widgets_init', n( 'register_sidebars' ), PHP_INT_MAX-1 );
 
-add_action('admin_notices', n( 'print_theme_errors' ), PHP_INT_MAX-1);
+add_action( 'admin_notices', n( 'print_theme_errors' ), PHP_INT_MAX-1 );
+
+add_action( 'wp_enqueue_scripts', n( 'load_frontend_scripts' ), PHP_INT_MAX-1 );
+add_action( 'wp_enqueue_scripts', n( 'load_admin_scripts' ), PHP_INT_MAX-1 );
+add_action( 'wp_enqueue_scripts', n( 'load_login_scripts' ), PHP_INT_MAX-1 );
 
 /*
  * Setup Core WP Objects
  */
-$Assets = new Wp\Assets();
 $Ajax = new Ajax\Ajax();
 $CoreFilter = new Filter\Filter();
 $PostTypeRegistry = new PostTypeRegistry();
 $TaxonomyRegistry = new TaxonomyRegistry();
 $VanityUrlRouter = new VanityUrlRouter();
+
+/**
+ * [load_frontend_scripts description]
+ * @return [type] [description]
+ */
+function load_frontend_scripts() {
+    // Stylesheets
+    $stylesheets = [
+        'style' => [
+            'source' => get_stylesheet_directory_uri() . '/style.css',
+            'dependencies' => false,
+            'version' => Util\Configure::read('version')
+        ]
+    ];
+    $stylesheets = apply_filters( 'royl_frontend_stylesheets', $stylesheets );
+    do_load_stylesheets( $stylesheets );
+
+    // JavaScripts
+    $scripts = [];
+    $scripts = apply_filters( 'royl_frontend_scripts', $scripts );
+    do_load_scripts( $scripts );
+}
+
+/**
+ * [load_admin_scripts description]
+ * @return [type] [description]
+ */
+function load_admin_scripts() {
+    // Stylesheets
+    $stylesheets = [];
+    $stylesheets = apply_filters( 'royl_admin_stylesheets', $stylesheets );
+    do_load_stylesheets( $stylesheets );
+
+    // JavaScripts
+    $scripts = [];
+    $scripts = apply_filters( 'royl_admin_scripts', $scripts );
+    do_load_scripts( $scripts );
+}
+
+/**
+ * [load_login_scripts description]
+ * @return [type] [description]
+ */
+function load_login_scripts() {
+    // Stylesheets
+    $stylesheets = [];
+    $stylesheets = apply_filters( 'royl_login_stylesheets', $stylesheets );
+    do_load_stylesheets( $stylesheets );
+
+    // JavaScripts
+    $scripts = [];
+    $scripts = apply_filters( 'royl_login_scripts', $scripts );
+    do_load_scripts( $scripts );
+}
+
+/**
+ * Helper function to load stylehseets
+ * @param  array  $stylesheets [description]
+ * @return [type]              [description]
+ */
+function do_load_stylesheets( $stylesheets=[] ) {
+    // Register the stylesheets
+    foreach ($stylesheets as $handle => $data) {
+        wp_register_style($handle, $data['source'], $data['dependencies'], $data['version']);
+    }
+
+    // Enqueue the stylesheets
+    foreach ($stylesheets as $handle => $data) {
+        wp_enqueue_style($handle, $data['source'], $data['dependencies'], $data['version']);
+    }
+}
+
+/**
+ * [do_load_scripts description]
+ * @param  array  $scripts [description]
+ * @return [type]          [description]
+ */
+function do_load_scripts( $scripts=[] ) {
+    // Register the scripts
+    foreach ($scripts as $handle => $data) {
+        wp_register_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
+    }
+
+    // Enqueue the scripts
+    foreach ($scripts as $handle => $data) {
+        wp_enqueue_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
+    }
+}
 
 /**
  * [register_theme_features description]

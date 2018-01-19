@@ -63,37 +63,4 @@ $config = [
         ],
     ],
     */
-    
-    // Define stylesheets and scripts
-    // WordPress core throws a NOTICE if you don't enqueue at least one stylesheet
-    // This bug should be patched in WordPress core 4.2.3
-    /*
-    'assets' => [
-        'frontend' => [
-            'stylesheets' => [
-                'style' => [
-                    'source' => get_stylesheet_directory_uri() . '/style.css',
-                    'dependencies' => false,
-                    'version' => \Royl\WpThemeBase\Util\Configure::read('version')
-                ],
-            ],
-            'scripts' => [
-                'main' => [
-                    'source' => get_stylesheet_directory_uri() . '/assets/js/main.js',
-                    'dependencies' => false,
-                    'version' => \Royl\WpThemeBase\Util\Configure::read('version'),
-                    'in_footer' => true
-                ],
-            ]
-        ],
-        'admin' => [
-            'stylesheets' => [],
-            'scripts' => [],
-        ],
-        'login' => [
-            'stylesheets' => [],
-            'scripts' => [],
-        ],
-    ]
-    */
 ];
