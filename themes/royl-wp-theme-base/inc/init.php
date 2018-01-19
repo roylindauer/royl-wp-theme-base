@@ -24,8 +24,6 @@ add_action( 'widgets_init', n( 'register_sidebars' ), PHP_INT_MAX-1 );
 
 add_action('admin_notices', n( 'print_theme_errors' ), PHP_INT_MAX-1);
 
-add_action( 'tgmpa_register', n( 'tgmpa_register' ), PHP_INT_MAX-1 );
-
 /*
  * Setup Core WP Objects
  */
@@ -41,7 +39,30 @@ $VanityUrlRouter = new VanityUrlRouter();
  * @return [type] [description]
  */
 function register_theme_features() {
-    $features = Util\Configure::read('theme_features');
+    
+    /**
+     * Sane Defaults for Theme Features
+     * @var array
+     */
+    $features = [
+        'automatic-feed-links',
+        'post-thumbnails',
+        'title-tag',
+        'automatic-feed-links',
+        'customize-selective-refresh-widgets',
+        'html5' => [
+            'search-form',
+            'comment-form',
+            'comment-list',
+            'gallery',
+            'caption',
+        ]
+    ];
+
+    /*
+     * Allow child theme/plugin to customize default theme features
+     */
+    $features = apply_filters('royl_register_theme_features', $features);
 
     if (empty($features)) {
         return;
@@ -61,7 +82,7 @@ function register_theme_features() {
  * @return [type] [description]
  */
 function register_image_sizes() {
-    $image_sizes = Util\Configure::read('image_sizes');
+    $image_sizes = apply_filters('royl_register_image_sizes', []);
 
     if (empty($image_sizes)) {
         return;
@@ -83,7 +104,7 @@ function register_image_sizes() {
  */
 function register_nav_menus()
 {
-    $menus = Util\Configure::read('menus');
+    $menus = apply_filters('royl_register_nav_menus', []);
 
     if (empty($menus)) {
         return;
@@ -107,7 +128,7 @@ function load_textdomain()
  */
 function register_sidebars()
 {
-    $sidebars = Util\Configure::read('sidebars');
+    $sidebars = apply_filters('royl_register_sidebars', []);
 
     if (empty($sidebars)) {
         return;

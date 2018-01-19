@@ -88,11 +88,15 @@ class Util
     public static function getFilterQuery($set)
     {
         // Setup default query args
-        $args = \Royl\WpThemeBase\Util\Configure::read('filters.defaults');
-        if (!$args) {
-            $args = [];
-        }
+        $args = [
+            'posts_per_page' => 6,
+            'ignore_sticky_posts' => false,
+        ];
 
+        // ALlow user to override args
+        $args = apply_filters('royl_set_filter_query_arg_defaults', $args);
+
+        // Init the post types array
         $args['post_type'] = [];
 
         $filterdata = self::getDefinedFilterData($set);

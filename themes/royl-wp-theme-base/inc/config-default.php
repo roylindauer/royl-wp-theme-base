@@ -8,20 +8,6 @@
 // Set theme config
 $config = [
 
-    // Post Filtering Defaults
-    'filters' => [
-        'defaults' => [
-            'posts_per_page' => 6,
-            'ignore_sticky_posts' => false,
-            'post_type' => [],
-        ]
-    ],
-    
-    // Custom Template Partials directory
-    /*
-    'partial_dir' => 'template-parts', // this directory is relative to your theme root
-    */
-
     // Define a namespace for the ajax classes
     /*
     'ajax' => [
@@ -74,95 +60,6 @@ $config = [
                 'hierarchical' => false,
                 'show_admin_column' => false
             ]
-        ],
-    ],
-    */
-
-    // Define theme features
-    // http://codex.wordpress.org/Function_Reference/add_theme_support
-    'theme_features' => [
-        'automatic-feed-links',
-        'post-thumbnails',
-        'post-formats' => [
-            'aside',
-            'gallery',
-            'link',
-            'image',
-            'quote',
-            'status',
-            'video',
-            'audio',
-            'chat',
-        ],
-        'title-tag',
-        'automatic-feed-links',
-        'customize-selective-refresh-widgets',
-        'html5' => [
-            'search-form',
-            'comment-form',
-            'comment-list',
-            'gallery',
-            'caption',
-        ]
-    ],
-
-    // Custom Image Sizes
-    /*
-    'image_sizes' => [
-        'cover_large' => [
-            'width' => 1920,
-            'height' => 1080,
-            'crop' => false
-        ],
-    ][,
-    */
-
-    // Define custom nav menus
-    // https://codex.wordpress.org/Function_Reference/register_nav_menu
-    /*
-    'menus' => [
-        'main-menu'   => \Royl\WpThemeBase\Util\Text::translate('Main Menu'),
-        'sub-menu'    => \Royl\WpThemeBase\Util\Text::translate('Sub Menu'),
-        'footer-menu' => \Royl\WpThemeBase\Util\Text::translate('Footer Menu')
-    ],
-    */
-
-    // Define custom sidebars
-    // https://codex.wordpress.org/Function_Reference/register_sidebar
-    'sidebars' => [
-        [
-            'id'            => 'default-sidebar',
-            'name'          => \Royl\WpThemeBase\Util\Text::translate('Default Sidebar'),
-            'description'   => '',
-            'class'         => '',
-            'before_widget' => '<li id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</li>',
-            'before_title'  => '<h2 class="widgettitle">',
-            'after_title'   => '</h2>',
-        ],
-    ],
-
-    // Define theme dependencies
-    // Require WP Plugins - http://tgmpluginactivation.com/
-    // Require Core PHP Classes / Libraries
-    /*
-    'dependencies' => [
-        'plugins' => [
-            [
-                'name'      => 'Meta Box',
-                'slug'      => 'meta-box',
-                'required'  => true,
-            ],
-            [
-                'name'      => 'Options Framework',
-                'slug'      => 'options-framework',
-                'required'  => false,
-            ],
-            [
-                'name'      => 'Wordpress SEO',
-                'slug'      => 'wordpress-seo',
-                'required'  => true,
-            ],
         ],
     ],
     */

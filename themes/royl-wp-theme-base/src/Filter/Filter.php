@@ -111,7 +111,7 @@ class Filter
     {
         add_action('init', [&$this, 'configFilters'], 20);
         add_action('init', [&$this, 'configFilterTemplateMap'], 20);
-        add_action('init', [&$this, 'setDefaults'], 20);
+        
         add_filter('royl_config_filters', [&$this, 'preProcessFilters']);
         add_filter('query_vars', [&$this, 'queryVars']);
     }
@@ -145,14 +145,6 @@ class Filter
         $filter_template_map = [];
         $filter_template_map = apply_filters( 'royl_map_filters', $filter_template_map );
         \Royl\WpThemeBase\Util\Configure::write('filters.filter_template_map', $filter_template_map);
-    }
-
-    /**
-     * User can define filter defaults
-     */
-    public function setDefaults()
-    {
-        $this->defaultQueryArgs = \Royl\WpThemeBase\Util\Configure::read('filters.defaults');
     }
 
     /**

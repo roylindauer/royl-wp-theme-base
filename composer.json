@@ -4,7 +4,6 @@
         "vendor-dir": "themes/royl-wp-theme-base/vendor/"
     },
     "require": {
-        "tgmpa/tgm-plugin-activation": "*",
         "doctrine/inflector": "*"
     },
     "require-dev": {
