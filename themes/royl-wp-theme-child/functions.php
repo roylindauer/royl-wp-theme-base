@@ -26,7 +26,10 @@ add_filter( 'royl_frontend_stylesheets', function( $styles ){
  * Debug Theme Configure Array
  */
 add_action( 'shutdown', function(){
-    Util\Debug::debug( Util\Configure::read() );
+    if ( defined('DOING_AJAX') && DOING_AJAX ) {
+        return;
+    }
+    Util\Debug::pr( Util\Configure::read() );
 });
 
 /**
@@ -83,6 +86,9 @@ add_filter('royl_set_theme_config', function( $config = [] ){
  */
 add_filter( 'royl_register_theme_features', function( $features ){
     return [
+        'custom-logo' => [
+            'size' => 'theme-logo'
+        ],
         'automatic-feed-links',
         'post-thumbnails',
         'title-tag',
@@ -103,6 +109,11 @@ add_filter( 'royl_register_theme_features', function( $features ){
  */
 add_filter( 'royl_register_image_sizes', function( $sizes ){
     return [
+        'theme-logo' => [
+            'width' => 150,
+            'height' => 150,
+            'crop' => false
+        ],
         'cover_large' => [
             'width' => 1920,
             'height' => 1080,
@@ -192,7 +203,7 @@ function setup_filters() {
             'field' => [
                 'type' => 'Text',
                 'name' => 'mycustomfield', // use for the name attr on the field
-                'label' => Util\Text::translate('Custom Fields'),
+                'label' => Util\Text::translate('Custom Field <code>mycustomfield</code>'),
             ]
         ],
     ];

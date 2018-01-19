@@ -72,17 +72,6 @@ add_action( 'wp_enqueue_scripts', n( 'load_login_scripts' ), PHP_INT_MAX-1 );
 
 add_action( 'after_setup_theme', n( 'royl_set_theme_config' ), PHP_INT_MAX-1 );
 
-
-/*****************************************************************************
- I N I T   C O R E   O B J E C T S  &   S E R V I C E S
-*****************************************************************************/
-
-$Ajax             = new Ajax\Ajax();
-$CoreFilter       = new Filter\Filter();
-$PostTypeRegistry = new PostTypeRegistry();
-$TaxonomyRegistry = new TaxonomyRegistry();
-$VanityUrlRouter  = new VanityUrlRouter();
-
 /*****************************************************************************
  A C T I O N   F U N C T I O N S
 *****************************************************************************/
