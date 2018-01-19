@@ -10,11 +10,20 @@ get_header();
 <section class="site-section" id="posts">
     <div class="site-section__content">
 
-        <a href="#" class="js-ajax-test">AJAX TESTERINO</a>
+        <div class="alert alert-info">AJAX FILTER TEST</div>
+        <a href="#" class="js-ajax-test">AJAX TESTERINO (look at your console)</a>
 
+        <hr>
+
+        <div class="alert alert-info">POST FILTER FORM</div>
         <?php
         // Render the filter form:
         Filter\Util::renderFilterForm( 'post-category' );
+        ?>
+        <hr>
+        <div class="alert alert-info">FILTERED POSTS<br>
+        This is not the main loop. It is the <code>post-category</code> Filter Query</div>
+        <?php
 
         // Get filtered query object:
         $query = Filter\Util::getFilterQuery( 'post-category' );
@@ -48,6 +57,8 @@ get_header();
         endif;
         $wp_query = $temp_query;
         ?>
+
+        <hr>
     </div>
 </section>
 <?php get_sidebar(); ?>
