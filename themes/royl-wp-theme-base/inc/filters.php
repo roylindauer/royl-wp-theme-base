@@ -1,4 +1,5 @@
 <?php
+
 namespace Royl\WpThemeBase\Core;
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Ajax;
@@ -32,4 +33,4 @@ function change_reader_heading( $template, $class ) {
 
     return $template;
 }
-add_filter( 'navigation_markup_template', n( 'change_reader_heading' ), 10, 2 );
+add_filter( 'navigation_markup_template', __n( 'change_reader_heading' ), 10, 2 );

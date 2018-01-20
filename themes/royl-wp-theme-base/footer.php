@@ -10,7 +10,7 @@
 use Royl\WpThemeBase\Wp;
 ?>
   </main><!-- .site-content -->
-  <?php Wp\Template::load( 'footer/site--footer' ); ?>
+  <?php Wp\Template::load( 'footer/footer' ); ?>
 </div><!-- .site -->
 </body>
 </html>

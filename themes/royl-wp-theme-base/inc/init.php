@@ -6,78 +6,23 @@ use Royl\WpThemeBase\Ajax;
 use Royl\WpThemeBase\Filter;
 use Royl\WpThemeBase\Wp;
 
-/*****************************************************************************
- H E L P E R   F U N C T I O N S
-*****************************************************************************/
+add_action( 'after_setup_theme', __n( 'register_theme_features' ), PHP_INT_MAX-1 );
+add_action( 'after_setup_theme', __n( 'register_image_sizes' ), PHP_INT_MAX-1 );
+add_action( 'after_setup_theme', __n( 'register_nav_menus' ), PHP_INT_MAX-1 );
+add_action( 'after_setup_theme', __n( 'load_textdomain' ), PHP_INT_MAX-1 );
 
-/**
- * Helper function to make it easier to use NAMESPACE in callbacks
- * @param  string  $function  function to namespace
- * @return string
- */
-function n($function) {
-    return __NAMESPACE__ . '\\' . $function;
-}
+add_action( 'widgets_init', __n( 'register_sidebars' ), PHP_INT_MAX-1 );
 
-/**
- * Register and Enqueue Stylesheets
- * @param  array  $stylesheets  multidim array - [ HANDLE => [ SOURCE, DEPENDENCIES, VERSION ] ]
- * @return void
- */
-function do_load_stylesheets( $stylesheets=[] ) {
-    // Register the stylesheets
-    foreach ($stylesheets as $handle => $data) {
-        wp_register_style($handle, $data['source'], $data['dependencies'], $data['version']);
-    }
+add_action( 'admin_notices', __n( 'print_theme_errors' ), PHP_INT_MAX-1 );
 
-    // Enqueue the stylesheets
-    foreach ($stylesheets as $handle => $data) {
-        wp_enqueue_style($handle, $data['source'], $data['dependencies'], $data['version']);
-    }
-}
+add_action( 'wp_enqueue_scripts', __n( 'load_frontend_scripts' ), PHP_INT_MAX-1 );
+add_action( 'wp_enqueue_scripts', __n( 'load_admin_scripts' ), PHP_INT_MAX-1 );
+add_action( 'wp_enqueue_scripts', __n( 'load_login_scripts' ), PHP_INT_MAX-1 );
 
-/**
- * Register and Enqueue Scripts
- * @param  array  $scripts  multidim array - [ HANDLE => [ SOURCE, DEPENDENCIES, VERSION, IN-FOOTER ] 
- * @return void
- */
-function do_load_scripts( $scripts=[] ) {
-    // Register the scripts
-    foreach ($scripts as $handle => $data) {
-        wp_register_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
-    }
+add_action( 'after_setup_theme', __n( 'set_theme_config' ), PHP_INT_MAX-1 );
 
-    // Enqueue the scripts
-    foreach ($scripts as $handle => $data) {
-        wp_enqueue_script($handle, $data['source'], $data['dependencies'], $data['version'], $data['in_footer']);
-    }
-}
-
-/*****************************************************************************
- A C T I O N S   &   F I L T E R S
-*****************************************************************************/
-
-add_action( 'after_setup_theme', n( 'register_theme_features' ), PHP_INT_MAX-1 );
-add_action( 'after_setup_theme', n( 'register_image_sizes' ), PHP_INT_MAX-1 );
-add_action( 'after_setup_theme', n( 'register_nav_menus' ), PHP_INT_MAX-1 );
-add_action( 'after_setup_theme', n( 'load_textdomain' ), PHP_INT_MAX-1 );
-
-add_action( 'widgets_init', n( 'register_sidebars' ), PHP_INT_MAX-1 );
-
-add_action( 'admin_notices', n( 'print_theme_errors' ), PHP_INT_MAX-1 );
-
-add_action( 'wp_enqueue_scripts', n( 'load_frontend_scripts' ), PHP_INT_MAX-1 );
-add_action( 'wp_enqueue_scripts', n( 'load_admin_scripts' ), PHP_INT_MAX-1 );
-add_action( 'wp_enqueue_scripts', n( 'load_login_scripts' ), PHP_INT_MAX-1 );
-
-add_action( 'after_setup_theme', n( 'set_theme_config' ), PHP_INT_MAX-1 );
-
-add_action( 'init', n( 'register_post_types' ), PHP_INT_MAX-1 );
-add_action( 'init', n( 'register_taxonomies' ), PHP_INT_MAX-1 );
-
-/*****************************************************************************
- A C T I O N   F U N C T I O N S
-*****************************************************************************/
+add_action( 'init', __n( 'register_post_types' ), PHP_INT_MAX-1 );
+add_action( 'init', __n( 'register_taxonomies' ), PHP_INT_MAX-1 );
 
 /**
  * Register Custom Post Types
@@ -94,6 +39,8 @@ function register_post_types() {
     foreach ( $post_types as $post_type => $params ) {
         new Wp\PostType( $post_type, $params );
     }
+
+    Util\Configure::write( 'theme_post_types', $post_types );
 }
 
 /**
@@ -112,6 +59,8 @@ function register_taxonomies() {
     foreach ($taxonomies as $name => $opts) {
         new Wp\TaxonomyType($name, $opts['params'], $opts['args']);
     }
+
+    Util\Configure::write( 'theme_taxonomies', $taxonomies );
 }
 
 /**

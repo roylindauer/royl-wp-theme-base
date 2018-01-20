@@ -22,6 +22,6 @@ use Royl\WpThemeBase\Wp;
   <div class="site" id="site">
     <a class="skip-link screen-reader-text visually-hidden" href="#main"><?php echo Util\Text::translate( 'Skip to content' ); ?></a>
 
-    <?php Wp\Template::load( 'header/site--header' ); ?>
+    <?php Wp\Template::load( 'header/header' ); ?>
 
     <main class="site__body">
