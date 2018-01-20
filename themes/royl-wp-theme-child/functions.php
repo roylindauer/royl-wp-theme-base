@@ -1,6 +1,7 @@
 <?php
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
+use Royl\WpThemeBase\Ajax;
 
 /**
  * Enqueue Parent Theme Styles
@@ -248,14 +249,11 @@ add_action( 'royl_after_render_filter_field_filter_search', function(){
     echo ' <br><em>You can add a custom description or something using the action <code>royl_after_render_filter_field_filter_{$field_name}</code>.</em>';
 } );
 
-
-
-
 // include custom jQuery
 function royl_include_custom_jquery()
 {
     wp_deregister_script('jquery');
-    wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, true);
+    wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, false);
 
 }
 add_action('wp_enqueue_scripts', 'royl_include_custom_jquery');
