@@ -2,13 +2,9 @@
 
 namespace Royl\WpThemeBase\Core;
 use Royl\WpThemeBase\Util;
-use Royl\WpThemeBase\Ajax;
-use Royl\WpThemeBase\Filter;
-use Royl\WpThemeBase\Wp;
 
 add_action( 'login_enqueue_scripts', __n( 'output_custom_login_logo' ), PHP_INT_MAX-1 );
 add_action( 'customize_register', __n( 'customizer_logo' ), PHP_INT_MAX-1 );
-
 
 /**
  * Custom Login Logo
