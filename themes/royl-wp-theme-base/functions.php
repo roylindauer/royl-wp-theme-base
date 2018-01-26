@@ -13,6 +13,7 @@ require_once 'inc/functions.php';
 
 // WP Actions and Filters and Bootstrapyness
 require_once 'inc/init.php';
+require_once 'inc/customizer.php';
 require_once 'inc/filters.php';
 
 // Include template tags
