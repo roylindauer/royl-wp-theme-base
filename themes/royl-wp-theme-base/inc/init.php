@@ -260,3 +260,4 @@ function print_theme_errors() {
     echo $output;
     echo '</ul></div>';
 }
+
