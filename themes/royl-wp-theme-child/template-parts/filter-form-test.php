@@ -1,20 +1,16 @@
 <?php
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Ajax;
-use Royl\WpThemeBase\Filter;
 ?>
 <div class="alert alert-info">POST FILTER FORM</div>
-<?php
-// Render the filter form:
-Filter\Util::renderFilterForm( 'test-filter-form' );
-?>
+<?php royl_render_filter_form( 'test-filter-form' ); ?>
 <hr>
 <div class="alert alert-info">FILTERED POSTS<br>
 This is not the main loop. It is the <code>test-filter-form</code> Filter Query</div>
 <?php
 
 // Get filtered query object:
-$query = Filter\Util::getFilterQuery( 'test-filter-form' );
+$query = royl_get_filter_query( 'test-filter-form' );
 
 // WordPress pagination is based on the Main query.
 // We have to kinda trick WP when we use a custom query object in the main loop.. 

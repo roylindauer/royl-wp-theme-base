@@ -1,6 +1,7 @@
 <?php
 
 use Royl\WpThemeBase\Util;
+use Royl\WpThemeBase\Filter;
 
 /**
  * Render post meta data. if post type is "post" will render tags and categories
@@ -34,5 +35,25 @@ if (!function_exists('royl_custom_logo')) {
         if (function_exists('the_custom_logo')) {
             the_custom_logo();
         }
+    }
+}
+
+/**
+ * Retreive a Filtered Query Object
+ */
+if ( !function_exists( 'royl_get_filter_query' ) ) {
+    function royl_get_filter_query( $set )
+    {
+        return Filter\Util::getFilterQuery( $set );
+    }
+}
+
+/**
+ * Retreive a Filtered Query Object
+ */
+if ( !function_exists( 'royl_render_filter_form' ) ) {
+    function royl_render_filter_form( $set )
+    {
+        Filter\Util::renderFilterForm( $set );
     }
 }
