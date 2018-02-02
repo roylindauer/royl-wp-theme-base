@@ -6,15 +6,15 @@ use Royl\WpThemeBase\Filter;
 <div class="alert alert-info">POST FILTER FORM</div>
 <?php
 // Render the filter form:
-Filter\Util::renderFilterForm( 'post-category' );
+Filter\Util::renderFilterForm( 'test-filter-form' );
 ?>
 <hr>
 <div class="alert alert-info">FILTERED POSTS<br>
-This is not the main loop. It is the <code>post-category</code> Filter Query</div>
+This is not the main loop. It is the <code>test-filter-form</code> Filter Query</div>
 <?php
 
 // Get filtered query object:
-$query = Filter\Util::getFilterQuery( 'post-category' );
+$query = Filter\Util::getFilterQuery( 'test-filter-form' );
 
 // WordPress pagination is based on the Main query.
 // We have to kinda trick WP when we use a custom query object in the main loop.. 

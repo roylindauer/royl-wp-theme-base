@@ -191,11 +191,12 @@ function setup_filters() {
                 'post_types' => [ 'post' ],
             ],
             'field' => [
+                'classes' => [ 'form-control' ],
                 'type' => 'Select',
                 'multi' => false,
                 'options' => Wp\Taxonomy::getList( 'category' ),
                 'name' => 'category', // use for the name attr on the field
-                'label' => Util\Text::translate('Post Category'),
+                'label' => Util\Text::translate( 'Post Category' ),
             ]
         ],
         'search' => [
@@ -204,9 +205,10 @@ function setup_filters() {
                 'post_types' => [ 'post' ],
             ],
             'field' => [
+                'classes' => [ 'form-control' ],
                 'type' => 'Text',
                 'name' => 'search', // use for the name attr on the field
-                'label' => Util\Text::translate('Search'),
+                'label' => Util\Text::translate( 'Search' ),
             ]
         ],
         'mycustomfield' => [
@@ -217,11 +219,51 @@ function setup_filters() {
                 'post_types' => [ 'post' ],
             ],
             'field' => [
+                'classes' => [ 'form-control' ],
                 'type' => 'Text',
                 'name' => 'mycustomfield', // use for the name attr on the field
-                'label' => Util\Text::translate('Custom Field <code>mycustomfield</code>'),
+                'label' => Util\Text::translate( 'Custom Field <code>you can include html in the label</code>' ),
+                'placeholder' => Util\Text::translate( 'This is a placeholder' )
             ]
         ],
+        // sort and direction
+        'orderby' => [
+            'filter_query' => [
+                'type' => 'OrderBy',
+                'rand_seed' => 1234,
+            ],
+            'field' => [
+                'classes' => [ 'form-control' ],
+                'type' => 'Select',
+                'multi' => false,
+                'options' => [
+                    'ID' => Util\Text::translate( 'ID' ),
+                    'name' => Util\Text::translate( 'Slug' ),
+                    'title' => Util\Text::translate( 'Post Title' ),
+                    'date' => Util\Text::translate( 'Publish Date' ),
+                    'modified' => Util\Text::translate( 'Modified Date' ),
+                    'rand' => Util\Text::translate( 'Random' ),
+                ],
+                'name' => 'orderby',
+                'label' => Util\Text::translate( 'Order By' ),
+            ]
+        ],
+        'order' => [
+            'filter_query' => [
+                'type' => 'Order'
+            ],
+            'field' => [
+                'classes' => [ 'form-control' ],
+                'type' => 'Select',
+                'multi' => false,
+                'options' => [
+                    'ASC' => Util\Text::translate( 'ASC' ),
+                    'DESC' => Util\Text::translate( 'DESC' ),
+                ],
+                'name' => 'order',
+                'label' => Util\Text::translate( 'Direction' ),
+            ]
+        ]
     ];
 }
 
@@ -231,22 +273,63 @@ function setup_filters() {
 add_filter( 'royl_map_filters', 'map_filters' );
 function map_filters() {
     return [
-        'post-category' => [ 'category', 'mycustomfield', 'search' ],
+        'test-filter-form' => [ 'category', 'mycustomfield', 'search', 'orderby', 'order' ],
+        'test-filter-form-secondary' => [ 'category', 'search' ],
     ];
 }
 
 /**
  * Example: Injecting some content before a custom filters field
  */
-add_action( 'royl_before_render_filter_field_filter_search', function(){
-    echo '<u>stuff before the field</u>&nbsp;';
+add_action( 'royl_before_render_filter_field_wrapper_filter_search', function(){
+    echo '<em>This appears before the field, inside the field wrapper</em><br><code>royl_before_render_filter_field_wrapper_filter_{$field_name}</code>';
 } );
 
 /**
  * Example: Injecting some content after a custom filters field
  */
-add_action( 'royl_after_render_filter_field_filter_search', function(){
-    echo ' <br><em>You can add a custom description or something using the action <code>royl_after_render_filter_field_filter_{$field_name}</code>.</em>';
+add_action( 'royl_after_render_filter_field_wrapper_filter_search', function(){
+    echo '<em>This appears after the field, inside the field wrapper</em><br><code>royl_after_render_filter_field_wrapper_filter_{$field_name}</code>.';
+} );
+
+/**
+ * Example: Adding additional classes to field containers
+ */
+add_filter( 'filter_field_container_classes', function( $classes ){
+    $classes[] = 'form-group';
+    $classes[] = 'row';
+    return $classes;
+});
+
+/**
+ * Example: Adding additional classes to field wrappers
+ */
+add_filter( 'filter_field_wrapper_classes', function( $classes ){
+    $classes[] = 'col-sm-10';
+    return $classes;
+});
+
+/**
+ * Example: Adding additional classes to field labels
+ */
+add_filter( 'filter_field_label_classes', function( $classes ){
+    $classes[] = 'col-sm-2';
+    $classes[] = 'col-form-label';
+    return $classes;
+});
+
+/**
+ * Example: Add content before the orderby filter
+ */
+add_action( 'royl_before_render_filter_field_filter_orderby', function(){
+    echo '<hr>';
+} );
+
+/**
+ * Example: Add content after the orderby direction filter
+ */
+add_action( 'royl_after_render_filter_field_filter_order', function(){
+    echo '<hr>';
 } );
 
 // include custom jQuery

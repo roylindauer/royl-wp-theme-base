@@ -30,6 +30,7 @@ class Field
     public function __construct($params = [])
     {
         $this->field_params = array_merge( $this->field_params, $params );
+        $this->field_params['value'] = \Royl\WpThemeBase\Filter\Util::getQueryVar($this->field_params['name']);
     }
     
     /**
@@ -38,16 +39,40 @@ class Field
      */
     public function doRender()
     {
-        $this->processFieldClasses();
+        $field_container_classes = [ 'filter-container' ];
+        $field_container_classes = apply_filters( 'filter_field_container_classes', $field_container_classes );
 
-        echo '<div class="filter-wrapper">';
+        $field_wrapper_classes = [ 'filter-wrapper' ];
+        $field_wrapper_classes = apply_filters( 'filter_field_wrapper_classes', $field_wrapper_classes );
+
+        $field_label_classes = [ 'filter-label' ];
+        $field_label_classes = apply_filters( 'filter_field_label_classes', $field_label_classes );
+
         do_action('royl_before_render_filter_field_' . $this->field_params['name']);
+
+        // Field Container
+        echo '<div class="' . implode( ' ', $field_container_classes ) . '">';
+
+        // Field Label
         if (isset($this->field_params['label'])) {
-            echo '<label class="filter-label" for="' . $this->field_params['id'] . '">' . Util\Text::translate( $this->field_params['label'] ) . '</label>';
+            echo '<label class="' . implode( ' ', $field_label_classes ) . '" for="' . $this->field_params['id'] . '">' . Util\Text::translate( $this->field_params['label'] ) . '</label>';
         }
+
+        // Field Wrapper
+        echo '<div class="' . implode( ' ', $field_wrapper_classes ) . '">';
+
+        do_action('royl_before_render_filter_field_wrapper_' . $this->field_params['name']);
+        $this->processFieldClasses();
         Wp\Template::load('filter/' . $this->partial, [ 'field' => $this->field_params ]);
-        do_action('royl_after_render_filter_field_' . $this->field_params['name']);
+        do_action('royl_after_render_filter_field_wrapper_' . $this->field_params['name']);
+        
+        // Close Field Wrapper
         echo '</div>';
+
+        // Close Field Container
+        echo '</div>';
+
+        do_action('royl_after_render_filter_field_' . $this->field_params['name']);
     }
 
     /**

@@ -60,22 +60,22 @@ class Util
         $filterdata = self::getDefinedFilterData($set);
 
         /**
-         * Collection of Filter Query Objects for $set
+         * Collection of Filter Fields for $set
          * @var array
          */
-        $filter_objects = [];
+        $fields = [];
 
-        // Instantiate new Filter Objects for each of the filters in our $set
+        // Instantiate new Filter Fields to be rendered in the filter form
         foreach ($filterdata['filterlist'] as $_f) {
-            $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filterdata['filters'][$_f]['filter_query']['type'];
-            $filter_objects[] = new $filterclass($filterdata['filters'][$_f]);
+            $fieldClass = 'Royl\WpThemeBase\Filter\Field\\' . $filterdata['filters'][$_f]['field']['type'];
+            $fields[] = new $fieldClass($filterdata['filters'][$_f]['field']);
         }
 
         // Modify output before the filter form is rendered
         do_action('royl_before_render_filter_form');
 
         // Load the filter form
-        Wp\Template::load( 'filter/' . $partial, ['filters' => $filter_objects]);
+        Wp\Template::load( 'filter/' . $partial, ['fields' => $fields]);
 
         // Modify output after the filter form is rendered
         do_action('royl_after_render_filter_form');
@@ -109,12 +109,14 @@ class Util
             $filter_conf = $filterdata['filters'][$_f];
 
             // Process Filter Query
-            $filterclass = 'Royl\WpThemeBase\Filter\Query\\' . $filter_conf['filter_query']['type'];
-            $filter = new $filterclass($filter_conf);
+            $queryclass = 'Royl\WpThemeBase\Filter\Query\\' . $filter_conf['filter_query']['type'];
+            $filter = new $queryclass($filter_conf['field']['name'], $filter_conf['filter_query']);
             $args = array_merge_recursive($args, $filter->getFilter());
 
             // Post Types
-            $args['post_type'] = array_merge($args['post_type'], $filter_conf['filter_query']['post_types']);
+            if ( isset( $filter_conf['filter_query']['post_types'] ) ) {
+                $args['post_type'] = array_merge($args['post_type'], $filter_conf['filter_query']['post_types']);
+            }
         }
 
         // Clean up Post Types
