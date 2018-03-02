@@ -4,7 +4,9 @@ namespace Royl\WpThemeBase\Core;
 use Royl\WpThemeBase\Util;
 
 add_action( 'login_enqueue_scripts', __n( 'output_custom_login_logo' ), PHP_INT_MAX-1 );
+
 add_action( 'customize_register', __n( 'customizer_logo' ), PHP_INT_MAX-1 );
+add_action( 'customize_register', __n( 'customizer_content_width' ), PHP_INT_MAX-1 );
 
 /**
  * Custom Login Logo
@@ -94,5 +96,36 @@ function customizer_logo( $wp_customize ) {
         'section' => 'theme_options_logo',
         'label' => __( 'Logo Height' ),
         'description' => Util\Text::translate( 'Defaults to 160px' )
+    ]);
+}
+
+/**
+ * [customizer_custom_login_logo description]
+ * @param  [type]  $wp_customize [description]
+ * @return [type]                [description]
+ */
+function customizer_content_width( $wp_customize) {
+
+    // THEME OPTION SECTION
+    // this is the container for our custom settings
+    $wp_customize->add_section( 'theme_options_content_width', [
+        'title' => Util\Text::translate( 'Content Width' ),
+        'description' => Util\Text::translate( 'Set a custom content width. This is required for responsive images and videos, and other media features of WordPress - Read more here https://codex.wordpress.org/Content_Width' ),
+        'priority' => 160,
+        'capability' => 'edit_theme_options',
+    ] );
+
+    // Theme Width
+    $wp_customize->add_setting( 'content_width', [
+      'type' => 'option',
+      'capability' => 'manage_options',
+      'default' => '',
+    ]);
+    $wp_customize->add_control( 'content_width', [
+        'type' => 'number',
+        'priority' => 10,
+        'section' => 'theme_options_content_width',
+        'label' => __( 'Content Width' ),
+        'description' => Util\Text::translate( 'Value in pixels (ie: 960)' )
     ]);
 }

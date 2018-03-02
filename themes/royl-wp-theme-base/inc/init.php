@@ -25,6 +25,15 @@ add_action( 'init', __n( 'register_post_types' ), PHP_INT_MAX-1 );
 add_action( 'init', __n( 'register_taxonomies' ), PHP_INT_MAX-1 );
 
 /**
+ * https://codex.wordpress.org/Content_Width 
+ * @var int
+ */
+$content_width = (int) get_option( 'content_width' );
+if ( false === $content_width ) {
+    $content_width = 1080;
+}
+
+/**
  * Register Custom Post Types
  * @return [type] [description]
  */
