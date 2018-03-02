@@ -29,7 +29,7 @@ add_action( 'init', __n( 'register_taxonomies' ), PHP_INT_MAX-1 );
  * @var int
  */
 $content_width = (int) get_option( 'content_width' );
-if ( false === $content_width ) {
+if ( 0 == $content_width ) {
     $content_width = 1080;
 }
 
