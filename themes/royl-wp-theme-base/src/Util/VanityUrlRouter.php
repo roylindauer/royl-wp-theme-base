@@ -286,14 +286,16 @@ class VanityUrlRouter
         if ($post->post_type == 'revision') {
             return $post_id;
         }
+
+        if (!isset($_POST['custom-url-path'])) {
+            return;
+        }
         
         global $wpdb;
         
         $metabox_custom_url_path = '';
-        if (isset($_POST['custom-url-path'])) {
-            $metabox_custom_url_path = sanitize_text_field($_POST['custom-url-path']);
-            $metabox_custom_url_path = $this->cleanUrl($metabox_custom_url_path);
-        }
+        $metabox_custom_url_path = sanitize_text_field($_POST['custom-url-path']);
+        $metabox_custom_url_path = $this->cleanUrl($metabox_custom_url_path);
 
         $result = $this->getVanityUrlRouteByID($post->ID);
 
