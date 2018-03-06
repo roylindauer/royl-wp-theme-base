@@ -23,6 +23,7 @@ add_action( 'after_setup_theme', __n( 'set_theme_config' ), PHP_INT_MAX-1 );
 
 add_action( 'init', __n( 'register_post_types' ), PHP_INT_MAX-1 );
 add_action( 'init', __n( 'register_taxonomies' ), PHP_INT_MAX-1 );
+add_action( 'init', __n( 'maybe_use_vanity_urls' ) );
 
 /**
  * https://codex.wordpress.org/Content_Width 
@@ -265,5 +266,17 @@ function print_theme_errors() {
     echo '<div class="error"><h4>' . Util\Text::translate('Theme Errors & Warnings').'</h4><ul>';
     echo $output;
     echo '</ul></div>';
+}
+
+
+/**
+ * Maybe setup Vanity URL Router
+ * @return [type] [description]
+ */
+function maybe_use_vanity_urls() {
+    $enable_url_router = apply_filters( 'royl_enable_vanity_urls', false );
+    if ( true === $enable_url_router ) {
+        $VanityUrlRouter  = new Util\VanityUrlRouter();
+    }
 }
 

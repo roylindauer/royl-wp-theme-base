@@ -22,7 +22,6 @@ require_once 'inc/template-tags.php';
 // Init core theme services
 $Ajax             = new Ajax\Ajax();
 $CoreFilter       = new Filter\Filter();
-$VanityUrlRouter  = new Util\VanityUrlRouter();
 
 // Set some theme specific configurations in the Theme Config
 if ( function_exists( 'wp_get_theme' ) ) {

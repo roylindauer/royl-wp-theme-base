@@ -34,3 +34,8 @@ function change_reader_heading( $template, $class ) {
     return $template;
 }
 add_filter( 'navigation_markup_template', __n( 'change_reader_heading' ), 10, 2 );
+
+/**
+ * Enable/Disable vanity URLs
+ */
+add_filter( 'royl_enable_vanity_urls', __return_false(), 10 );
