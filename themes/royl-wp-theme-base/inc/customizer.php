@@ -5,7 +5,7 @@ use Royl\WpThemeBase\Util;
 
 add_action( 'login_enqueue_scripts', __n( 'output_custom_login_logo' ), PHP_INT_MAX-1 );
 
-add_action( 'customize_register', __n( 'customizer_logo' ), PHP_INT_MAX-1 );
+add_action( 'customize_register', __n( 'customizer_login_logo' ), PHP_INT_MAX-1 );
 add_action( 'customize_register', __n( 'customizer_content_width' ), PHP_INT_MAX-1 );
 
 /**
@@ -39,61 +39,58 @@ function output_custom_login_logo() {
  * @param  [type]  $wp_customize [description]
  * @return [type]                [description]
  */
-function customizer_logo( $wp_customize ) {
+function customizer_login_logo( $wp_customize ) {
 
     // THEME OPTION SECTION
     // this is the container for our custom settings
-    $wp_customize->add_section( 'theme_options_logo', [
+    $wp_customize->add_section( 'theme_options_login_logo', [
         'title' => Util\Text::translate( 'Login Branding' ),
         'description' => Util\Text::translate( 'Customize the logo on the login page' ),
-        'panel' => '', // Not typically needed.
         'priority' => 160,
         'capability' => 'edit_theme_options',
-        'theme_supports' => '', // Rarely needed.
     ] );
 
     // Logo Media
-    $wp_customize->add_setting( 'custom_logo', [
+    $wp_customize->add_setting( 'custom_login_logo', [
         'type' => 'option',
         'capability' => 'manage_options',
-        'default' => '',
     ]);
     $wp_customize->add_control(
         new \WP_Customize_Upload_Control(
             $wp_customize,
-            'custom_logo',
+            'custom_login_logo',
             [
                 'label' => Util\Text::translate( 'Logo File' ),
-                'section' => 'theme_options_logo',
-                'settings' => 'custom_logo',
+                'section' => 'theme_options_login_logo',
+                'settings' => 'custom_login_logo',
             ]
         )
     );
 
     // Logo Width
-    $wp_customize->add_setting( 'custom_logo_width', [
+    $wp_customize->add_setting( 'custom_login_logo_width', [
       'type' => 'option',
       'capability' => 'manage_options',
       'default' => '',
     ]);
-    $wp_customize->add_control( 'custom_logo_width', [
+    $wp_customize->add_control( 'custom_login_logo_width', [
         'type' => 'number',
         'priority' => 10,
-        'section' => 'theme_options_logo',
+        'section' => 'theme_options_login_logo',
         'label' => __( 'Logo Width' ),
         'description' => Util\Text::translate( 'Defaults to 320px' )
     ]);
 
     // Logo Height
-    $wp_customize->add_setting( 'custom_logo_height', [
+    $wp_customize->add_setting( 'custom_login_logo_height', [
       'type' => 'option',
       'capability' => 'manage_options',
       'default' => '',
     ] );
-    $wp_customize->add_control( 'custom_logo_height', [
+    $wp_customize->add_control( 'custom_login_logo_height', [
         'type' => 'number',
         'priority' => 10,
-        'section' => 'theme_options_logo',
+        'section' => 'theme_options_login_logo',
         'label' => __( 'Logo Height' ),
         'description' => Util\Text::translate( 'Defaults to 160px' )
     ]);
