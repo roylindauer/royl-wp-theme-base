@@ -75,7 +75,6 @@ class TaxonomyType
         
         // Post type defaults
         $this->args = [
-            'labels' => $this->labels,
             'public' => true,
             'description' => '',
             'exclude_from_search ' => false,
@@ -94,6 +93,7 @@ class TaxonomyType
         ];
 
         $this->args = array_merge($this->args, $args);
+        $this->args['labels'] = array_merge( $this->labels, $args['labels'] );
 
         $taxname = strtolower($this->name);
 

@@ -110,7 +110,6 @@ class PostType
         
         // Post type defaults
         $this->args = [
-            'labels' => $this->labels,
             'description' => '',
             'public' => true,
             'exclude_from_search ' => false,
@@ -130,6 +129,8 @@ class PostType
         if (isset($params['args'])) {
             $this->args = array_merge($this->args, $params['args']);
         }
+
+        $this->args['labels'] = array_merge($this->labels, (array) $params['args']['labels']);
 
         register_post_type($this->id, $this->args);
     }
