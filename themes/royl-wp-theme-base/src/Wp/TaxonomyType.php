@@ -92,8 +92,13 @@ class TaxonomyType
             'show_admin_column' => true
         ];
 
-        $this->args = array_merge($this->args, $args);
-        $this->args['labels'] = array_merge( $this->labels, $args['labels'] );
+        if (isset($args) && is_array($args)){
+            $this->args = array_merge($this->args, $args);
+        }
+
+        if (isset($args['labels']) && is_array($args['labels'])){
+            $this->args['labels'] = array_merge( $this->labels, $args['labels'] );
+        }
 
         $taxname = strtolower($this->name);
 

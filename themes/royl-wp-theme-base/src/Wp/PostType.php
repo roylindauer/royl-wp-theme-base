@@ -123,7 +123,8 @@ class PostType
             'has_archive' => true,
             'hierarchical' => false,
             'supports' => $this->supports,
-            'slug' => $singular
+            'slug' => $singular,
+            'taxonomies' => array(),
         ];
 
         if (isset($params['args'])) {
