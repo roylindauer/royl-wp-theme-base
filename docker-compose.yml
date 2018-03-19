@@ -22,7 +22,7 @@ wordpress:
     PHPUNIT_DB_NAME: wordpress_phpunit
     PHPUNIT_DB_USER: root
     PHPUNIT_DB_PASSWORD: ""
-
+    XDEBUG_CONFIG: "remote_host=172.17.0.1 idekey=xdebug profiler_enable=1 profiler_output_name=%R.%t.out"
 
 mysql:
   image: mariadb

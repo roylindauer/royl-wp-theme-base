@@ -92,10 +92,12 @@ class TaxonomyType
             'show_admin_column' => true
         ];
 
+        // Merge user args
         if (isset($args) && is_array($args)){
             $this->args = array_merge($this->args, $args);
         }
 
+        // Merge user labels
         if (isset($args['labels']) && is_array($args['labels'])){
             $this->args['labels'] = array_merge( $this->labels, $args['labels'] );
         }

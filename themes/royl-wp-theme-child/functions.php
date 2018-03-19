@@ -3,6 +3,10 @@ use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Ajax;
 
+add_filter( 'royl_enable_vanity_urls', function(){
+    return true;
+});
+
 /**
  * Enqueue Parent Theme Styles
  */

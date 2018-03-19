@@ -127,11 +127,15 @@ class PostType
             'taxonomies' => array(),
         ];
 
-        if (isset($params['args'])) {
+        // Merge user args
+        if (isset($params['args']) && is_array($params['args'])) {
             $this->args = array_merge($this->args, $params['args']);
         }
 
-        $this->args['labels'] = array_merge($this->labels, (array) $params['args']['labels']);
+        // Merge user custom labels
+        if (isset($params['args']['labels']) && is_array($params['args']['labels'])) {
+            $this->args['labels'] = array_merge($this->labels, $params['args']['labels']);
+        }
 
         register_post_type($this->id, $this->args);
     }

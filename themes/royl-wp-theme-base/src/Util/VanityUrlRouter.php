@@ -35,13 +35,8 @@ class VanityUrlRouter
          * We define a custom rewrite rule for EVERY VANITY URL
          * @todo  this may not be scalable, test it, and refactor if required
          */
-        add_action('init', [&$this, 'addRewriteTags'], 10);
-        add_action('init', [&$this, 'addRewriteRules'], 10);
-
-        /**
-         * Flushes rewrite rules if required. This must be executed after addRewriteRules()
-         */
-        add_action('init', [&$this, 'maybeUpdateRewriteRules'], 9999);
+        add_action('init', [&$this, 'addRewriteTags'], PHP_INT_MAX - 1);
+        add_action('init', [&$this, 'addRewriteRules'], PHP_INT_MAX - 1);
 
         /**
          * Does the initial setup. 
@@ -65,29 +60,23 @@ class VanityUrlRouter
     }
 
     /**
-     * Flushes Rewrite Rules if required
-     * @return [type] [description]
-     */
-    public function maybeUpdateRewriteRules() {
-        if (get_option('vanityurl_requires_update')) {
-            global $wp_rewrite;
-            flush_rewrite_rules( false );
-            $wp_rewrite->flush_rules();
-            update_option('vanityurl_requires_update', false);
-        }
-    }
-
-    /**
      * Create rewrite rules for every entry in the routes table
      */
     public function addRewriteRules()
     {
+        global $wp_rewrite;
         $routes = $this->getRoutes();
         foreach ($routes as $route) {
             add_rewrite_rule('^' . $route['url'] . '$', 'index.php?' . $this->queryVar . '=true', 'top');
         }
+
+        flush_rewrite_rules( false );
+        $wp_rewrite->flush_rules( false );
     }
 
+    /**
+     *
+     */
     public function addRewriteTags()
     {
         add_rewrite_tag($this->queryVar, '([^&]+)');
@@ -162,11 +151,10 @@ class VanityUrlRouter
             $url = ltrim($url, '/');
         }
 
-        // Rermove trailing slash
+        // Remove trailing slash
         if (substr($url, 0, -1) == '/') {
             $url = rtrim($url, '/');
         }
-
 
         return $url;
     }
@@ -202,20 +190,22 @@ class VanityUrlRouter
         if ($result !== null) {
 
             /*
-             * WordPress will redirect to the internal canonical url unless we 
-             * explicitly tell it not to here. 
+             * WordPress will redirect to the internal canonical url unless we
+             * explicitly tell it not to here.
+             * @todo - do we really need to prevent redirect? I think the answer is no..
              */
-            remove_action('template_redirect', 'redirect_canonical');
-            
+            #remove_action('template_redirect', 'redirect_canonical');
+
             /*
              * Manually set query vars based on our matched route.
              * Normally WordPress would auto fill this information.
+             * @todo - are we sure we need to do this?
              */
             $post = get_post($result['post_id']);
 
             if ($post->post_type == 'page') {
-                $wp->query_vars['page']     = '';
-                $wp->query_vars['pagename'] = $post->post_name;
+                $wp->query_vars['page']      = '';
+                $wp->query_vars['pagename']  = $post->post_name;
             } else {
                 $wp->query_vars['p']         = $post->ID;
                 $wp->query_vars['post_name'] = $post->post_name;
@@ -267,6 +257,7 @@ class VanityUrlRouter
 
     /**
      * Save meta box data
+     * @todo - throw error if route already exists
      */
     public function saveCustomMetabox($post_id, $post, $update)
     {
@@ -292,8 +283,7 @@ class VanityUrlRouter
         }
         
         global $wpdb;
-        
-        $metabox_custom_url_path = '';
+
         $metabox_custom_url_path = sanitize_text_field($_POST['custom-url-path']);
         $metabox_custom_url_path = $this->cleanUrl($metabox_custom_url_path);
 
@@ -314,7 +304,7 @@ class VanityUrlRouter
             );
         }
 
-        update_option('vanityurl_requires_update', true);
+        $this->addRewriteRules();
     }
 
     /**

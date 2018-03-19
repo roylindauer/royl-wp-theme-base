@@ -4,3 +4,4 @@ node_modules
 tmp/
 /vendor
 /themes/royl-wp-theme-base/vendor
+/.idea
