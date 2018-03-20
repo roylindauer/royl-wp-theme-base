@@ -23,7 +23,7 @@ add_action( 'after_setup_theme', __n( 'set_theme_config' ), PHP_INT_MAX-1 );
 
 add_action( 'init', __n( 'register_post_types' ), PHP_INT_MAX-1 );
 add_action( 'init', __n( 'register_taxonomies' ), PHP_INT_MAX-1 );
-add_action( 'init', __n( 'maybe_use_vanity_urls' ) );
+add_action( 'init', __n( 'maybe_use_auri' ) );
 
 /**
  * https://codex.wordpress.org/Content_Width 
@@ -270,13 +270,13 @@ function print_theme_errors() {
 
 
 /**
- * Maybe setup Vanity URL Router
- * @return [type] [description]
+ * Maybe setup AURI
+ * @return  void
  */
-function maybe_use_vanity_urls() {
-    $enable_url_router = apply_filters( 'royl_enable_vanity_urls', false );
+function maybe_use_auri() {
+    $enable_url_router = apply_filters( 'royl_enable_auri', false );
     if ( true === $enable_url_router ) {
-        $VanityUrlRouter  = new Util\VanityUrlRouter();
+        $AURI = new Util\AURI();
     }
 }
 
