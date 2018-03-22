@@ -18,8 +18,8 @@ function output_custom_login_logo() {
         return;
     }
 
-    $width  = get_option( 'custom_logo_width', 320 );
-    $height = get_option( 'custom_logo_height', 160 );
+    $width  = get_option( 'custom_login_logo_width', 320 );
+    $height = get_option( 'custom_login_logo_height', 160 );
     ?>   
     <style type="text/css">
         #login h1 a, .login h1 a {
