@@ -13,7 +13,7 @@ add_action( 'customize_register', __n( 'customizer_content_width' ), PHP_INT_MAX
  * @return [type] [description]
  */
 function output_custom_login_logo() {
-    $logo_url = get_option( 'custom_logo' );
+    $logo_url = get_option( 'custom_login_logo' );
     if ( $logo_url === false ) {
         return;
     }
