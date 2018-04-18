@@ -49,7 +49,7 @@ class FilterPost extends \Royl\WpThemeBase\Ajax\Response
         if ($set) {
             $ret = [];
             $filters    = Util\Configure::read('filters.filters');
-            $filterlist = Util\Configure::read('filters.filter_template_map.' . $set);
+            $filterlist = Util\Configure::read('filters.filter_groups.' . $set);
 
             foreach ($filterlist as $_f) {
                 if (!isset( $filters[$_f])) {

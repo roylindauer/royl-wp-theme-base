@@ -185,10 +185,11 @@ add_filter( 'royl_set_filter_query_arg_defaults', function( $defaults ){
 /**
  * Example: Setup Custom WP Query Filters
  */
-add_filter( 'royl_config_filters', 'setup_filters', 10 );
+add_filter( 'royl_filter_define_filters', 'setup_filters', 10 );
 function setup_filters() {
     return [
         'category' => [
+            'name' => 'category',
             'filter_query' => [
                 'type' => 'Taxonomy',
                 'taxonomy' => 'category',
@@ -199,11 +200,19 @@ function setup_filters() {
                 'type' => 'Select',
                 'multi' => false,
                 'options' => Wp\Taxonomy::getList( 'category' ),
-                'name' => 'category', // use for the name attr on the field
                 'label' => Util\Text::translate( 'Post Category' ),
             ]
         ],
+        'nofield' => [
+            'name' => 'nofield',
+            'filter_query' => [
+                'type' => 'Taxonomy',
+                'taxonomy' => 'category',
+                'post_types' => [ 'post' ],
+            ],
+        ],
         'search' => [
+            'name' => 'search', // use for the name attr on the field
             'filter_query' => [
                 'type' => 'Search',
                 'post_types' => [ 'post' ],
@@ -211,11 +220,11 @@ function setup_filters() {
             'field' => [
                 'classes' => [ 'form-control' ],
                 'type' => 'Text',
-                'name' => 'search', // use for the name attr on the field
                 'label' => Util\Text::translate( 'Search' ),
             ]
         ],
         'mycustomfield' => [
+            'name' => 'mycustomfield', // use for the name attr on the field
             'filter_query' => [
                 'type' => 'Postmeta',
                 'key' => 'mycustomfield',
@@ -225,13 +234,13 @@ function setup_filters() {
             'field' => [
                 'classes' => [ 'form-control' ],
                 'type' => 'Text',
-                'name' => 'mycustomfield', // use for the name attr on the field
                 'label' => Util\Text::translate( 'Custom Field <code>you can include html in the label</code>' ),
                 'placeholder' => Util\Text::translate( 'This is a placeholder' )
             ]
         ],
         // sort and direction
         'orderby' => [
+            'name' => 'orderby',
             'filter_query' => [
                 'type' => 'OrderBy',
                 'rand_seed' => 1234,
@@ -248,11 +257,11 @@ function setup_filters() {
                     'modified' => Util\Text::translate( 'Modified Date' ),
                     'rand' => Util\Text::translate( 'Random' ),
                 ],
-                'name' => 'orderby',
                 'label' => Util\Text::translate( 'Order By' ),
             ]
         ],
         'order' => [
+            'name' => 'order',
             'filter_query' => [
                 'type' => 'Order'
             ],
@@ -264,7 +273,6 @@ function setup_filters() {
                     'ASC' => Util\Text::translate( 'ASC' ),
                     'DESC' => Util\Text::translate( 'DESC' ),
                 ],
-                'name' => 'order',
                 'label' => Util\Text::translate( 'Direction' ),
             ]
         ]
@@ -272,12 +280,13 @@ function setup_filters() {
 }
 
 /**
- * Example: Map Custom Filters to create Filter Sets
+ * Example: Combine Custom Filters to create Filter Query Groups
+ * Use Filter Query Groups to generate WP_Query objects and render filter forms.
  */
-add_filter( 'royl_map_filters', 'map_filters' );
-function map_filters() {
+add_filter( 'royl_filter_define_filter_groups', 'define_filter_groups' );
+function define_filter_groups() {
     return [
-        'test-filter-form' => [ 'category', 'mycustomfield', 'search', 'orderby', 'order' ],
+        'test-filter-form' => [ 'category', 'mycustomfield', 'search', 'orderby', 'order', 'nofield' ],
         'test-filter-form-secondary' => [ 'category', 'search' ],
     ];
 }

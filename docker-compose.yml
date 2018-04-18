@@ -1,5 +1,5 @@
 wordpress:
-  image: chriszarate/wordpress:4.7.2
+  image: chriszarate/wordpress
   volumes:
     - ./themes/royl-wp-theme-base:/var/www/html/wp-content/themes/royl-wp-theme-base
     - ./themes/royl-wp-theme-child:/var/www/html/wp-content/themes/royl-wp-theme-child
@@ -9,14 +9,13 @@ wordpress:
   ports:
     - 80:80
   environment:
-#    WORDPRESS_ACTIVATE_PLUGINS: royl-wp-theme-base
-    WORDPRESS_SITE_URL: http://localhost:8080/
     WORDPRESS_DB_HOST: mysql
     WORDPRESS_DB_NAME: wordpress
     WODRPRESS_DB_USER: root
     WORDPRESS_DB_PASSWORD: ""
     WORDPRESS_SITE_TITLE: "ROYL WP Theme Base Development"
     WORDPRESS_CONFIG_EXTRA: "define('WP_DEBUG', 1);"
+    WORDPRESS_SITE_URL: "http://localhost"
     PHPUNIT_TEST_DIR: /var/www/html/wp-content/themes/royl-wp-theme-child
     PHPUNIT_DB_HOST: mysql_phpunit
     PHPUNIT_DB_NAME: wordpress_phpunit

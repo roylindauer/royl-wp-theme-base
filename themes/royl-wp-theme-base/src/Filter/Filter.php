@@ -13,19 +13,25 @@ class Filter
     public function __construct()
     {
         add_action('init', [&$this, 'configFilters'], 20);
-        add_action('init', [&$this, 'configFilterTemplateMap'], 20);
-        
-        add_filter('royl_config_filters', [&$this, 'preProcessFilters']);
-        add_filter('query_vars', [&$this, 'queryVars']);
+        add_action('init', [&$this, 'configFilterGroups'], 20);
+        add_filter('royl_filter_define_filters', [&$this, 'setFilterFieldDefaultAttributes']);
+        add_filter('query_vars', [&$this, 'addQueryVars']);
     }
 
     /**
-     * Pre Process Filters
+     * Setup default field attributes for defined filter fields
+     * Every field must have a name an id.
      */
-    public function preProcessFilters($filters = []) {
+    public function setFilterFieldDefaultAttributes($filters = []) {
         foreach ($filters as $k => $v) {
-            $filters[$k]['field']['name'] = 'filter_' . $v['field']['name'];
-            $filters[$k]['field']['id'] = 'filter_' . $v['field']['name'];
+            if (isset($v['field'])) {
+                if (!isset($filters[$k]['field']['name'])) {
+                    $filters[$k]['field']['name'] = $v['name'];
+                }
+                if (!isset($filters[$k]['field']['id'])) {
+                    $filters[$k]['field']['id'] = 'filter_field_id_' . $v['name'];
+                }
+            }
         }
         return $filters;
     }
@@ -35,31 +41,29 @@ class Filter
      */
     public function configFilters()
     {
-        $filters = [];
-        $filters = apply_filters( 'royl_config_filters', $filters );
+        $filters = apply_filters( 'royl_filter_define_filters', [] );
         \Royl\WpThemeBase\Util\Configure::write('filters.filters', $filters);
     }
 
     /**
      * Setup filter map
      */
-    public function configFilterTemplateMap()
+    public function configFilterGroups()
     {
-        $filter_template_map = [];
-        $filter_template_map = apply_filters( 'royl_map_filters', $filter_template_map );
-        \Royl\WpThemeBase\Util\Configure::write('filters.filter_template_map', $filter_template_map);
+        $filter_groups = apply_filters( 'royl_filter_define_filter_groups', [] );
+        \Royl\WpThemeBase\Util\Configure::write('filters.filter_groups', $filter_groups);
     }
 
     /**
-     * Add our filter query vars
+     * Add a custom query var for each of our defined filters
      */
-    public function queryVars($query_vars)
+    public function addQueryVars($query_vars)
     {
         $filters = \Royl\WpThemeBase\Util\Configure::read('filters.filters');
-        
+
         // Add each of our defined filters as query var
         foreach ($filters as $filter => $data) {
-            $query_vars[] = $data['field']['name'];
+            $query_vars[] = $data['name'];
         }
         
         return $query_vars;

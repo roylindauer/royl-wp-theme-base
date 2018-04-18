@@ -37,7 +37,7 @@ class Util
     private static function getDefinedFilterData($set) {
 
         $filters    = \Royl\WpThemeBase\Util\Configure::read('filters.filters');
-        $filterlist = \Royl\WpThemeBase\Util\Configure::read('filters.filter_template_map.' . $set);
+        $filterlist = \Royl\WpThemeBase\Util\Configure::read('filters.filter_groups.' . $set);
 
         return [
             'filters' => $filters,
@@ -67,8 +67,10 @@ class Util
 
         // Instantiate new Filter Fields to be rendered in the filter form
         foreach ($filterdata['filterlist'] as $_f) {
-            $fieldClass = 'Royl\WpThemeBase\Filter\Field\\' . $filterdata['filters'][$_f]['field']['type'];
-            $fields[] = new $fieldClass($filterdata['filters'][$_f]['field']);
+            if (isset($filterdata['filters'][$_f]['field']['type'])) {
+                $fieldClass = 'Royl\WpThemeBase\Filter\Field\\' . $filterdata['filters'][$_f]['field']['type'];
+                $fields[] = new $fieldClass($filterdata['filters'][$_f]['field']);
+            }
         }
 
         // Modify output before the filter form is rendered
@@ -93,10 +95,10 @@ class Util
             'ignore_sticky_posts' => false,
         ];
 
-        // ALlow user to override args
         $args = apply_filters('royl_set_filter_query_arg_defaults', $args);
 
-        // Init the post types array
+        // Reset post type array. Post types should be defined in the filter config.
+        // We build the array of post types from each filter in the $set.
         $args['post_type'] = [];
 
         $filterdata = self::getDefinedFilterData($set);
@@ -110,7 +112,7 @@ class Util
 
             // Process Filter Query
             $queryclass = 'Royl\WpThemeBase\Filter\Query\\' . $filter_conf['filter_query']['type'];
-            $filter = new $queryclass($filter_conf['field']['name'], $filter_conf['filter_query']);
+            $filter = new $queryclass($filter_conf['name'], $filter_conf['filter_query']);
             $args = array_merge_recursive($args, $filter->getFilter());
 
             // Post Types
@@ -121,13 +123,17 @@ class Util
 
         // Clean up Post Types
         $args['post_type'] = array_filter(array_unique($args['post_type']));
-        
-        $args['paged'] = self::getQueryVar('paged');
-        
-        // last chance to modify filter args before WP_Query object is created
-        $args = apply_filters('royl_alter_filter_query_args', $args);
 
-        // Create new WP_Query object and return it
+        // Paged must be an int
+        $args['paged'] = intval(self::getQueryVar('paged'));
+
+        // Global filter
+        $args = apply_filters('royl_filter_alter_query_args', $args);
+
+        // Filter specifically this $set
+        $args = apply_filters('royl_filter_alter_query_args_' . $set, $args);
+
+        // Create and return new WP_Query object
         return new \WP_Query($args);
     }
 }
