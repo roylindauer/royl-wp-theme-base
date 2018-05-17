@@ -7,12 +7,12 @@ class Postmeta extends \Royl\WpThemeBase\Filter\Query
     public function getFilter()
     {
         $args = [];
-        if ($this->filter_query['value']) {
+        if ($this->getValue()) {
             $args = [
                 'meta_query' => [
                     [
                         'key' => $this->filter_query['key'],
-                        'value' => $this->filter_query['value'],
+                        'value' => $this->getValue(),
                         'compare' => $this->filter_query['compare']
                     ]
                 ]

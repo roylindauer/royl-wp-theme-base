@@ -7,13 +7,13 @@ class Taxonomy extends \Royl\WpThemeBase\Filter\Query
     public function getFilter()
     {
         $args = [];
-        if ($this->filter_query['value']) {
+        if ($this->getValue()) {
             $args = [
                 'tax_query' => [
                     [
                         'taxonomy' => $this->filter_query['taxonomy'],
                         'field' => 'slug',
-                        'terms' => $this->filter_query['value'],
+                        'terms' => $this->getValue(),
                     ]
                 ]
             ];

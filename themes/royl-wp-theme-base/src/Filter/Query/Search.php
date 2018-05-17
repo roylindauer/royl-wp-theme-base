@@ -6,8 +6,8 @@ class Search extends \Royl\WpThemeBase\Filter\Query
 {
     public function getFilter()
     {
-        if ($this->filter_query['value']) {
-            return ['s' => $this->filter_query['value']];
+        if ($this->getValue()) {
+            return ['s' => $this->getValue()];
         }
         return [];
     }
