@@ -19,11 +19,12 @@ class Template
     /**
      * Load and render a template.
      *
-     * @param  string $template name of the template to load
-     * @param  array  $data     array of data to make available to the template
-     * @return bool             return truthy value
+     * @param  string $template      name of the template to load
+     * @param  array  $data          array of data to make available to the template
+     * @param  bool   $return        set as true to return output as string
+     * @return bool                  return truthy value
      */
-    public static function load($template, $data = [])
+    public static function load($template, $data = [], $return = false)
     {
         try {
             // Allow users to change the default location of template partials
@@ -42,8 +43,14 @@ class Template
             if (is_array($data)) {
                 extract($data);
             }
-        
-            return include ($located);
+
+            if ($return) {
+                ob_start();
+                include ($located);
+                return ob_get_clean();
+            } else {
+                return include ($located);
+            }
         } catch (\Exception $e) {
             Util\Debug::log($e->getMessage());
         }
