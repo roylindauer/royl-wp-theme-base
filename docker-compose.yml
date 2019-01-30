@@ -1,38 +1,58 @@
-wordpress:
-  image: chriszarate/wordpress
-  volumes:
-    - ./themes/royl-wp-theme-base:/var/www/html/wp-content/themes/royl-wp-theme-base
-    - ./themes/royl-wp-theme-child:/var/www/html/wp-content/themes/royl-wp-theme-child
-  links:
-    - mysql:mysql
-    - mysql_phpunit:mysql_phpunit
-  ports:
-    - 80:80
-  environment:
-    WORDPRESS_DB_HOST: mysql
-    WORDPRESS_DB_NAME: wordpress
-    WODRPRESS_DB_USER: root
-    WORDPRESS_DB_PASSWORD: ""
-    WORDPRESS_SITE_TITLE: "ROYL WP Theme Base Development"
-    WORDPRESS_CONFIG_EXTRA: "define('WP_DEBUG', 1);"
-    WORDPRESS_SITE_URL: "http://localhost"
-    PHPUNIT_TEST_DIR: /var/www/html/wp-content/themes/royl-wp-theme-child
-    PHPUNIT_DB_HOST: mysql_phpunit
-    PHPUNIT_DB_NAME: wordpress_phpunit
-    PHPUNIT_DB_USER: root
-    PHPUNIT_DB_PASSWORD: ""
-    XDEBUG_CONFIG: "remote_host=172.17.0.1 idekey=xdebug profiler_enable=1 profiler_output_name=%R.%t.out"
+version: "3"
 
-mysql:
-  image: mariadb
-  environment:
-    MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-    MYSQL_DATABASE: wordpress
-    MYSQL_ROOT_PASSWORD: ""
+services:
 
-mysql_phpunit:
-  image: mariadb
-  environment:
-    MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-    MYSQL_DATABASE: wordpress_phpunit
-    MYSQL_ROOT_PASSWORD: ""
+  wordpress:
+    image: "wordpress:${WP_VERSION:-4.9.6}-php${PHP_VERSION:-7.2}-apache"
+    environment:
+      VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN:-project.test}"
+      WORDPRESS_DB_HOST: "mysql"
+      WORDPRESS_DB_NAME: "wordpress"
+      WORDPRESS_DB_PASSWORD: ""
+      WORDPRESS_DB_USER: "root"
+    depends_on:
+      - "mysql"
+    networks:
+      - "front"
+      - "back"
+    volumes:
+      - "wp:/var/www/html:rw"
+      - "./themes/royl-wp-theme-base:/var/www/html/wp-content/themes/royl-wp-theme-base:rw"
+      - "./themes/royl-wp-theme-child:/var/www/html/wp-content/themes/royl-wp-theme-child:rw"
+  wp-cli:
+    image: "wordpress:cli-php${PHP_VERSION:-7.2}"
+    environment:
+      - APACHE_RUN_USER="www-data"
+      - APACHE_RUN_GROUP="www-data"
+    depends_on:
+      - "mysql"
+    networks:
+      - "back"
+    volumes:
+      - "wp:/var/www/html:rw"
+      - "./bin/install-wp.sh:/usr/local/bin/install-wp:ro"
+  mysql:
+    image: "mariadb:10.2"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: "wordpress"
+      MYSQL_ROOT_PASSWORD: ""
+    networks:
+      - "back"
+  proxy:
+    image: "jwilder/nginx-proxy:alpine"
+    ports:
+      - "80:80"
+    networks:
+      front:
+        aliases:
+          - "${DOCKER_DEV_DOMAIN:-project.test}"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+
+networks:
+  front: {}
+  back: {}
+
+volumes:
+  wp: {}

@@ -82,6 +82,12 @@ class PostType
             return;
         }
 
+        $_default_params = [
+            'labels' => []
+        ];
+
+        $params = array_merge($_default_params, $params);
+
         if (isset($params['supports'])) {
             $this->supports = $params['supports'];
         }
@@ -128,14 +134,13 @@ class PostType
         ];
 
         // Merge user args
-        if (isset($params['args']) && is_array($params['args'])) {
-            $this->args = array_merge($this->args, $params['args']);
-        }
+        $this->args = array_merge($this->args, $params['args']);
 
         // Merge user custom labels
-        if (isset($params['args']['labels']) && is_array($params['args']['labels'])) {
-            $this->args['labels'] = array_merge($this->labels, $params['args']['labels']);
+        if (!isset($params['args']['labels']) || !is_array($params['args']['labels'])) {
+            $params['args']['labels'] = [];
         }
+        $this->args['labels'] = array_merge($this->labels, $params['args']['labels']);
 
         register_post_type($this->id, $this->args);
     }
