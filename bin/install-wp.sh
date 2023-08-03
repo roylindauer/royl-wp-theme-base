@@ -6,7 +6,7 @@ wp core install \
   --admin_user="wordpress" \
   --admin_password="wordpress" \
   --admin_email="admin@example.com" \
-  --url="http://project.test" \
+  --url="http://127.0.0.1" \
   --skip-email
 
 # Update permalink structure.

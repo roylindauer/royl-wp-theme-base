@@ -3,6 +3,7 @@
 namespace Royl\WpThemeBase\Wp;
 
 use \Royl\WpThemeBase\Util;
+use Doctrine\Inflector\InflectorFactory;
 
 /**
  * WordPress Taxonomy Base Class
@@ -46,7 +47,7 @@ class TaxonomyType
     {
         $this->name = $name;
 
-        $this->Inflector = new \Doctrine\Common\Inflector\Inflector();
+        $this->Inflector = InflectorFactory::create()->build();
         
         // Convention over configuration!
         $singular = \Royl\WpThemeBase\Util\Text::humanize($this->name);
