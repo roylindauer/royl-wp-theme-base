@@ -9,12 +9,12 @@ spl_autoload_register(function ($class) {
     $len = strlen($prefix);
 
     if (strncmp($prefix, $class, $len) !== 0) {
-        return;
+        return false;
     }
 
     $relative_class = substr($class, $len);
 
     $located = locate_template('src/' . str_replace('\\', '/', $relative_class) . '.php', true);
 
-    return $located ? true : false;
+    return (bool)$located;
 });

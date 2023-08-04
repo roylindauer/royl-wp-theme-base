@@ -1,63 +1,64 @@
 <?php
 
 namespace Royl\WpThemeBase\Core;
+
 use Royl\WpThemeBase\Util;
-use Royl\WpThemeBase\Ajax;
-use Royl\WpThemeBase\Filter;
 use Royl\WpThemeBase\Wp;
 
-add_action( 'after_setup_theme', __n( 'register_theme_features' ), PHP_INT_MAX-1 );
-add_action( 'after_setup_theme', __n( 'register_image_sizes' ), PHP_INT_MAX-1 );
-add_action( 'after_setup_theme', __n( 'register_nav_menus' ), PHP_INT_MAX-1 );
-add_action( 'after_setup_theme', __n( 'load_textdomain' ), PHP_INT_MAX-1 );
+add_action('after_setup_theme', __n('register_theme_features'), PHP_INT_MAX - 1);
+add_action('after_setup_theme', __n('register_image_sizes'), PHP_INT_MAX - 1);
+add_action('after_setup_theme', __n('register_nav_menus'), PHP_INT_MAX - 1);
+add_action('after_setup_theme', __n('load_textdomain'), PHP_INT_MAX - 1);
 
-add_action( 'widgets_init', __n( 'register_sidebars' ), PHP_INT_MAX-1 );
+add_action('widgets_init', __n('register_sidebars'), PHP_INT_MAX - 1);
 
-add_action( 'admin_notices', __n( 'print_theme_errors' ), PHP_INT_MAX-1 );
+add_action('admin_notices', __n('print_theme_errors'), PHP_INT_MAX - 1);
 
-add_action( 'wp_enqueue_scripts', __n( 'load_frontend_scripts' ), PHP_INT_MAX-1 );
-add_action( 'wp_enqueue_scripts', __n( 'load_admin_scripts' ), PHP_INT_MAX-1 );
-add_action( 'wp_enqueue_scripts', __n( 'load_login_scripts' ), PHP_INT_MAX-1 );
+add_action('wp_enqueue_scripts', __n('load_frontend_scripts'), PHP_INT_MAX - 1);
+add_action('wp_enqueue_scripts', __n('load_admin_scripts'), PHP_INT_MAX - 1);
+add_action('wp_enqueue_scripts', __n('load_login_scripts'), PHP_INT_MAX - 1);
 
-add_action( 'after_setup_theme', __n( 'set_theme_config' ), PHP_INT_MAX-1 );
+add_action('after_setup_theme', __n('set_theme_config'), PHP_INT_MAX - 1);
 
-add_action( 'init', __n( 'register_post_types' ), PHP_INT_MAX-1 );
-add_action( 'init', __n( 'register_taxonomies' ), PHP_INT_MAX-1 );
-add_action( 'init', __n( 'maybe_use_auri' ) );
+add_action('init', __n('register_post_types'), PHP_INT_MAX - 1);
+add_action('init', __n('register_taxonomies'), PHP_INT_MAX - 1);
+add_action('init', __n('maybe_use_auri'));
 
 /**
- * https://codex.wordpress.org/Content_Width 
+ * https://codex.wordpress.org/Content_Width
  * @var int
  */
-$content_width = (int) get_option( 'content_width', 1080 );
+$content_width = (int)get_option('content_width', 1080);
 
 /**
  * Register Custom Post Types
  * @return [type] [description]
  */
-function register_post_types() {
+function register_post_types()
+{
     $post_types = [];
-    $post_types = apply_filters( 'royl_register_post_types', $post_types );
+    $post_types = apply_filters('royl_register_post_types', $post_types);
 
-    if ( empty( $post_types ) ) {
+    if (empty($post_types)) {
         return;
     }
 
-    foreach ( $post_types as $post_type => $params ) {
-        new Wp\PostType( $post_type, $params );
+    foreach ($post_types as $post_type => $params) {
+        new Wp\PostType($post_type, $params);
     }
 
-    Util\Configure::write( 'theme_post_types', $post_types );
+    Util\Configure::write('theme_post_types', $post_types);
 }
 
 /**
  * Register Custom Taxonomies
  * @return [type] [description]
  */
-function register_taxonomies() {
+function register_taxonomies()
+{
 
     $taxonomies = [];
-    $taxonomies = apply_filters( 'royl_register_taxonomies', $taxonomies );
+    $taxonomies = apply_filters('royl_register_taxonomies', $taxonomies);
 
     if (empty($taxonomies)) {
         return;
@@ -67,17 +68,18 @@ function register_taxonomies() {
         new Wp\TaxonomyType($name, $opts['params'], $opts['args']);
     }
 
-    Util\Configure::write( 'theme_taxonomies', $taxonomies );
+    Util\Configure::write('theme_taxonomies', $taxonomies);
 }
 
 /**
  * Set Core Theme Config (i suppose things like, api keys, or other data you want to pass around)
- * @param  array  $config [description]
+ * @param array $config [description]
  * @return [type]         [description]
  */
-function set_theme_config() {
+function set_theme_config()
+{
     $config = [];
-    $config = apply_filters( 'royl_set_theme_config', $config );
+    $config = apply_filters('royl_set_theme_config', $config);
     Util\Configure::set($config);
 }
 
@@ -85,7 +87,8 @@ function set_theme_config() {
  * [load_frontend_scripts description]
  * @return [type] [description]
  */
-function load_frontend_scripts() {
+function load_frontend_scripts()
+{
     // Stylesheets
     $stylesheets = [
         'style' => [
@@ -94,53 +97,56 @@ function load_frontend_scripts() {
             'version' => Util\Configure::read('version')
         ]
     ];
-    $stylesheets = apply_filters( 'royl_frontend_stylesheets', $stylesheets );
-    do_load_stylesheets( $stylesheets );
+    $stylesheets = apply_filters('royl_frontend_stylesheets', $stylesheets);
+    do_load_stylesheets($stylesheets);
 
     // JavaScripts
     $scripts = [];
-    $scripts = apply_filters( 'royl_frontend_scripts', $scripts );
-    do_load_scripts( $scripts );
+    $scripts = apply_filters('royl_frontend_scripts', $scripts);
+    do_load_scripts($scripts);
 }
 
 /**
  * [load_admin_scripts description]
  * @return [type] [description]
  */
-function load_admin_scripts() {
+function load_admin_scripts()
+{
     // Stylesheets
     $stylesheets = [];
-    $stylesheets = apply_filters( 'royl_admin_stylesheets', $stylesheets );
-    do_load_stylesheets( $stylesheets );
+    $stylesheets = apply_filters('royl_admin_stylesheets', $stylesheets);
+    do_load_stylesheets($stylesheets);
 
     // JavaScripts
     $scripts = [];
-    $scripts = apply_filters( 'royl_admin_scripts', $scripts );
-    do_load_scripts( $scripts );
+    $scripts = apply_filters('royl_admin_scripts', $scripts);
+    do_load_scripts($scripts);
 }
 
 /**
  * [load_login_scripts description]
  * @return [type] [description]
  */
-function load_login_scripts() {
+function load_login_scripts()
+{
     // Stylesheets
     $stylesheets = [];
-    $stylesheets = apply_filters( 'royl_login_stylesheets', $stylesheets );
-    do_load_stylesheets( $stylesheets );
+    $stylesheets = apply_filters('royl_login_stylesheets', $stylesheets);
+    do_load_stylesheets($stylesheets);
 
     // JavaScripts
     $scripts = [];
-    $scripts = apply_filters( 'royl_login_scripts', $scripts );
-    do_load_scripts( $scripts );
+    $scripts = apply_filters('royl_login_scripts', $scripts);
+    do_load_scripts($scripts);
 }
 
 /**
  * [register_theme_features description]
  * @return [type] [description]
  */
-function register_theme_features() {
-    
+function register_theme_features()
+{
+
     /**
      * Sane Defaults for Theme Features
      * @var array
@@ -182,7 +188,8 @@ function register_theme_features() {
  * [register_image_sizes description]
  * @return [type] [description]
  */
-function register_image_sizes() {
+function register_image_sizes()
+{
     $image_sizes = apply_filters('royl_register_image_sizes', []);
 
     if (empty($image_sizes)) {
@@ -234,7 +241,7 @@ function register_sidebars()
     if (empty($sidebars)) {
         return;
     }
-    
+
     foreach ($sidebars as $sidebar) {
         \register_sidebar($sidebar);
     }
@@ -251,7 +258,8 @@ function register_sidebars()
  *
  * @return string
  */
-function print_theme_errors() {
+function print_theme_errors()
+{
     global $wp_theme_error, $wp_theme_error_code;
 
     if (!current_user_can('manage_options') || !is_wp_error($wp_theme_error)) {
@@ -263,7 +271,7 @@ function print_theme_errors() {
         $output .= '<li>' . $error . '</li>';
     }
 
-    echo '<div class="error"><h4>' . Util\Text::translate('Theme Errors & Warnings').'</h4><ul>';
+    echo '<div class="error"><h4>' . Util\Text::translate('Theme Errors & Warnings') . '</h4><ul>';
     echo $output;
     echo '</ul></div>';
 }
@@ -273,9 +281,10 @@ function print_theme_errors() {
  * Maybe setup AURI
  * @return  void
  */
-function maybe_use_auri() {
-    $enable_url_router = apply_filters( 'royl_enable_auri', false );
-    if ( true === $enable_url_router ) {
+function maybe_use_auri()
+{
+    $enable_url_router = apply_filters('royl_enable_auri', false);
+    if (true === $enable_url_router) {
         $AURI = new Util\AURI();
     }
 }

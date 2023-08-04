@@ -33,7 +33,7 @@ class Text
 
         return \__($str, $domain);
     }
-    
+
     /**
      * Wrapper for https://codex.wordpress.org/Function_Reference/_nx
      */
@@ -56,10 +56,10 @@ class Text
      * $str = \Ecs\Core\Utilties\Text::truncate($str, 7, '...');
      * // returns "This is..."
      *
-     * @param  string   $str, the string to truncate
-     * @param  integer  $len, where to truncate the string
-     * @param  string   $suffix, any text to include after the truncated string
-     * @param  boolean  $safe, when true will strip html tags before truncating
+     * @param string $str , the string to truncate
+     * @param integer $len , where to truncate the string
+     * @param string $suffix , any text to include after the truncated string
+     * @param boolean $safe , when true will strip html tags before truncating
      */
     public static function truncate($str, $len = 50, $suffix = '...', $safe = false)
     {
@@ -78,7 +78,7 @@ class Text
         }
         return $str;
     }
-    
+
     /**
      * Returns a human-readable string from $word
      *
@@ -91,8 +91,8 @@ class Text
      *
      * @access public
      * @static
-     * @param    string    $word    String to "humanize"
-     * @param    string    $uppercase    If set to 'all' it will uppercase all the words
+     * @param string $word String to "humanize"
+     * @param string $uppercase If set to 'all' it will uppercase all the words
      * instead of just the first one.
      * @return string Human-readable word
      */

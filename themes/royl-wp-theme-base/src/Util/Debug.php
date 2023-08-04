@@ -12,7 +12,7 @@ namespace Royl\WpThemeBase\Util;
  */
 class Debug
 {
-    
+
     /**
      * Prettier version of print_r
      *
@@ -39,7 +39,7 @@ class Debug
     public static function debug($var = null)
     {
         $backtrace = debug_backtrace();
-        $file = '.'.str_replace($_SERVER['DOCUMENT_ROOT'], '', $backtrace[0]['file']);
+        $file = '.' . str_replace($_SERVER['DOCUMENT_ROOT'], '', $backtrace[0]['file']);
 
         if (PHP_SAPI === 'cli') {
             echo str_repeat('-', 50) . "\n";
@@ -48,29 +48,29 @@ class Debug
             echo str_repeat('-', 50) . "\n\n";
         } else {
             echo '<div class="__theme_debug">';
-            echo '<p>DEBUG: file: ' . $file . ' - line: ' . $backtrace[0]['line'].'</p>';
+            echo '<p>DEBUG: file: ' . $file . ' - line: ' . $backtrace[0]['line'] . '</p>';
             echo '<pre>';
             var_dump($var);
             echo '</pre>';
             echo '</div>';
         }
     }
-    
+
     public static function log($message = '')
     {
         error_log($message, 4);
     }
-    
+
     /**
      * Adds theme specific messages to the global theme WP_Error object.
      *
      * Takes the theme name as $code for the WP_Error object.
-     * Merges old $data and new $data arrays @uses wp_parse_args().
-     *
-     * @param  (string)  $message
-     * @param  (mixed)   $data_key
-     * @param  (mixed)   $data_value
+     * Merges old $data and new $data arrays @param (string) $message
+     * @param (mixed) $data_key
+     * @param (mixed) $data_value
      * @return WP_Error|Boolean
+     * @uses wp_parse_args().
+     *
      */
     public static function addThemeError($message, $data_key = '', $data_value = '')
     {

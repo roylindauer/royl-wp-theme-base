@@ -28,7 +28,7 @@ class Output
 {
     /**
      * Return a JSON response
-     * @param  string $content The JSON payload
+     * @param string $content The JSON payload
      */
     public static function json($content = false)
     {
@@ -41,7 +41,7 @@ class Output
 
     /**
      * Return an XML response
-     * @param  string $content The XML payload
+     * @param string $content The XML payload
      */
     public static function xml($content = '')
     {
@@ -53,8 +53,8 @@ class Output
 
     /**
      * Force download of $filename
-     * @param  string $filename name of the file download
-     * @param  string $path path to file
+     * @param string $filename name of the file download
+     * @param string $path path to file
      */
     public static function file($filename, $path)
     {
@@ -68,7 +68,7 @@ class Output
         set_time_limit(0);
         $file = @fopen($path, "rb");
         while (!feof($file)) {
-            print(@fread($file, 1024*8));
+            print(@fread($file, 1024 * 8));
             ob_flush();
             flush();
         }

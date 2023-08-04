@@ -5,7 +5,7 @@ namespace Royl\WpThemeBase\Util;
 /**
  * Configure class for handling theme configurations.
  *
- * Provides dot notation for retrieving mutlidim config data
+ * Provides dot notation for retrieving multidimensional config data
  *
  * Usage:
  * \Ecs\Core\Utilities\Configure::write('key', 'value');
@@ -21,22 +21,20 @@ namespace Royl\WpThemeBase\Util;
  */
 final class Configure
 {
-
     /**
      * Array of configure data.
      *
      * @param $config array
      */
-    protected static $config = [];
+    protected static array $config = [];
 
     /**
      * Set $config. Used to initialize the Configure object
      *
-     * @param array $set array of config data
-     *
+     * @param array $config
      * @todo refactor, remove this method and use write()
      */
-    public static function set($config = [])
+    public static function set(array $config = []): void
     {
         self::$config = array_merge(self::$config, $config);
     }
@@ -44,12 +42,9 @@ final class Configure
     /**
      * Write config data
      *
-     * @param string|array $key - the config key to write to
-     * @param string $val - the config value to write
-     * @return void
      * @todo refactor, support passing an array of config data
      */
-    public static function write($key, $val = '')
+    public static function write(string $key, array|string $val = ''): void
     {
         self::setConfig($key, $val);
     }
@@ -57,8 +52,6 @@ final class Configure
     /**
      * Read config data from the array
      *
-     * @param string $key - the config value to return
-     * @return mixed
      * @todo refactor, enhance to support dot notation (Configure::read('my.config.data'))
      */
     public static function read($key = false)
@@ -67,18 +60,14 @@ final class Configure
             $key = explode('.', $key);
             return self::getConfig($key, self::$config);
         }
-        
+
         return self::$config;
     }
-    
+
     /**
      * Handle the dot notation to set a config value to the config array
-     *
-     * @param type $index
-     * @param type $value
-     * @return type
      */
-    private static function setConfig($index, $val)
+    private static function setConfig($index, $val): void
     {
         $link =& self::$config;
 
@@ -100,20 +89,17 @@ final class Configure
             }
         }
     }
-    
+
     /**
      * Handle the dot notation to get a config value from the config array
-     *
-     * @param type $index
-     * @param type $value
-     * @return type
      */
     private static function getConfig($index, $config)
     {
+        $current_index = $index;
         if (is_array($index) && count($index)) {
             $current_index = array_shift($index);
         }
-        
+
         if (is_array($index) &&
             count($index) &&
             isset($config[$current_index]) &&
@@ -121,7 +107,7 @@ final class Configure
             count($config[$current_index])) {
             return self::getConfig($index, $config[$current_index]);
         } else {
-            return (!empty($config[$current_index])) ? $config[$current_index] : false ;
+            return (!empty($config[$current_index])) ? $config[$current_index] : false;
         }
     }
 }

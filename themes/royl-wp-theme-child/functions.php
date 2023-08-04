@@ -2,7 +2,6 @@
 
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
-use Royl\WpThemeBase\Ajax;
 
 add_filter('royl_enable_auri', function () {
     return true;
@@ -33,7 +32,7 @@ add_filter('royl_frontend_stylesheets', function ($styles) {
  * Debug Theme Configure Array
  */
 add_action('shutdown', function () {
-    if (wp_is_json_request()) {
+    if (wp_is_json_request() || wp_doing_ajax()) {
         return;
     }
     Util\Debug::pr(Util\Configure::read());
@@ -66,7 +65,6 @@ add_filter('royl_register_post_types', function ($post_types) {
  * Example: Register Custom Taxonomies
  */
 add_filter('royl_register_taxonomies', function ($tax) {
-
     $custom_tax = [
         'cover_categories' => [
             'params' => [
@@ -98,9 +96,7 @@ add_filter('royl_register_taxonomies', function ($tax) {
  */
 add_filter('royl_set_theme_config', function ($config = []) {
     $theme_config = [];
-    $config = array_merge($config, $theme_config);
-
-    return $config;
+    return array_merge($config, $theme_config);
 });
 
 /**
@@ -188,7 +184,7 @@ add_filter('royl_set_filter_query_arg_defaults', function ($defaults) {
  * Example: Setup Custom WP Query Filters
  */
 add_filter('royl_filter_define_filters', 'setup_filters', 10);
-function setup_filters()
+function setup_filters() :array
 {
     return [
         'category' => [

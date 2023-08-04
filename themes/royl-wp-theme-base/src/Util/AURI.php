@@ -2,6 +2,8 @@
 
 namespace Royl\WpThemeBase\Util;
 
+use WP;
+
 /**
  * Vanity URL Router
  *
@@ -15,9 +17,9 @@ namespace Royl\WpThemeBase\Util;
  */
 class AURI
 {
-    public $tableName = 'auri_map';
-    public $queryVar = 'is_mapped_uri';
-    
+    public string $tableName = 'auri_map';
+    public string $queryVar = 'is_mapped_uri';
+
     public function __construct()
     {
         /**
@@ -27,20 +29,20 @@ class AURI
         add_action('save_post', [&$this, 'saveCustomMetabox'], 99, 3);
 
         /**
-         * This does most of the work of handling the custoM URL
+         * This does most of the work of handling the custom URL
          */
         add_action('parse_request', [&$this, 'parseRequest'], PHP_INT_MAX - 1, 1);
 
         /**
          * We define a custom rewrite rule for EVERY VANITY URL
-         * @todo  this may not be scalable, test it, and refactor if required
+         * @BUGBUG this may not be that scalable, test it, and refactor if required. How many rewrites can we have?
          */
         add_action('init', [&$this, 'addRewriteTags'], PHP_INT_MAX - 1);
         add_action('init', [&$this, 'addRewriteRules'], PHP_INT_MAX - 1);
 
         /**
-         * Does the initial setup. 
-         * @todo  this should be part of theme activation
+         * Does the initial setup.
+         * @BUGBUG should this be part of theme activation?
          */
         add_action('admin_init', function () {
             $this->init();
@@ -54,7 +56,7 @@ class AURI
         add_filter('post_type_link', [&$this, 'permalinks'], 10, 3);
 
         /**
-         * Adds a custom query var so we know we are in a request
+         * Adds a custom query var, so we know we are in a request
          */
         add_filter('query_vars', [&$this, 'queryVars']);
     }
@@ -62,7 +64,7 @@ class AURI
     /**
      * Create rewrite rules for every entry in the routes table
      */
-    public function addRewriteRules()
+    public function addRewriteRules(): void
     {
         global $wp_rewrite;
         $routes = $this->getRoutes();
@@ -70,14 +72,14 @@ class AURI
             add_rewrite_rule('^' . $route['uri'] . '$', 'index.php?' . $this->queryVar . '=true', 'top');
         }
 
-        flush_rewrite_rules( false );
-        $wp_rewrite->flush_rules( false );
+        flush_rewrite_rules(false);
+        $wp_rewrite->flush_rules(false);
     }
 
     /**
      *
      */
-    public function addRewriteTags()
+    public function addRewriteTags(): void
     {
         add_rewrite_tag($this->queryVar, '([^&]+)');
     }
@@ -94,24 +96,23 @@ class AURI
     /**
      * Will return the user defined route if it is available
      *
-     * @param  string       $link
-     * @param  WP_Post|int  $post
-     * @param  bool         $leavename
+     * @param string $link
+     * @param int|WP_Post $post
+     * @param bool $leavename
      * @return string
      */
-    public function permalinks($link, $post, $leavename)
+    public function permalinks(string $link, \WP_Post|int $post, bool $leavename): string
     {
-
         if (!is_object($post)) {
             $post = get_post($post);
         }
-        
+
         $result = $this->getVanityUrlRouteByID($post->ID);
-        
+
         if ($result !== null) {
             return get_site_url(null, $result['uri']);
         }
-        
+
         return $link;
     }
 
@@ -120,7 +121,7 @@ class AURI
      *
      * @return null|array
      */
-    private function getRoutes()
+    private function getRoutes(): ?array
     {
         global $wpdb;
         return $wpdb->get_results('SELECT * FROM ' . $wpdb->prefix . $this->tableName, ARRAY_A);
@@ -129,10 +130,10 @@ class AURI
     /**
      * Retrieve route record by post id
      *
-     * @param  int  $post_id
+     * @param int $post_id
      * @return null|array
      */
-    private function getVanityUrlRouteByID($post_id)
+    private function getVanityUrlRouteByID(int $post_id): ?array
     {
         global $wpdb;
         return $wpdb->get_row('SELECT *  FROM ' . $wpdb->prefix . $this->tableName . ' WHERE post_id = ' . $post_id . ' ORDER BY post_id ASC', ARRAY_A);
@@ -140,14 +141,13 @@ class AURI
 
     /**
      * Returns a clean URL
-     * No trailing slas. No beginning slash. Returns a uri
-     * @param  [type] $uri [description]
-     * @return [type]      [description]
+     * No trailing slash. No beginning slash. Returns a URI that is ready to be used in a rewrite rule
      */
-    private function cleanUrl($uri) {
+    private function cleanUrl($uri)
+    {
 
         // Remove prefixed slash
-        if (substr($uri, 0, 1) == '/') {
+        if (str_starts_with($uri, '/')) {
             $uri = ltrim($uri, '/');
         }
 
@@ -162,52 +162,48 @@ class AURI
     /**
      * Retrieve AURI route record by exact uri
      *
-     * @param  string  $uri
+     * @param string $uri
      * @return null|array
      */
-    private function getPostByURL($uri)
+    private function getPostByURL(string $uri): ?array
     {
         global $wpdb;
 
         $uri = $this->cleanUrl($uri);
         $sql = $wpdb->prepare('SELECT * FROM ' . $wpdb->prefix . $this->tableName . ' WHERE uri = "%s"', $uri);
-        $result = $wpdb->get_row($sql, ARRAY_A);
-        return $result;
+        return $wpdb->get_row($sql, ARRAY_A);
     }
 
     /**
      * Hijack the initial request.
      *
      * Checks for matching uri route, if found then populates query params with the proper post data
-     *
-     * @param  WP  $wp
-     * @return null|array
      */
-    public function parseRequest(\WP $wp)
+    public function parseRequest(WP $wp): WP
     {
         $result = $this->getPostByURL($wp->request);
-        
+
         if ($result !== null) {
 
             /*
              * WordPress will redirect to the internal canonical uri unless we
              * explicitly tell it not to here.
-             * @todo - do we really need to prevent redirect? I think the answer is no..
+             * @BUGBUG - do we really need to prevent redirect? I think the answer is no
              */
             #remove_action('template_redirect', 'redirect_canonical');
 
             /*
              * Manually set query vars based on our matched route.
-             * Normally WordPress would auto fill this information.
-             * @todo - are we sure we need to do this?
+             * Normally WordPress would autofill this information.
+             * @BUGBUG - are we sure we need to do this?
              */
             $post = get_post($result['post_id']);
 
             if ($post->post_type == 'page') {
-                $wp->query_vars['page']      = '';
-                $wp->query_vars['pagename']  = $post->post_name;
+                $wp->query_vars['page'] = '';
+                $wp->query_vars['pagename'] = $post->post_name;
             } else {
-                $wp->query_vars['p']         = $post->ID;
+                $wp->query_vars['p'] = $post->ID;
                 $wp->query_vars['post_name'] = $post->post_name;
                 $wp->query_vars['post_type'] = $post->post_type;
             }
@@ -219,7 +215,7 @@ class AURI
     /**
      * Add custom meta box to post and pages
      */
-    public function addMetaBox()
+    public function addMetaBox(): void
     {
         add_meta_box(
             'auri-route-id',
@@ -232,12 +228,12 @@ class AURI
     /**
      * Render custom meta box field
      */
-    public function renderField($post)
+    public function renderField($post): void
     {
         wp_nonce_field(basename(__FILE__), 'auri-nonce');
-        
+
         global $wpdb;
-        
+
         $metabox_auri_path = '';
         $result = $wpdb->get_row(
             'SELECT * 
@@ -250,7 +246,9 @@ class AURI
         <div>
             <label for="auri-path"><?php echo Text::translate('URI') ?></label>
             <input name="auri-path" type="text" value="<?php echo $metabox_auri_path; ?>">
-            <p><small><?php echo Text::translate('eg: primary-content-container/secondary-structure/name-of-the-post') ?></small></p>
+            <p>
+                <small><?php echo Text::translate('eg: primary-content-container/secondary-structure/name-of-the-post') ?></small>
+            </p>
         </div>
         <?php
     }
@@ -264,11 +262,11 @@ class AURI
         if (!isset($_POST['auri-nonce']) || !wp_verify_nonce($_POST['auri-nonce'], basename(__FILE__))) {
             return $post_id;
         }
-        
+
         if (!current_user_can('edit_post', $post_id)) {
             return $post_id;
         }
-        
+
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return $post_id;
         }
@@ -281,7 +279,7 @@ class AURI
         if (!isset($_POST['auri-path'])) {
             return;
         }
-        
+
         global $wpdb;
 
         $metabox_auri_path = sanitize_text_field($_POST['auri-path']);
@@ -310,11 +308,11 @@ class AURI
     /**
      * Setup Vanity URL Table
      */
-    private function init()
+    private function init(): void
     {
         global $wpdb;
         $table_name = $wpdb->prefix . $this->tableName;
-        
+
         $charset_collate = $wpdb->get_charset_collate();
         $sql = "CREATE TABLE $table_name (
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -322,8 +320,8 @@ class AURI
                 post_id mediumint(9) NOT NULL,
                 PRIMARY KEY  (id)
             ) $charset_collate;";
-        
-        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
     }
 }
