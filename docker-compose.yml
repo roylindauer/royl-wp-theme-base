@@ -1,15 +1,15 @@
 version: "3"
 
 services:
-
   wordpress:
-    image: "wordpress:${WP_VERSION:-4.9.6}-php${PHP_VERSION:-7.2}-apache"
+    image: "wordpress:${WP_VERSION:-6.2.2}-php${PHP_VERSION:-8.1}-apache"
     environment:
       VIRTUAL_HOST: "${DOCKER_DEV_DOMAIN:-project.test}"
       WORDPRESS_DB_HOST: "mysql"
       WORDPRESS_DB_NAME: "wordpress"
       WORDPRESS_DB_PASSWORD: ""
       WORDPRESS_DB_USER: "root"
+      WORDPRESS_DEBUG: "${WORDPRESS_DEBUG:-false}"
     depends_on:
       - "mysql"
     networks:
@@ -20,7 +20,7 @@ services:
       - "./themes/royl-wp-theme-base:/var/www/html/wp-content/themes/royl-wp-theme-base:rw"
       - "./themes/royl-wp-theme-child:/var/www/html/wp-content/themes/royl-wp-theme-child:rw"
   wp-cli:
-    image: "wordpress:cli-php${PHP_VERSION:-7.2}"
+    image: "wordpress:cli-${WP_CLI_VERSION:-2.2.0}-php${PHP_VERSION:-7.3}"
     environment:
       - APACHE_RUN_USER="www-data"
       - APACHE_RUN_GROUP="www-data"
@@ -31,6 +31,7 @@ services:
     volumes:
       - "wp:/var/www/html:rw"
       - "./bin/install-wp.sh:/usr/local/bin/install-wp:ro"
+      - ".:/var/www/html/wp-content/plugins/my-plugin:ro"
   mysql:
     image: "mariadb:10.2"
     environment:

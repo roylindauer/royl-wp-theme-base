@@ -6,25 +6,50 @@ A WordPress rapid development theme framework.
 
 To develop on this project you will need the following:
 
-- Latest [Docker][1]
+- [Docker](http://docker.com/)
+- [Node](https://nodejs.org/en/)
 
-Install development dependencies:
+**Refer to https://github.com/chriszarate/docker-compose-wordpress for more information on the Docker setup.**
 
+### Install Dependencies
+
+- Home Brew - https://docs.brew.sh/Installation
+- Docker - https://docs.docker.com/docker-for-mac/install/
+- NodeJS - https://nodejs.org/en/download/
+
+- Add hosts entry to `/etc/hosts` for local development
+  ```shell
+  127.0.0.1 localhost project.test
+  ```
+### Start Development
+
+- Start Docker
+  ```shell 
+  docker-compose up -d
+  ```
+
+- Install WordPress
+  ```shell
+  docker-compose run --rm wp-cli install-wp
+  ```
+
+- Visit http://project.test/ in your browser
+
+### WP-CLI
+
+```shell
+docker-compose run --rm wp-cli wp [command]
 ```
-docker run --rm --interactive --tty --volume $PWD:/app composer install
+
+Import to and export from the WordPress database:
+
+```shell
+docker-compose run --rm wp-cli wp db import - < dump.sql
+docker-compose run --rm wp-cli wp db export - > dump.sql
 ```
 
-## Docker Development Environment 
+### Running tests (PHPUnit)
 
-This project uses chriszarate/wordpress (https://hub.docker.com/r/chriszarate/wordpress/). It's a pretty great WordPress development docker setup. You will need to add a hosts record on your computer in order to view the site. 
-
+```shell
+docker-compose run --rm wp-cli wp scaffold plugin-tests my-plugin
 ```
-127.0.0.1 project.test
-```
-
-You'll be able to view the site at http://project.test. 
-
-[1]:http://docker.com/
-[2]:https://nodejs.org/en/
-[3]:http://getcomposer.org/
-
