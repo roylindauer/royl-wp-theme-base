@@ -1,24 +1,26 @@
 <?php
+
 use Royl\WpThemeBase\Util;
 use Royl\WpThemeBase\Wp;
 use Royl\WpThemeBase\Ajax;
 
-add_filter( 'royl_enable_vanity_urls', function(){
+add_filter('royl_enable_auri', function () {
     return true;
 });
 
 /**
  * Enqueue Parent Theme Styles
  */
-add_action( 'wp_enqueue_scripts', 'royl_child_enqueue_styles' );
-function royl_child_enqueue_styles() {
-    wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
+add_action('wp_enqueue_scripts', 'royl_child_enqueue_styles');
+function royl_child_enqueue_styles()
+{
+    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
 }
 
 /**
  * Example: Enqueue Stylesheets
  */
-add_filter( 'royl_frontend_stylesheets', function( $styles ){
+add_filter('royl_frontend_stylesheets', function ($styles) {
     $styles['bootstrap'] = [
         'source' => 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
         'dependencies' => false,
@@ -30,17 +32,17 @@ add_filter( 'royl_frontend_stylesheets', function( $styles ){
 /**
  * Debug Theme Configure Array
  */
-add_action( 'shutdown', function(){
-    if ( defined('DOING_AJAX') && DOING_AJAX ) {
+add_action('shutdown', function () {
+    if (wp_is_json_request()) {
         return;
     }
-    Util\Debug::pr( Util\Configure::read() );
+    Util\Debug::pr(Util\Configure::read());
 });
 
 /**
  * Example: Register Custom Post Types
  */
-add_filter( 'royl_register_post_types', function( $post_types ){
+add_filter('royl_register_post_types', function ($post_types) {
 
     $custom_post_types = [
         'Cover' => [
@@ -57,46 +59,46 @@ add_filter( 'royl_register_post_types', function( $post_types ){
             ]
         ]
     ];
-    return array_merge( $post_types, $custom_post_types );
+    return array_merge($post_types, $custom_post_types);
 });
 
 /**
  * Example: Register Custom Taxonomies
  */
-add_filter( 'royl_register_taxonomies', function( $tax ){
+add_filter('royl_register_taxonomies', function ($tax) {
 
     $custom_tax = [
         'cover_categories' => [
             'params' => [
-                'post_types'   => ['cover', 'post', 'page'], // this can include built in post types (page, post, etc)
+                'post_types' => ['cover', 'post', 'page'], // this can include built in post types (page, post, etc)
             ],
             'args' => [
-                'label'        => Util\Text::translate('Cover Categories'),
-                'rewrite'      => 'cover_categories',
+                'label' => Util\Text::translate('Cover Categories'),
+                'rewrite' => 'cover_categories',
                 'hierarchical' => true,
             ]
         ],
         'cover_tags' => [
             'params' => [
-                'post_types'   => ['cover'],
+                'post_types' => ['cover'],
             ],
             'args' => [
-                'label'        => Util\Text::translate('Cover Tags'),
-                'rewrite'      => 'cover_tags',
+                'label' => Util\Text::translate('Cover Tags'),
+                'rewrite' => 'cover_tags',
                 'hierarchical' => false,
                 'show_admin_column' => false
             ]
         ],
     ];
-    return array_merge( $tax, $custom_tax );
+    return array_merge($tax, $custom_tax);
 });
 
 /**
  * Example: Set Theme Config Options
  */
-add_filter( 'royl_set_theme_config', function( $config = [] ){
+add_filter('royl_set_theme_config', function ($config = []) {
     $theme_config = [];
-    $config = array_merge( $config, $theme_config );
+    $config = array_merge($config, $theme_config);
 
     return $config;
 });
@@ -104,7 +106,7 @@ add_filter( 'royl_set_theme_config', function( $config = [] ){
 /**
  * Example: Register Theme Features
  */
-add_filter( 'royl_register_theme_features', function( $features ){
+add_filter('royl_register_theme_features', function ($features) {
     return [
         'custom-logo' => [
             'size' => 'theme-logo'
@@ -127,7 +129,7 @@ add_filter( 'royl_register_theme_features', function( $features ){
 /**
  * Example: Register Custom Image Sizes
  */
-add_filter( 'royl_register_image_sizes', function( $sizes ){
+add_filter('royl_register_image_sizes', function ($sizes) {
     return [
         'theme-logo' => [
             'width' => 150,
@@ -145,17 +147,17 @@ add_filter( 'royl_register_image_sizes', function( $sizes ){
 /**
  * Example: Register Sidebars
  */
-add_filter( 'royl_register_sidebars', function( $sidebars ){
+add_filter('royl_register_sidebars', function ($sidebars) {
     return [
         [
-            'id'            => 'default-sidebar',
-            'name'          => \Royl\WpThemeBase\Util\Text::translate('Default Sidebar'),
-            'description'   => '',
-            'class'         => '',
+            'id' => 'default-sidebar',
+            'name' => \Royl\WpThemeBase\Util\Text::translate('Default Sidebar'),
+            'description' => '',
+            'class' => '',
             'before_widget' => '<li id="%1$s" class="widget %2$s">',
-            'after_widget'  => '</li>',
-            'before_title'  => '<h2 class="widgettitle">',
-            'after_title'   => '</h2>',
+            'after_widget' => '</li>',
+            'before_title' => '<h2 class="widgettitle">',
+            'after_title' => '</h2>',
         ],
     ];
 });
@@ -163,10 +165,10 @@ add_filter( 'royl_register_sidebars', function( $sidebars ){
 /**
  * Example: Register Nav Menus
  */
-add_filter( 'royl_register_nav_menus', function( $navs ){
+add_filter('royl_register_nav_menus', function ($navs) {
     return [
-        'main-menu'   => \Royl\WpThemeBase\Util\Text::translate('Main Menu'),
-        'sub-menu'    => \Royl\WpThemeBase\Util\Text::translate('Sub Menu'),
+        'main-menu' => \Royl\WpThemeBase\Util\Text::translate('Main Menu'),
+        'sub-menu' => \Royl\WpThemeBase\Util\Text::translate('Sub Menu'),
         'footer-menu' => \Royl\WpThemeBase\Util\Text::translate('Footer Menu'),
         'social-menu' => \Royl\WpThemeBase\Util\Text::translate('Social Menu')
     ];
@@ -175,8 +177,8 @@ add_filter( 'royl_register_nav_menus', function( $navs ){
 /**
  * Example: Setup custom filter query arg defaults. ANY VALID WP_QUERY arg is acceptable, except post_type.
  */
-add_filter( 'royl_set_filter_query_arg_defaults', function( $defaults ){
-    return array_merge( $defaults, [
+add_filter('royl_set_filter_query_arg_defaults', function ($defaults) {
+    return array_merge($defaults, [
         'posts_per_page' => 10,
         'ignore_sticky_posts' => false,
     ]);
@@ -185,22 +187,23 @@ add_filter( 'royl_set_filter_query_arg_defaults', function( $defaults ){
 /**
  * Example: Setup Custom WP Query Filters
  */
-add_filter( 'royl_filter_define_filters', 'setup_filters', 10 );
-function setup_filters() {
+add_filter('royl_filter_define_filters', 'setup_filters', 10);
+function setup_filters()
+{
     return [
         'category' => [
             'name' => 'category',
             'filter_query' => [
                 'type' => 'Taxonomy',
                 'taxonomy' => 'category',
-                'post_types' => [ 'post' ],
+                'post_types' => ['post'],
             ],
             'field' => [
-                'classes' => [ 'form-control' ],
+                'classes' => ['form-control'],
                 'type' => 'Select',
                 'multi' => false,
-                'options' => Wp\Taxonomy::getList( 'category' ),
-                'label' => Util\Text::translate( 'Post Category' ),
+                'options' => Wp\Taxonomy::getList('category'),
+                'label' => Util\Text::translate('Post Category'),
             ]
         ],
         'nofield' => [
@@ -208,19 +211,19 @@ function setup_filters() {
             'filter_query' => [
                 'type' => 'Taxonomy',
                 'taxonomy' => 'category',
-                'post_types' => [ 'post' ],
+                'post_types' => ['post'],
             ],
         ],
         'search' => [
             'name' => 'search', // use for the name attr on the field
             'filter_query' => [
                 'type' => 'Search',
-                'post_types' => [ 'post' ],
+                'post_types' => ['post'],
             ],
             'field' => [
-                'classes' => [ 'form-control' ],
+                'classes' => ['form-control'],
                 'type' => 'Text',
-                'label' => Util\Text::translate( 'Search' ),
+                'label' => Util\Text::translate('Search'),
             ]
         ],
         'mycustomfield' => [
@@ -229,13 +232,13 @@ function setup_filters() {
                 'type' => 'Postmeta',
                 'key' => 'mycustomfield',
                 'compare' => 'LIKE',
-                'post_types' => [ 'post' ],
+                'post_types' => ['post'],
             ],
             'field' => [
-                'classes' => [ 'form-control' ],
+                'classes' => ['form-control'],
                 'type' => 'Text',
-                'label' => Util\Text::translate( 'Custom Field <code>you can include html in the label</code>' ),
-                'placeholder' => Util\Text::translate( 'This is a placeholder' )
+                'label' => Util\Text::translate('Custom Field <code>you can include html in the label</code>'),
+                'placeholder' => Util\Text::translate('This is a placeholder')
             ]
         ],
         // sort and direction
@@ -246,18 +249,18 @@ function setup_filters() {
                 'rand_seed' => 1234,
             ],
             'field' => [
-                'classes' => [ 'form-control' ],
+                'classes' => ['form-control'],
                 'type' => 'Select',
                 'multi' => false,
                 'options' => [
-                    'ID' => Util\Text::translate( 'ID' ),
-                    'name' => Util\Text::translate( 'Slug' ),
-                    'title' => Util\Text::translate( 'Post Title' ),
-                    'date' => Util\Text::translate( 'Publish Date' ),
-                    'modified' => Util\Text::translate( 'Modified Date' ),
-                    'rand' => Util\Text::translate( 'Random' ),
+                    'ID' => Util\Text::translate('ID'),
+                    'name' => Util\Text::translate('Slug'),
+                    'title' => Util\Text::translate('Post Title'),
+                    'date' => Util\Text::translate('Publish Date'),
+                    'modified' => Util\Text::translate('Modified Date'),
+                    'rand' => Util\Text::translate('Random'),
                 ],
-                'label' => Util\Text::translate( 'Order By' ),
+                'label' => Util\Text::translate('Order By'),
             ]
         ],
         'order' => [
@@ -266,14 +269,14 @@ function setup_filters() {
                 'type' => 'Order'
             ],
             'field' => [
-                'classes' => [ 'form-control' ],
+                'classes' => ['form-control'],
                 'type' => 'Select',
                 'multi' => false,
                 'options' => [
-                    'ASC' => Util\Text::translate( 'ASC' ),
-                    'DESC' => Util\Text::translate( 'DESC' ),
+                    'ASC' => Util\Text::translate('ASC'),
+                    'DESC' => Util\Text::translate('DESC'),
                 ],
-                'label' => Util\Text::translate( 'Direction' ),
+                'label' => Util\Text::translate('Direction'),
             ]
         ]
     ];
@@ -283,32 +286,33 @@ function setup_filters() {
  * Example: Combine Custom Filters to create Filter Query Groups
  * Use Filter Query Groups to generate WP_Query objects and render filter forms.
  */
-add_filter( 'royl_filter_define_filter_groups', 'define_filter_groups' );
-function define_filter_groups() {
+add_filter('royl_filter_define_filter_groups', 'define_filter_groups');
+function define_filter_groups()
+{
     return [
-        'test-filter-form' => [ 'category', 'mycustomfield', 'search', 'orderby', 'order', 'nofield' ],
-        'test-filter-form-secondary' => [ 'category', 'search' ],
+        'test-filter-form' => ['category', 'mycustomfield', 'search', 'orderby', 'order', 'nofield'],
+        'test-filter-form-secondary' => ['category', 'search'],
     ];
 }
 
 /**
  * Example: Injecting some content before a custom filters field
  */
-add_action( 'royl_before_render_filter_field_wrapper_filter_search', function(){
+add_action('royl_before_render_filter_field_wrapper_filter_search', function () {
     echo '<em>This appears before the field, inside the field wrapper</em><br><code>royl_before_render_filter_field_wrapper_filter_{$field_name}</code>';
-} );
+});
 
 /**
  * Example: Injecting some content after a custom filters field
  */
-add_action( 'royl_after_render_filter_field_wrapper_filter_search', function(){
+add_action('royl_after_render_filter_field_wrapper_filter_search', function () {
     echo '<em>This appears after the field, inside the field wrapper</em><br><code>royl_after_render_filter_field_wrapper_filter_{$field_name}</code>.';
-} );
+});
 
 /**
  * Example: Adding additional classes to field containers
  */
-add_filter( 'filter_field_container_classes', function( $classes ){
+add_filter('filter_field_container_classes', function ($classes) {
     $classes[] = 'form-group';
     $classes[] = 'row';
     return $classes;
@@ -317,7 +321,7 @@ add_filter( 'filter_field_container_classes', function( $classes ){
 /**
  * Example: Adding additional classes to field wrappers
  */
-add_filter( 'filter_field_wrapper_classes', function( $classes ){
+add_filter('filter_field_wrapper_classes', function ($classes) {
     $classes[] = 'col-sm-10';
     return $classes;
 });
@@ -325,7 +329,7 @@ add_filter( 'filter_field_wrapper_classes', function( $classes ){
 /**
  * Example: Adding additional classes to field labels
  */
-add_filter( 'filter_field_label_classes', function( $classes ){
+add_filter('filter_field_label_classes', function ($classes) {
     $classes[] = 'col-sm-2';
     $classes[] = 'col-form-label';
     return $classes;
@@ -334,16 +338,16 @@ add_filter( 'filter_field_label_classes', function( $classes ){
 /**
  * Example: Add content before the orderby filter
  */
-add_action( 'royl_before_render_filter_field_filter_orderby', function(){
+add_action('royl_before_render_filter_field_filter_orderby', function () {
     echo '<hr>';
-} );
+});
 
 /**
  * Example: Add content after the orderby direction filter
  */
-add_action( 'royl_after_render_filter_field_filter_order', function(){
+add_action('royl_after_render_filter_field_filter_order', function () {
     echo '<hr>';
-} );
+});
 
 // include custom jQuery
 function royl_include_custom_jquery()
@@ -352,5 +356,6 @@ function royl_include_custom_jquery()
     wp_enqueue_script('jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js', array(), null, false);
 
 }
+
 add_action('wp_enqueue_scripts', 'royl_include_custom_jquery');
 
